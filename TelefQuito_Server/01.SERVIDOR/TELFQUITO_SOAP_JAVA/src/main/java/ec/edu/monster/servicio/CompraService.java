@@ -46,8 +46,12 @@ public class CompraService {
         compra.setDescuento(descuento);
         compra.setPreciofinal(precioFinal);
 
-        compraDAO.createCompra(compra);
-        return("Compra en efectivo exitosa!!");
+        if(compraDAO.createCompraEfectivo(compra)){
+             return("Compra en efectivo exitosa!!");
+        }else{
+            return("Compra en efectivo fallida");
+        }
+       
     }
 
     public String realizarCompraCredito(int codTelefono, String cedula, String formaPago, int plazoMeses)
@@ -81,8 +85,13 @@ public class CompraService {
         compra.setCodcCliente(clientecDAO.getCodClienteByCedula(cedula));
         compra.setFormaPago(formaPago);
         compra.setFecha(LocalDate.now().toString());
+        compra.setPreciofinal(precioTelefono);
 
-        compraDAO.createCompra(compra);
-        return("Compra exitosa a credito!!");
+        if(compraDAO.createCompraCredito(compra)){
+             return("Compra exitosa a credito!!");
+        }else{
+            return ("Compra fallida!!");
+        }
+       
     }
 }
