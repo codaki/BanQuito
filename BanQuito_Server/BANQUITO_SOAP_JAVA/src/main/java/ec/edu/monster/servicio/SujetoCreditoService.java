@@ -12,34 +12,47 @@ public class SujetoCreditoService {
         CreditoDAO creditoDAO = new CreditoDAO();
 
         
-    public boolean verificar( String cedula ){
+    public int verificar( String cedula ){
+        int cod = this.obtenerCodClientePorCedula(cedula);
          try {
             if (!clienteDAO.esCliente(cedula)) {
                 System.out.println("El solicitante no es cliente del banco.");
-                return false;
+                return 0;
             }
 
             if (!movimientoDAO.tieneDepositoReciente(cedula)) {
                 System.out.println("El cliente no tiene depósitos en el último mes.");
-                return false;
+                return 0;
             }
 
             if (!clienteDAO.cumpleRequisitoEdad(cedula)) {
                 System.out.println("El cliente no cumple con el requisito de edad.");
-                return false;
+                return 0;
             }
 
             if (creditoDAO.tieneCreditoActivo(cedula)) {
                 System.out.println("El cliente tiene un crédito activo.");
-                return false;
+                return 0;
             }
             
 
             System.out.println("El cliente cumple con todos los requisitos.");
-            return true;
+            return cod;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
+        }
+    }
+    public int obtenerCodClientePorCedula(String cedula) {
+        try {
+            int valor = clienteDAO.getCodClienteByCedula(cedula);
+            System.out.println("aaaaaaaaaaaaaxd");
+            System.out.println(valor);
+            return clienteDAO.getCodClienteByCedula(cedula);
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1; // Return -1 if an error occurs
         }
     }
 

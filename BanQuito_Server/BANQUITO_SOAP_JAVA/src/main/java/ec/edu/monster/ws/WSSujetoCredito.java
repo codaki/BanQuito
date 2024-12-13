@@ -17,7 +17,7 @@ public class WSSujetoCredito {
      * Web service operation to verify a customer
      */
     @WebMethod(operationName = "verifica")
-    public boolean verifica(@WebParam(name = "cedula") String cedula) {
+    public int verifica(@WebParam(name = "cedula") String cedula) {
         SujetoCreditoService sujetoCredito = new SujetoCreditoService();
         return sujetoCredito.verificar(cedula);
     }

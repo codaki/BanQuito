@@ -135,5 +135,17 @@ public class ClienteDAO {
     }
     return false;
 }
+     public int getCodClienteByCedula(String cedula) throws SQLException {
+        String sql = "SELECT COD_CLIENTE FROM cliente WHERE CEDULA = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, cedula);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("COD_CLIENTE");
+            }
+        }
+        return -1; // Return -1 if no client is found
+    }
 }
 
