@@ -19,8 +19,8 @@ public class WSMontoMáximo {
     /**
      * This is a sample web service operation
      */
-    @WebMethod(operationName = "hello")
-    public double hello(@WebParam(name = "name") int codigo) throws SQLException {
+    @WebMethod(operationName = "montoMaximo")
+    public double hello(@WebParam(name = "codigo") int codigo) throws SQLException {
         MontoMaximoService monto = new MontoMaximoService();
         return monto.calcularMontoMaximoCredito(codigo);
     }
