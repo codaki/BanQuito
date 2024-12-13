@@ -1,20 +1,22 @@
 package ec.edu.monster.models;
 
 public class Credito {
-     private int codCredito;
+    private int codCredito;
     private int codCliente;
     private double monto;
     private int plazoMeses;
     private double tasaInteres;
     private String fechaInicio;
+    private int activo;
 
-    public Credito(int codCredito, int codCliente, double monto, int plazoMeses, double tasaInteres, String fechaInicio) {
+    public Credito(int codCredito, int codCliente, double monto, int plazoMeses, double tasaInteres, String fechaInicio, int activo) {
         this.codCredito = codCredito;
         this.codCliente = codCliente;
         this.monto = monto;
         this.plazoMeses = plazoMeses;
         this.tasaInteres = tasaInteres;
         this.fechaInicio = fechaInicio;
+        this.activo = activo;
     }
 
     public Credito() {
@@ -67,5 +69,13 @@ public class Credito {
 
     public void setFechaInicio(String fechaInicio) {
         this.fechaInicio = fechaInicio;
+    }
+
+    public int getActivo() {
+        return activo;
+    }
+
+    public void setActivo(int activo) {
+        this.activo = activo;
     }
 }
