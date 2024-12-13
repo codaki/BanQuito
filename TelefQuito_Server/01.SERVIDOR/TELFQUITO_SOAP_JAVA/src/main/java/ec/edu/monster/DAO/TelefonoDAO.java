@@ -46,7 +46,7 @@ public class TelefonoDAO {
     }
 
     public void updateTelefono(Telefonos telefono) throws SQLException {
-        String query = "UPDATE telefonos SET nombre = ?, precio = ?, marca = ?, disponble = ? WHERE cod_telefono = ?";
+        String query = "UPDATE telefonos SET nombre = ?, precio = ?, marca = ?, disponible = ? WHERE cod_telefono = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, telefono.getNombre());
             stmt.setDouble(2, telefono.getPrecio());

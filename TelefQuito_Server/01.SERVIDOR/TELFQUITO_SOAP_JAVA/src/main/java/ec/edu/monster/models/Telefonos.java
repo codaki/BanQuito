@@ -19,6 +19,14 @@ public class Telefonos {
         this.disponible = disponible;
     }
 
+    public Telefonos(String nombre, double precio, String marca, int disponible) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.marca = marca;
+        this.disponible = disponible;
+    }
+    
+
     public String getMarca() {
         return marca;
     }
