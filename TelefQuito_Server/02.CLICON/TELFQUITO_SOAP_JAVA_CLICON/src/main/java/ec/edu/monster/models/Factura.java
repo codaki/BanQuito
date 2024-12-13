@@ -76,4 +76,9 @@ public class Factura {
     public void setMarcaTelefono(String marcaTelefono) {
         this.marcaTelefono = marcaTelefono;
     }
+     @Override
+    public String toString() {
+        return String.format("CodCompra: %d, FormaPago: %s, Fecha: %s, Descuento: %.2f, PrecioFinal: %.2f, NombreCliente: %s, NombreTelefono: %s, MarcaTelefono: %s",
+                codCompra, formaPago, fecha, descuento, precioFinal, nombreCliente, nombreTelefono, marcaTelefono);
+    }
 }

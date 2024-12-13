@@ -20,4 +20,7 @@ public class CompraServicio {
       public List<Factura> obtenerFactura(String cedula) {
           return port.obtenerFactura(cedula);
       }
+       public List<Tabla> consultarTablaAmortizacion(String cedula) {
+        return port.consultarTablaAmortizacion(cedula);
+    }
 }

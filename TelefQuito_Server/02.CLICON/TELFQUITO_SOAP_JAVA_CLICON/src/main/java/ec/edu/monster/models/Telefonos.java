@@ -1,6 +1,7 @@
 
 package ec.edu.monster.models;
 
+
 public class Telefonos {
     private int codTelefono;
     private String nombre;
@@ -18,6 +19,14 @@ public class Telefonos {
         this.marca = marca;
         this.disponible = disponible;
     }
+
+    public Telefonos(String nombre, double precio, String marca, int disponible) {
+        this.nombre = nombre;
+        this.precio = precio;
+        this.marca = marca;
+        this.disponible = disponible;
+    }
+    
 
     public String getMarca() {
         return marca;
@@ -59,4 +68,11 @@ public class Telefonos {
         this.precio = precio;
     }
     
+
+
+    @Override
+    public String toString() {
+        return String.format("CodTelefono: %d, Nombre: %s, Precio: %.2f, Marca: %s, Disponible: %d",
+                codTelefono, nombre, precio, marca, disponible);
+    }
 }

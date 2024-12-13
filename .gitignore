@@ -24,3 +24,4 @@ hs_err_pid*
 replay_pid*
 
 target/
+/TelefQuito_Server/02.CLIWEB/TELFQUITO_SOAP_JAVA_CLIWEB/nbproject/private/

@@ -69,4 +69,9 @@ public class Tabla {
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
+     @Override
+    public String toString() {
+        return String.format("CodCredito: %d, Cuota: %d, ValorCuota: %.2f, InteresPagado: %.2f, CapitalPagado: %.2f, Saldo: %.2f",
+                codCredito, cuota, valorCuota, interesPagado, capitalPagado, saldo);
+    }
 }
