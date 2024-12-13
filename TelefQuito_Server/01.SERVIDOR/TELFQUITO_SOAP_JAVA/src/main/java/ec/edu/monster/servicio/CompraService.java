@@ -9,6 +9,8 @@ import ec.edu.monster.banquito.MontoMaximoService;
 import ec.edu.monster.banquito.GenerarTablaService;
 import ec.edu.monster.models.Telefonos;
 import ec.edu.monster.DAO.TelefonoDAO;
+import ec.edu.monster.models.Factura;
+import java.util.List;
 
 import java.time.LocalDate;
 
@@ -100,5 +102,8 @@ public class CompraService {
             return ("Compra fallida!!");
         }
        
+    }
+    public List<Factura> obtenerFactura(String cedula) {
+        return compraDAO.obtenerFactura(cedula);
     }
 }

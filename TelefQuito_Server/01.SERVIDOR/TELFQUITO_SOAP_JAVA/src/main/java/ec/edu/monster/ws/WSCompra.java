@@ -15,8 +15,10 @@ import ec.edu.monster.banquito.MontoMaximoService;
 import ec.edu.monster.banquito.GenerarTablaService;
 import ec.edu.monster.servicio.CompraService;
 import ec.edu.monster.bdd.DBConnection;
+import ec.edu.monster.models.Factura;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
@@ -67,5 +69,14 @@ public class WSCompra {
         } catch (Exception e) {
             return "Error al realizar la compra con crédito: " + e.getMessage();
         }
+    }
+    /**
+     * Web service operation factura
+     * @param cedula
+     * @return 
+     */
+     @WebMethod(operationName = "obtenerFactura")
+    public List<Factura> obtenerFactura(@WebParam(name = "cedula") String cedula) {
+        return compraService.obtenerFactura(cedula);
     }
 }
