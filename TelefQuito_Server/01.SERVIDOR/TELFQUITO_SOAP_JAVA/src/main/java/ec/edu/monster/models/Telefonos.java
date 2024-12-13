@@ -2,17 +2,37 @@
 package ec.edu.monster.models;
 
 public class Telefonos {
-     private int codTelefono;
+    private int codTelefono;
     private String nombre;
     private double precio;
+    private String marca;
+    private int disponible;
 
     public Telefonos() {
     }
 
-    public Telefonos(int codTelefono, String nombre, double precio) {
+    public Telefonos(int codTelefono, String nombre, double precio, String marca, int disponible) {
         this.codTelefono = codTelefono;
         this.nombre = nombre;
         this.precio = precio;
+        this.marca = marca;
+        this.disponible = disponible;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public int getDisponible() {
+        return disponible;
+    }
+
+    public void setDisponible(int disponible) {
+        this.disponible = disponible;
     }
 
     public int getCodTelefono() {
