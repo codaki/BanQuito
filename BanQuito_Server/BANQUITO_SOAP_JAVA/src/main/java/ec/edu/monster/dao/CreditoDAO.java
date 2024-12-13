@@ -13,7 +13,7 @@ import java.util.List;
 
     public class CreditoDAO {
     public boolean tieneCreditoActivo(String cedula) throws SQLException {
-        String sql = " SELECT COUNT(*) FROM credito cr INNER JOIN cliente cl ON cr.COD_CLIENTE = cl.COD_CLIENTE WHERE cl.CEDULA = ? AND NOT EXISTS ( SELECT 1 FROM amortizacion WHERE COD_CREDITO = cr.COD_CREDITO AND SALDO > 0) ";
+        String sql = " SELECT COUNT(*) FROM credito cr INNER JOIN cliente cl ON cr.COD_CLIENTE = cl.COD_CLIENTE WHERE cl.CEDULA = ? AND cr.ACTIVO = 1; ";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, cedula);
@@ -22,7 +22,7 @@ import java.util.List;
         }
     }
     public int createCredito(Credito credito) throws SQLException {
-        String sql = "INSERT INTO credito (COD_CLIENTE, MONTO, PLAZO_MESES, TASA_INTERES, FECHA_INICIO) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO credito (COD_CLIENTE, MONTO, PLAZO_MESES, TASA_INTERES, FECHA_INICIO, ACTIVO) VALUES (?, ?, ?, ?, ?, 1)";
         try (Connection connection = DBConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, credito.getCodCliente());
@@ -55,6 +55,7 @@ import java.util.List;
                 credito.setPlazoMeses(resultSet.getInt("PLAZO_MESES"));
                 credito.setTasaInteres(resultSet.getDouble("TASA_INTERES"));
                 credito.setFechaInicio(resultSet.getDate("FECHA_INICIO").toString());
+                credito.setActivo(resultSet.getInt("ACTIVO"));
                 creditos.add(credito);
             }
         }

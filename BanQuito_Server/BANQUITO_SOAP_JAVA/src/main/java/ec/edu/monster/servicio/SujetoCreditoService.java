@@ -7,9 +7,9 @@ import ec.edu.monster.dao.MovimientoDAO;
 import java.sql.SQLException;
 
 public class SujetoCreditoService {
-   ClienteDAO clienteDAO = new ClienteDAO();
-        MovimientoDAO movimientoDAO = new MovimientoDAO();
-        CreditoDAO creditoDAO = new CreditoDAO();
+    ClienteDAO clienteDAO = new ClienteDAO();
+    MovimientoDAO movimientoDAO = new MovimientoDAO();
+    CreditoDAO creditoDAO = new CreditoDAO();
 
         
     public int verificar( String cedula ){
