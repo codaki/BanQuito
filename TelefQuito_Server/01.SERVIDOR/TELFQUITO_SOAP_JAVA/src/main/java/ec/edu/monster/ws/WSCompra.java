@@ -49,9 +49,9 @@ public class WSCompra {
      */
     @WebMethod(operationName = "comprarEfectivo")
     public String comprarEfectivo(@WebParam(name = "codTelefono") int codTelefono,
-            @WebParam(name = "codcCliente") int codcCliente) {
+            @WebParam(name = "codcCedula") String codcCedula) {
         try {
-            return compraService.realizarCompraEfectivo(codTelefono, codcCliente, "Efectivo");
+            return compraService.realizarCompraEfectivo(codTelefono, codcCedula, "Efectivo");
         } catch (Exception e) {
             return "Error al realizar la compra en efectivo: " + e.getMessage();
         }

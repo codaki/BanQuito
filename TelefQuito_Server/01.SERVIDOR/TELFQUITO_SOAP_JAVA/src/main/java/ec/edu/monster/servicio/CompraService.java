@@ -32,15 +32,22 @@ public class CompraService {
 
 
 
-    public String realizarCompraEfectivo(int codTelefono, int codcCliente, String formaPago) throws Exception {
+    public String realizarCompraEfectivo(int codTelefono, String codCedula, String formaPago) throws Exception {
         Telefonos telefono = telefonoDAO.getTelefonoById(codTelefono);
+        if(telefono == null){
+            return "No se encontró el teléfono";
+        }
         double precioOriginal = telefono.getPrecio();
         double descuento = precioOriginal * 0.42;
         double precioFinal = precioOriginal - descuento;
+        int idCliente = clientecDAO.getCodClienteByCedula(codCedula);
+        if(idCliente == -1){
+            return "No se encontró el cliente";
+        }
 
         Compras compra = new Compras();
         compra.setCodTelefono(codTelefono);
-        compra.setCodcCliente(codcCliente);
+        compra.setCodcCliente(idCliente);
         compra.setFormaPago(formaPago);
         compra.setFecha(LocalDate.now().toString());
         compra.setDescuento(descuento);
