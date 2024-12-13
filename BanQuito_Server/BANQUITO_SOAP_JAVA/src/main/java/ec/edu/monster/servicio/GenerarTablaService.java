@@ -28,9 +28,9 @@ public class GenerarTablaService {
             amortizacionDAO.createAmortizacion(amortizacion);
         }
     }
-     public List<Tabla> consultarTablaAmortizacion(int codCredito) throws SQLException {
+     public List<Tabla> consultarTablaAmortizacion(String cedula) throws SQLException {
         TablaDAO amortizacionDAO = new TablaDAO();
-        return amortizacionDAO.getAmortizacionByCredito(codCredito);
+        return amortizacionDAO.getAmortizacionByCedula(cedula);
     }
      public List<Credito> getCreditosByCedula(String cedula) throws SQLException {
         CreditoDAO creditoDAO = new CreditoDAO();

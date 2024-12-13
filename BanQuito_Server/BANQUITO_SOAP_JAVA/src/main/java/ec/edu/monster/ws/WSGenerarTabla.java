@@ -52,14 +52,14 @@ public class WSGenerarTabla {
     }
     /**
      * Web service operation to get amortization table for a given loan ID.
-     * @param codCredito
+     * @param cedula
      * @return 
      */
     @WebMethod(operationName = "consultarTablaAmortizacion")
-    public List<Tabla> consultarTablaAmortizacion(@WebParam(name = "codCredito") int codCredito) {
+    public List<Tabla> consultarTablaAmortizacion(@WebParam(name = "cedula") String cedula) {
         GenerarTablaService generarTablaService = new GenerarTablaService();
         try {
-            return generarTablaService.consultarTablaAmortizacion(codCredito);
+            return generarTablaService.consultarTablaAmortizacion(cedula);
         } catch (SQLException e) {
             return null;
         }

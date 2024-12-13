@@ -15,8 +15,8 @@ public class GenerarTablaService {
          return port.crearCreditoYTablaAmortizacion(codCliente, monto, plazoMeses);
      }
      
-     public List<ec.edu.monster.banquito.Tabla> consultarTablaAmortizacion( int codCredito) {
-     return port.consultarTablaAmortizacion(codCredito);
+     public List<ec.edu.monster.banquito.Tabla> consultarTablaAmortizacion( String cedula) {
+     return port.consultarTablaAmortizacion(cedula);
      }
          public List<ec.edu.monster.banquito.Credito> consultarCreditosPorCedula( String cedula) {
              return port.consultarCreditosPorCedula(cedula);

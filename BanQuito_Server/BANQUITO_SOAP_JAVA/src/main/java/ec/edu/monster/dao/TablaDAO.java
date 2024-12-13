@@ -10,12 +10,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TablaDAO {
-     public void createAmortizacion(Tabla amortizacion) throws SQLException {
+    public void createAmortizacion(Tabla amortizacion) throws SQLException {
         String sql = "INSERT INTO amortizacion (COD_CREDITO, CUOTA, VALOR_CUOTA, INTERES_PAGADO, CAPITAL_PAGADO, SALDO) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+                PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, amortizacion.getCodCredito());
             statement.setInt(2, amortizacion.getCuota());
             statement.setDouble(3, amortizacion.getValorCuota());
@@ -25,12 +24,16 @@ public class TablaDAO {
             statement.executeUpdate();
         }
     }
-     public List<Tabla> getAmortizacionByCredito(int codCredito) throws SQLException {
-        String sql = "SELECT * FROM amortizacion WHERE COD_CREDITO = ?";
+
+    public List<Tabla> getAmortizacionByCedula(String cedula) throws SQLException {
+        String sql = "SELECT a.* FROM amortizacion a " +
+                "INNER JOIN credito cr ON a.COD_CREDITO = cr.COD_CREDITO " +
+                "INNER JOIN cliente cl ON cr.COD_CLIENTE = cl.COD_CLIENTE " +
+                "WHERE cl.CEDULA = ?";
         List<Tabla> amortizaciones = new ArrayList<>();
         try (Connection connection = DBConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, codCredito);
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, cedula);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 Tabla amortizacion = new Tabla();
@@ -45,5 +48,5 @@ public class TablaDAO {
         }
         return amortizaciones;
     }
-    
+
 }

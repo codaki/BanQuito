@@ -13,6 +13,7 @@ import ec.edu.monster.DAO.TelefonoDAO;
 import ec.edu.monster.banquito.SujetoCreditoService;
 import ec.edu.monster.banquito.MontoMaximoService;
 import ec.edu.monster.banquito.GenerarTablaService;
+import ec.edu.monster.banquito.Tabla;
 import ec.edu.monster.servicio.CompraService;
 import ec.edu.monster.bdd.DBConnection;
 import ec.edu.monster.models.Factura;
@@ -46,7 +47,8 @@ public class WSCompra {
             e.printStackTrace();
         }
     }
-/**
+
+    /**
      * Web service operation to verify a customer
      */
     @WebMethod(operationName = "comprarEfectivo")
@@ -58,7 +60,8 @@ public class WSCompra {
             return "Error al realizar la compra en efectivo: " + e.getMessage();
         }
     }
-/**
+
+    /**
      * Web service operation to verify a customer
      */
     @WebMethod(operationName = "comprarCredito")
@@ -70,13 +73,20 @@ public class WSCompra {
             return "Error al realizar la compra con crédito: " + e.getMessage();
         }
     }
+
     /**
      * Web service operation factura
+     * 
      * @param cedula
-     * @return 
+     * @return
      */
-     @WebMethod(operationName = "obtenerFactura")
+    @WebMethod(operationName = "obtenerFactura")
     public List<Factura> obtenerFactura(@WebParam(name = "cedula") String cedula) {
         return compraService.obtenerFactura(cedula);
+    }
+
+    @WebMethod(operationName = "consultarTablaAmortizacion")
+    public List<Tabla> consultarTablaAmortizacion(@WebParam(name = "cedula") String cedula) {
+        return compraService.consultarTablaAmortizacion(cedula);
     }
 }
