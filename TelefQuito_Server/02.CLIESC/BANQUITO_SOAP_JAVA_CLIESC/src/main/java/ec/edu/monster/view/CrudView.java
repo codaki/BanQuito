@@ -16,7 +16,6 @@ public class CrudView extends javax.swing.JFrame {
     private TelefonoController telefonoController;
     private Telefonos telefono;
     private boolean isEditMode;
-    private CatalogoView catalogoView;
 
 
     
@@ -27,7 +26,6 @@ public class CrudView extends javax.swing.JFrame {
         initComponents();
         this.telefonoController = new TelefonoController();
         this.isEditMode = false;
-        this.catalogoView = catalogoView;
 
     }
 
@@ -36,7 +34,6 @@ public class CrudView extends javax.swing.JFrame {
         this.telefonoController = new TelefonoController();
         this.telefono = telefono;
         this.isEditMode = true;
-        this.catalogoView = catalogoView;
         populateFields();
     }
 
@@ -219,6 +216,8 @@ public class CrudView extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPrecioActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        CatalogoView cat = new CatalogoView();
+        cat.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
@@ -250,8 +249,8 @@ public class CrudView extends javax.swing.JFrame {
             String result = telefonoController.insertarTelefono(newTelefono);
             messageLabel.setText(result);
         }
-        
-         catalogoView.cargarCatalogo();
+        CatalogoView cat = new CatalogoView();
+        cat.setVisible(true);
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**

@@ -427,6 +427,8 @@ public class VentaView extends javax.swing.JFrame {
     }//GEN-LAST:event_cbPagoActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        CatalogoView cat = new CatalogoView();
+        cat.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegresarActionPerformed
 

@@ -227,7 +227,10 @@ public class TablaView extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCedulaActionPerformed
 
     private void btnAceptar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptar1ActionPerformed
+        CatalogoView cat = new CatalogoView();
+        cat.setVisible(true);
         this.dispose();
+        
     }//GEN-LAST:event_btnAceptar1ActionPerformed
 
     /**

@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.RenderingHints;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ import javax.swing.JScrollPane;
 public final class CatalogoView extends javax.swing.JFrame {
 
     public TelefonoController controller;
+
     /**
      * Creates new form CatalogoView
      */
@@ -112,6 +114,7 @@ public final class CatalogoView extends javax.swing.JFrame {
     private void btnTabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTabActionPerformed
         TablaView tabla = new TablaView();
         tabla.setVisible(true);
+        this.dispose();
 //        MovimientoController controller = new MovimientoController();
 //        String cuenta = txtCuenta.getText();
 //
@@ -126,6 +129,7 @@ public final class CatalogoView extends javax.swing.JFrame {
     private void btnCrudActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrudActionPerformed
         CrudView crud = new CrudView();
         crud.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnCrudActionPerformed
 
     /**
@@ -163,99 +167,97 @@ public final class CatalogoView extends javax.swing.JFrame {
         });
     }
 
-    public JPanel crearCelda(String codigo, String marca, String modelo, String disponible, String precio) {
-        JPanel panelCelda = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(getBackground());
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
-            }
+private JButton crearBoton(String texto, ActionListener accion) {
+    JButton boton = new JButton(texto);
+    boton.setBackground(new Color(173, 216, 230)); // Color celeste
+    boton.setForeground(Color.BLACK); // Texto negro
+    boton.setFocusPainted(false); // Elimina el borde de enfoque
+    boton.setBorder(BorderFactory.createLineBorder(new Color(100, 149, 237), 2)); // Borde azul claro
+    boton.setPreferredSize(new Dimension(100, 35)); // Menos ancho, más alto
+    boton.addActionListener(accion);
+    return boton;
+}
 
-            @Override
-            public void setBackground(Color bg) {
-                super.setBackground(bg);
-                repaint();
-            }
-        };
+public JPanel crearCelda(String codigo, String marca, String modelo, String disponible, String precio) {
+    JPanel panelCelda = new JPanel() {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
+        }
 
-        panelCelda.setLayout(new BorderLayout());
-        panelCelda.setBackground(new Color(214, 209, 246));
-        panelCelda.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
-        panelCelda.setMaximumSize(new Dimension(550, 150));
+        @Override
+        public void setBackground(Color bg) {
+            super.setBackground(bg);
+            repaint();
+        }
+    };
 
-        // Texto principal
-        JLabel labelModelo = new JLabel(modelo);
-        JLabel lblMarca = new JLabel(marca);
-        JLabel labelImporte = new JLabel(precio);
-        labelModelo.setFont(new Font("Arial", Font.BOLD, 14));
-        labelImporte.setFont(new Font("Arial", Font.BOLD, 16));
-        labelImporte.setForeground(new Color(45, 150, 255));
-        
-        // Botón Editar
-        JButton btnEditar = new JButton("Editar");
-        btnEditar.setBackground(new java.awt.Color(0, 153, 153));
-        btnEditar.setForeground(new java.awt.Color(255, 255, 255));
-        btnEditar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 51, 51), 1, true));
-        btnEditar.addActionListener(e -> {
-            // Acción para editar
-                Telefonos telefono = controller.obtenerPorId(Integer.parseInt(codigo));
-                CrudView crudView = new CrudView(telefono);
-                crudView.setVisible(true);
+    panelCelda.setLayout(new BorderLayout());
+    panelCelda.setBackground(new Color(214, 209, 246));
+    panelCelda.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+    panelCelda.setMaximumSize(new Dimension(550, 150));
 
-            System.out.println("Editar: " + codigo);
-        });
+    // Texto principal
+    JLabel labelModelo = new JLabel(modelo);
+    JLabel lblMarca = new JLabel(marca);
+    JLabel labelImporte = new JLabel(precio);
+    labelModelo.setFont(new Font("Arial", Font.BOLD, 14));
+    labelImporte.setFont(new Font("Arial", Font.BOLD, 16));
+    labelImporte.setForeground(new Color(45, 150, 255));
 
-        // Botón Activar/Desactivar
-        String textoBotonActivar = disponible.equals("1") ? "Desactivar" : "Activar";
-        JButton btnActivar = new JButton(textoBotonActivar);
-        btnActivar.setBackground(new java.awt.Color(0, 153, 153));
-        btnActivar.setForeground(new java.awt.Color(255, 255, 255));
-        btnActivar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 51, 51), 1, true));
-        btnActivar.addActionListener(e -> {
-            // Acción para activar/desactivar
-            System.out.println(textoBotonActivar + ": " + codigo);
-        });
+    // Crear botones
+    JButton btnEditar = crearBoton("Editar", e -> {
+        Telefonos telefono = controller.obtenerPorId(Integer.parseInt(codigo));
+        CrudView crudView = new CrudView(telefono);
+        crudView.setVisible(true);
+        this.cargarCatalogo();
+        System.out.println("Editar: " + codigo);
+    });
 
-        // Botón Vender
-        JButton btnVender = new JButton("Vender");
-        btnVender.setBackground(new java.awt.Color(0, 153, 153));
-        btnVender.setForeground(new java.awt.Color(255, 255, 255));
-        btnVender.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 51, 51), 1, true)); 
-        btnVender.addActionListener(e -> {
-            // Acción para vender
-            System.out.println("Vender: " + codigo);
-            controller.activarpantallaVenta(codigo);
-        }); 
+    String textoBotonActivar = disponible.equals("1") ? "Desactivar" : "Activar";
+    JButton btnActivar = crearBoton(textoBotonActivar, e -> {
+        System.out.println(textoBotonActivar + ": " + codigo);
+        this.cargarCatalogo();
+    });
 
-        // Contenedor de datos
-        JPanel datosPanel = new JPanel(new GridLayout(3, 2, 5, 15)); // Espacio entre filas y columnas
-        datosPanel.setBackground(new Color(214, 209, 246));
-        datosPanel.add(labelModelo);
-        datosPanel.add(btnActivar);
-        
-        datosPanel.add(lblMarca);
-        datosPanel.add(btnEditar);
-        
-        datosPanel.add(labelImporte);   
-        datosPanel.add(btnVender);
-        
+    JButton btnVender = crearBoton("Vender", e -> {
+        System.out.println("Vender: " + codigo);
+        controller.activarpantallaVenta(codigo);
+    });
 
-        // Agregar al panel de celda
-        panelCelda.add(datosPanel, BorderLayout.CENTER);
+    // Contenedor de datos
+    JPanel datosPanel = new JPanel(new GridLayout(3, 2, 5, 15));
+    datosPanel.setBackground(new Color(214, 209, 246));
+    datosPanel.add(labelModelo);
+    datosPanel.add(btnActivar);
 
-        // Agregar borde con espacio entre celdas
-        panelCelda.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(10, 10, 10, 10), // Espaciado entre celdas
-                BorderFactory.createLineBorder(new Color(180, 180, 220), 2) // Borde de color claro
-        ));
+    datosPanel.add(lblMarca);
+    datosPanel.add(btnEditar);
 
-        return panelCelda;
-    }
+    datosPanel.add(labelImporte);
+    datosPanel.add(btnVender);
+
+    // Agregar al panel de celda
+    panelCelda.add(datosPanel, BorderLayout.CENTER);
+
+    // Borde de celda
+    panelCelda.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEmptyBorder(10, 10, 10, 10),
+            BorderFactory.createLineBorder(new Color(180, 180, 220), 2)
+    ));
+
+    return panelCelda;
+}
 
     public void cargarCatalogo() {
+        // Limpiar el contenido actual del JScrollPane
+        jScrollPane1.getViewport().removeAll();
+        jScrollPane1.revalidate();
+        jScrollPane1.repaint();
         controller.cargarTelefonos(this);
     }
 
