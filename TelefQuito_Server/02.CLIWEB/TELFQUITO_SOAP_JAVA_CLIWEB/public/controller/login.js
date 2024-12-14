@@ -16,7 +16,7 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
     const result = await response.json();
 
     if (result.success) {
-      window.location.href = "/telefono";
+      window.location.href = "/telefonos";
     } else {
       showModal("Login Fallido", "Por favor, intente de nuevo.");
     }
