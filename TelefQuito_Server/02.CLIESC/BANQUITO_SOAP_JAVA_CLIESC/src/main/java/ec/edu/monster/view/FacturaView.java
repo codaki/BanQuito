@@ -421,7 +421,7 @@ public class FacturaView extends javax.swing.JFrame {
     public javax.swing.JLabel lblPrecio;
     public javax.swing.JLabel lblSubtotal;
     public javax.swing.JLabel lblTipoPago;
-    private javax.swing.JLabel lblTitDescuento;
+    public javax.swing.JLabel lblTitDescuento;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel lblTitulo13;
     private javax.swing.JLabel lblTitulo15;

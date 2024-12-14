@@ -28,11 +28,14 @@ public class FacturaController {
         facturaView.lblMarca.setText(ultimaFactura.getMarcaTelefono());
         facturaView.lblPrecio.setText(String.valueOf(precio));
         facturaView.lblSubtotal.setText(String.valueOf(precio));
+        facturaView.lblTitDescuento.setText("Descuento 0%");
         facturaView.lblDescuento.setText(String.valueOf(ultimaFactura.getDescuento()));
         facturaView.lblTotal.setText(String.valueOf(ultimaFactura.getPreciofinal())); 
         
         if("Efectivo".equals(ultimaFactura.getFormaPago())){
             facturaView.lblBanco.setVisible(false);
+            facturaView.lblDescuento.setText("0");
+            facturaView.lblTitDescuento.setText("Descuento 42%");
         }
         facturaView.setVisible(true);
     }
