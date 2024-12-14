@@ -151,6 +151,7 @@ app.post("/updateTelefono", async (req, res) => {
   console.log(telefono);
   try {
     const result = await telefonoService.updateTelefono(telefono);
+    console.log(result);
     res.json({ success: true, result });
   } catch (error) {
     res.status(500).json({

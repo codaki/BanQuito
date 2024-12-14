@@ -46,21 +46,20 @@ function populateTelefonos(telefonos) {
 
   telefonos.forEach((telefono) => {
     const telefonoItem = document.createElement("div");
-    telefonoItem.className = "movement-item";
+    telefonoItem.className = 'movement-item';
     telefonoItem.innerHTML = `
-      <div class="row bg-radius2 bg-secondary-light py-3 mb-2">
-        <div class="col-6">
-          <div class="font-bold text-black">ID: ${telefono.codTelefono}</div>
-          <div class="font-normal text-gray-700">Nombre: ${telefono.nombre}</div>
-          <div class="font-normal text-gray-700">Precio: $${telefono.precio}</div>
-        </div>
-        <div class="col-6 d-flex flex-column align-items-end">
-          <div class="font-normal text-gray-700">Marca: ${telefono.marca}</div>
-          <div class="font-normal text-gray-700">Disponible: ${telefono.disponible}</div>
-          <div class="d-flex justify-content-end mt-2">
-            <button class="btn btn-primary mr-2 btn-edit">Editar</button>
-            <button class="btn btn-primary mr-2 btn-buy">Comprar</button>
-          </div>
+      <div class="col-6">
+        <div class="font-bold text-black">ID: ${telefono.codTelefono}</div>
+        <div class="font-normal text-gray-700">Nombre: ${telefono.nombre}</div>
+        <div class="font-normal text-gray-700">Precio: $${telefono.precio}</div>
+        <div class="font-normal text-gray-700">Marca: ${telefono.marca}</div>
+        <div class="font-normal text-gray-700">Disponible: ${telefono.disponible}</div>
+      </div>
+      <div>
+        <div class="d-flex justify-content-end mt-2">
+          <button class="btn btn-primary mr-2 btn-edit">Editar</button>
+          <br/><br/>
+          <button class="btn btn-primary mr-2 btn-buy">Comprar</button>
         </div>
       </div>
     `;
