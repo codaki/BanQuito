@@ -81,14 +81,14 @@ class CompraService {
     }
   }
 
-  async consultarTablaAmortizacion(codCredito) {
+  async consultarTablaAmortizacion(cedula) {
     try {
       const soapClient = new SoapClient(this.wsdlUrl);
       const client = await soapClient.createClient();
 
       return new Promise((resolve, reject) => {
         const args = {
-          codCredito: codCredito,
+          cedula: cedula,
         };
 
         client.consultarTablaAmortizacion(args, (err, result) => {
@@ -96,11 +96,16 @@ class CompraService {
             console.error("SOAP Request Error:", err);
             return reject(err);
           }
-          resolve(result.return);
+          if (result && result.return) {
+            resolve(result.return);
+          } else {
+            console.error("SOAP Response Error: No return value");
+            return reject(new Error("No return value from SOAP response"));
+          }
         });
       });
     } catch (error) {
-      console.error("Consultar Tabla Amortizacion Error:", error);
+      console.error("Error in consultarTablaAmortizacion:", error);
       throw error;
     }
   }

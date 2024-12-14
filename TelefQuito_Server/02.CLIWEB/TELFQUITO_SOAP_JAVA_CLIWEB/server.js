@@ -18,6 +18,14 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "login.html"));
 });
 
+app.get("/consultarCreditos", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "consultarCreditos.html"));
+});
+
+app.get("/crudTelefonos", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "crudTelefonos.html"));
+});
+
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -83,9 +91,9 @@ app.post("/obtenerFactura", async (req, res) => {
 });
 
 app.post("/consultarTablaAmortizacion", async (req, res) => {
-  const { codCredito } = req.body;
+  const { cedula } = req.body;
   try {
-    const result = await compraService.consultarTablaAmortizacion(codCredito);
+    const result = await compraService.consultarTablaAmortizacion(cedula);
     res.json({ success: true, result });
   } catch (error) {
     res.status(500).json({

@@ -8,28 +8,26 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/styles.css" />
-    <title>Buscar Teléfono</title>
+    <title>CRUD Teléfonos</title>
   </head>
-  <body>
-    <div class="movements-container">
-      <div class="button-bar">
-        <button id="crudTelefonosButton" class="btn-primary">
-          CRUD Teléfonos
-        </button>
-        <button id="consultarCreditosButton" class="btn-primary">
-          Consultar Amortizaciones
-        </button>
-      </div>
-      <div id="movements-list" class="movements-list">
-        <!-- Teléfono info will be populated here -->
+  <body class="login-body">
+    <div class="login-container">
+      <div class="login-card">
+        <img src="/images/oozma.png" alt="Logo" class="logo" />
+        <h2>Insertar un teléfono</h2>
+        <form id="telefonoForm">
+          <input type="text" id="nombre" placeholder="Nombre" required />
+          <input type="number" id="precio" placeholder="Precio" required />
+          <input type="text" id="marca" placeholder="Marca" required />
+          <select id="disponible" required>
+            <option value="" disabled selected>Disponibilidad</option>
+            <option value="true">Disponible</option>
+            <option value="false">No Disponible</option>
+          </select>
+          <button type="submit" class="btn-primary">Guardar</button>
+        </form>
       </div>
     </div>
-    <button
-      class="floating-button"
-      onclick="window.location.href='account.html'"
-    >
-      +
-    </button>
     <div id="modal-container"></div>
     <!-- Container for modal -->
     <script>
@@ -44,6 +42,6 @@
         });
     </script>
     <script type="module" src="/controller/modal.js"></script>
-    <script type="module" src="/controller/telefono.js"></script>
+    <script type="module" src="/controller/crudTelefonos.js"></script>
   </body>
 </html>

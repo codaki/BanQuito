@@ -93,7 +93,7 @@ function populateTelefonos(telefonos) {
           <div class="font-normal text-gray-700">Disponible: ${telefono.disponible}</div>
           <div class="d-flex justify-content-end mt-2">
             <button class="btn btn-primary mr-2" onclick="editTelefono(${telefono.codTelefono})">Editar</button>
-            <button class="btn btn-primary mr-2" onclick="deleteTelefono(${telefono.codTelefono})">Gestionar</button>
+            <button class="btn btn-primary mr-2" onclick="deleteTelefono(${telefono.codTelefono})">Comprar</button>
           </div>
         </div>
       </div>

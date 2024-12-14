@@ -8,20 +8,16 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/styles.css" />
-    <title>Buscar Teléfono</title>
+    <title>Consultar Amortizaciones</title>
   </head>
   <body>
     <div class="movements-container">
-      <div class="button-bar">
-        <button id="crudTelefonosButton" class="btn-primary">
-          CRUD Teléfonos
-        </button>
-        <button id="consultarCreditosButton" class="btn-primary">
-          Consultar Amortizaciones
-        </button>
+      <div class="search-bar">
+        <input type="text" id="cedula" placeholder="Ingrese la cédula" />
+        <button id="searchButton" class="btn-primary">Buscar</button>
       </div>
       <div id="movements-list" class="movements-list">
-        <!-- Teléfono info will be populated here -->
+        <!-- Amortizaciones info will be populated here -->
       </div>
     </div>
     <button
@@ -44,6 +40,6 @@
         });
     </script>
     <script type="module" src="/controller/modal.js"></script>
-    <script type="module" src="/controller/telefono.js"></script>
+    <script type="module" src="/controller/consultarCreditos.js"></script>
   </body>
 </html>
