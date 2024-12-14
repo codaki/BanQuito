@@ -27,9 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const precio = parseFloat(precioText.replace(/[^0-9.-]+/g, ""));
       const descuento = precio * 0.42;
       const precioFinal = precio - descuento;
-      document.getElementById("precioOriginal").textContent = "$" + precio.toFixed(2);
-      document.getElementById("descuento").textContent = "$" + descuento.toFixed(2);
-      document.getElementById("precioFinal").textContent = "$" + precioFinal.toFixed(2);
+      document.getElementById("precioOriginal").textContent =
+        "$" + precio.toFixed(2);
+      document.getElementById("descuento").textContent =
+        "$" + descuento.toFixed(2);
+      document.getElementById("precioFinal").textContent =
+        "$" + precioFinal.toFixed(2);
     } else if (tipoCompra === "credito") {
       const compraCredito = document.getElementById("compraCredito");
       compraCredito.classList.remove("hidden");
@@ -90,11 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
             result.result === "Compra exitosa a credito!!"
           ) {
             showModal("Éxito", "Compra realizada exitosamente.", false, () => {
-              window.location.href = "/telefonos";
+              window.location.href = `/factura?cedula=${cedula}`;
             });
           } else if (result.result === "Compra en efectivo exitosa!!") {
             showModal("Resultado", result.result, false, () => {
-              window.location.href = "/telefonos";
+              window.location.href = `/factura?cedula=${cedula}`;
             });
           } else {
             showModal("Resultado", result.result, false, null);
@@ -126,7 +129,12 @@ async function loadTelefonoData(id) {
       document.getElementById("precio").textContent = "$" + telefono.precio;
       document.getElementById("marca").textContent = telefono.marca;
     } else {
-      showModal("Error", "Fallo en recuperar los datos del teléfono.", true, null);
+      showModal(
+        "Error",
+        "Fallo en recuperar los datos del teléfono.",
+        true,
+        null
+      );
     }
   } catch (error) {
     console.error("Load telefono data error:", error);

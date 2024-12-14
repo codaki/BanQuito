@@ -227,7 +227,6 @@ select {
   display: grid;
   place-items: center;
   padding: 1em;
-
 }
 
 .grid3columns {
@@ -236,4 +235,73 @@ select {
 
 .grid2rows {
   grid-template-rows: repeat(2, 1fr);
+}
+.factura-container {
+  background-color: #f8f9fa; /* Fondo claro */
+
+  border-radius: 10px; /* Bordes redondeados */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  max-width: 900px; /* Ancho máximo */
+}
+
+.factura-header {
+  display: flex;
+  align-items: center;
+}
+
+.factura-title {
+  text-align: center;
+
+  color: #333;
+
+  font-weight: bold;
+}
+
+.factura-column h3 {
+  color: var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.factura-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.factura-grid div {
+  background-color: var(--card-background);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.factura-grid strong {
+  display: block;
+
+  font-weight: bold;
+  color: #333;
+}
+
+.factura-columns {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between; /* Espacio entre columnas */
+  gap: 1em; /* Espacio entre columnas */
+}
+
+.factura-column {
+  flex: 1;
+  background: #fff;
+
+  border-radius: 8px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+}
+
+.factura-column:first-child {
+  order: 1; /* Primera columna (Detalles del Producto) a la izquierda */
+}
+
+.factura-column:last-child {
+  order: 2; /* Segunda columna (Información del Cliente) a la derecha */
 }

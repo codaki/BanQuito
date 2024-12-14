@@ -69,7 +69,9 @@ app.post("/comprarEfectivo", async (req, res) => {
     });
   }
 });
-
+app.get("/factura", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "factura.html"));
+});
 app.post("/comprarCredito", async (req, res) => {
   const { codTelefono, cedula, plazoMeses } = req.body;
   console.log(codTelefono, plazoMeses, cedula);
