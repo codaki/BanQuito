@@ -22,10 +22,9 @@ import java.util.List;
 
 public class FacturaActivity extends AppCompatActivity {
 
-    private TextView tvNombreCliente, tvMarcaTelefono, tvNombreTelefono, tvPreciofinal, tvFecha, tvFormaPago, tvBanco, tvTitulo3, tvCedula, tvDescuento;
+    private TextView tvNombreCliente, tvMarcaTelefono, tvNombreTelefono, tvPreciofinal, tvFecha, tvFormaPago, tvBanco, tvCedula, tvDescuento;
     private Button btnAceptar;
     private CompraController compraController;
-    LinearLayout layoutDetallesCredito;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +44,6 @@ public class FacturaActivity extends AppCompatActivity {
         tvFormaPago = findViewById(R.id.tvFormaPago);
         tvBanco = findViewById(R.id.tvBancoV);
         btnAceptar = findViewById(R.id.btnAceptar);
-        layoutDetallesCredito = findViewById(R.id.detallesCredito);
-        tvTitulo3 = findViewById(R.id.tvTituloDetalleCredito);
         tvCedula = findViewById(R.id.tvCedulaCliente);
         tvDescuento = findViewById(R.id.tvDescuento);
 
@@ -66,12 +63,8 @@ public class FacturaActivity extends AppCompatActivity {
                         tvFecha.setText(latestFactura.getFecha());
                         if(latestFactura.getFormaPago().equals("Efectivo")){
                             tvBanco.setVisibility(View.GONE);
-                            layoutDetallesCredito.setVisibility(View.GONE);
-                            tvTitulo3.setVisibility(View.GONE);
                         } else {
                             tvBanco.setText("Banco BanQuito");
-                            layoutDetallesCredito.setVisibility(View.VISIBLE);
-                            tvTitulo3.setVisibility(View.VISIBLE);
                         }
                         tvFormaPago.setText(latestFactura.getFormaPago());
                         tvCedula.setText(cedula);

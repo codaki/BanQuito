@@ -2,10 +2,13 @@ package com.example.telfquito_soap_java.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,9 +29,9 @@ public class VenderActivity extends AppCompatActivity {
     private EditText etCedulaCliente, etMeses;
     private TextView tvMarca, tvNombre, tvPrecio, tvDescuento, tvTotal;
     private Button btnVerificarCredito, btnPagar;
-    private View layoutDiferido;
     private TelefonoModel telefono;
     private CompraController compraController;
+    LinearLayout layoutDiferido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,6 @@ public class VenderActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) { // Efectivo
                     layoutDiferido.setVisibility(View.GONE);
-
                     tvDescuento.setText("42%");
                     double descuento = Double.parseDouble(telefono.getPrecio()) * 0.42;
                     double total = Double.parseDouble(telefono.getPrecio()) - descuento;
@@ -97,7 +99,8 @@ public class VenderActivity extends AppCompatActivity {
                 compraController.comprarEfectivo(telefono.getCodTelefono(), cedula, new CompraService.SoapCallback<String>() {
                     @Override
                     public void onSuccess(String result) {
-                        if ("Compra exitosa en efectivo!!".equals(result)) {
+                        Log.d("VenderActivity", "onSuccess: " + result);
+                        if ("Compra en efectivo exitosa!!".equals(result)) {
                             Intent intent = new Intent(VenderActivity.this, FacturaActivity.class);
                             intent.putExtra("cedula", cedula);
                             startActivity(intent);
