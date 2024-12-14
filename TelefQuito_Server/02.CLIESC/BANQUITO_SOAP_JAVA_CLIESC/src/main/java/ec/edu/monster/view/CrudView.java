@@ -4,17 +4,44 @@
  */
 package ec.edu.monster.view;
 
+import ec.edu.monster.controller.TelefonoController;
+import ec.edu.monster.ws.Telefonos;
+
 /**
  *
  * @author JOSE
  */
 public class CrudView extends javax.swing.JFrame {
 
+   private TelefonoController telefonoController;
+    private Telefonos telefono;
+    private boolean isEditMode;
+
+    
     /**
      * Creates new form CrudView
      */
     public CrudView() {
         initComponents();
+        this.telefonoController = new TelefonoController();
+        this.isEditMode = false;
+    }
+
+    public CrudView(Telefonos telefono) {
+        initComponents();
+        this.telefonoController = new TelefonoController();
+        this.telefono = telefono;
+        this.isEditMode = true;
+        populateFields();
+    }
+
+
+    private void populateFields() {
+        txtModelo.setText(telefono.getNombre());
+        txtMarca.setText(telefono.getMarca());
+        txtPrecio.setText(String.valueOf(telefono.getPrecio()));
+        lblTitulo.setText("Editar celular del catálogo");
+        btnEnviar.setText("Actualizar Teléfono");
     }
 
     /**
@@ -201,7 +228,25 @@ public class CrudView extends javax.swing.JFrame {
     }//GEN-LAST:event_txtModeloActionPerformed
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        // TODO add your handling code here:
+        String modelo = txtModelo.getText();
+        String marca = txtMarca.getText();
+        double precio = Double.parseDouble(txtPrecio.getText());
+
+        if (isEditMode) {
+            telefono.setNombre(modelo);
+            telefono.setMarca(marca);
+            telefono.setPrecio(precio);
+            String result = telefonoController.actualizarTelefono(telefono);
+            messageLabel.setText(result);
+        } else {
+            Telefonos newTelefono = new Telefonos();
+            newTelefono.setNombre(modelo);
+            newTelefono.setMarca(marca);
+            newTelefono.setPrecio(precio);
+            newTelefono.setDisponible(1); // Assuming new phones are available by default
+            String result = telefonoController.insertarTelefono(newTelefono);
+            messageLabel.setText(result);
+        }
     }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**

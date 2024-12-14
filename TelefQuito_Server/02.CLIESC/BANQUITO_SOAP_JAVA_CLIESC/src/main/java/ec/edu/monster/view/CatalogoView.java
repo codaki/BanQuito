@@ -5,6 +5,7 @@
 package ec.edu.monster.view;
 
 import ec.edu.monster.controller.TelefonoController;
+import ec.edu.monster.ws.Telefonos;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -200,6 +201,10 @@ public final class CatalogoView extends javax.swing.JFrame {
         btnEditar.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 51, 51), 1, true));
         btnEditar.addActionListener(e -> {
             // Acción para editar
+                Telefonos telefono = controller.obtenerPorId(Integer.parseInt(codigo));
+                CrudView crudView = new CrudView(telefono);
+                crudView.setVisible(true);
+
             System.out.println("Editar: " + codigo);
         });
 

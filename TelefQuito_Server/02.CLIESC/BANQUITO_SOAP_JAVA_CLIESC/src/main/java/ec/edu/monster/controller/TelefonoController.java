@@ -76,4 +76,16 @@ public class TelefonoController {
         venta.setVisible(true);
     }
     
+    public String insertarTelefono(Telefonos telefono) {
+        return telefonoService.insertarTelefono(telefono);
+    }
+
+    public String actualizarTelefono(Telefonos telefono) {
+        return telefonoService.actualizarTelefono(telefono);
+    }
+
+    public Telefonos obtenerPorId(int codigo){
+        return telefonoService.obtenerTelefonoPorId(codigo);
+    }
+
 }
