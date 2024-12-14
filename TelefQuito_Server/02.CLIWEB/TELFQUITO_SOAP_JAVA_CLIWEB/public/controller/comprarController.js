@@ -22,6 +22,13 @@ document.addEventListener("DOMContentLoaded", () => {
       compraEfectivo
         .querySelector("input")
         .setAttribute("required", "required");
+      const precio = parseFloat(document.getElementById("precio").textContent);
+      const descuento = precio * 0.42;
+      const precioFinal = precio - descuento;
+      document.getElementById("precioOriginal").textContent = precio.toFixed(2);
+      document.getElementById("descuento").textContent = descuento.toFixed(2);
+      document.getElementById("precioFinal").textContent =
+        precioFinal.toFixed(2);
     } else if (tipoCompra === "credito") {
       const compraCredito = document.getElementById("compraCredito");
       compraCredito.classList.remove("hidden");
@@ -84,15 +91,19 @@ document.addEventListener("DOMContentLoaded", () => {
             showModal("Éxito", "Compra realizada exitosamente.", () => {
               window.location.href = "/telefonos";
             });
+          } else if (result.result === "Compra en efectivo exitosa!!") {
+            showModal("Resultado", result.result, () => {
+              window.location.href = "/telefonos";
+            });
           } else {
-            showModal("Resultado", result.result, null, true);
+            showModal("Resultado", result.result, null);
           }
         } else {
           showModal("Error", "Fallo al realizar la compra.");
         }
       } catch (error) {
         console.error("Compra error:", error);
-        showModal("Error", result.result, null, true);
+        showModal("Error", result.result, null);
       }
     });
 });

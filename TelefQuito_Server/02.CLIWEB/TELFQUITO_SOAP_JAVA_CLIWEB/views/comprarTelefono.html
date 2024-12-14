@@ -26,6 +26,19 @@
           </select>
           <div id="compraEfectivo" class="compra-opcion hidden">
             <input type="text" id="cedula" placeholder="Cédula" />
+            <div id="descuentoInfo">
+              <p>
+                <strong>Precio Original:</strong> $<span
+                  id="precioOriginal"
+                ></span>
+              </p>
+              <p>
+                <strong>Descuento (42%):</strong> $<span id="descuento"></span>
+              </p>
+              <p>
+                <strong>Precio Final:</strong> $<span id="precioFinal"></span>
+              </p>
+            </div>
           </div>
           <div id="compraCredito" class="compra-opcion hidden">
             <input type="number" id="plazoMeses" placeholder="Plazo en meses" />
