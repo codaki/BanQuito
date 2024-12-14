@@ -44,10 +44,22 @@ app.get("/telefonos", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "telefonos.html"));
 });
 
+app.get("/crudTelefonos", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "crudTelefonos.html"));
+});
+app.get("/editarTelefonos", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "editarTelefonos.html"));
+});
+
+app.get("/comprarTelefono", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "comprarTelefono.html"));
+});
+
 app.post("/comprarEfectivo", async (req, res) => {
-  const { codTelefono, codCedula } = req.body;
+  const { codTelefono, cedula } = req.body;
+  console.log(codTelefono, cedula);
   try {
-    const result = await compraService.comprarEfectivo(codTelefono, codCedula);
+    const result = await compraService.comprarEfectivo(codTelefono, cedula);
     res.json({ success: true, result });
   } catch (error) {
     res.status(500).json({
@@ -60,13 +72,15 @@ app.post("/comprarEfectivo", async (req, res) => {
 
 app.post("/comprarCredito", async (req, res) => {
   const { codTelefono, cedula, plazoMeses } = req.body;
+  console.log(codTelefono, plazoMeses, cedula);
   try {
     const result = await compraService.comprarCredito(
       codTelefono,
       cedula,
       plazoMeses
     );
-    res.json({ success: true, result });
+    res.json({ success: true, result, message: result.message });
+    console.log(result);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -134,6 +148,7 @@ app.post("/insertTelefono", async (req, res) => {
 
 app.post("/updateTelefono", async (req, res) => {
   const { telefono } = req.body;
+  console.log(telefono);
   try {
     const result = await telefonoService.updateTelefono(telefono);
     res.json({ success: true, result });

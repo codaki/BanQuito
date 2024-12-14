@@ -16,32 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllTelefonos(); // Fetch all teléfonos when the page loads
 });
 
-async function searchTelefono() {
-  const telefonoId = document.getElementById("telefonoId").value;
-
-  try {
-    const response = await fetch("/getTelefonoById", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: telefonoId }),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      populateTelefono(result.telefono);
-    } else {
-      showModal("Error", "Fallo en recuperar el teléfono.");
-    }
-  } catch (error) {
-    console.error("Search telefono error:", error);
-    showModal(
-      "Error",
-      "Un error ha ocurrido durante la búsqueda del teléfono. Por favor, revise la conexión."
-    );
-  }
-}
-
 async function fetchAllTelefonos() {
   try {
     const response = await fetch("/getAllTelefonos");
@@ -60,20 +34,12 @@ async function fetchAllTelefonos() {
     );
   }
 }
-
-function populateTelefono(telefono) {
-  const telefonoInfo = document.getElementById("telefono-info");
-  telefonoInfo.innerHTML = `
-    <div>
-      <div class="font-bold text-black">ID: ${telefono.codTelefono}</div>
-      <div class="font-normal text-gray-700">Nombre: ${telefono.nombre}</div>
-      <div class="font-normal text-gray-700">Precio: $${telefono.precio}</div>
-      <div class="font-normal text-gray-700">Marca: ${telefono.marca}</div>
-      <div class="font-normal text-gray-700">Disponible: ${telefono.disponible}</div>
-    </div>
-  `;
+function editTelefono(id) {
+  window.location.href = `/editarTelefonos?id=${id}`;
 }
-
+function buyTelefono(id) {
+  window.location.href = `/comprarTelefono?id=${id}`;
+}
 function populateTelefonos(telefonos) {
   const telefonoInfo = document.getElementById("movements-list");
   telefonoInfo.innerHTML = "";
@@ -92,12 +58,24 @@ function populateTelefonos(telefonos) {
           <div class="font-normal text-gray-700">Marca: ${telefono.marca}</div>
           <div class="font-normal text-gray-700">Disponible: ${telefono.disponible}</div>
           <div class="d-flex justify-content-end mt-2">
-            <button class="btn btn-primary mr-2" onclick="editTelefono(${telefono.codTelefono})">Editar</button>
-            <button class="btn btn-primary mr-2" onclick="deleteTelefono(${telefono.codTelefono})">Comprar</button>
+            <button class="btn btn-primary mr-2 btn-edit">Editar</button>
+            <button class="btn btn-primary mr-2 btn-buy">Comprar</button>
           </div>
         </div>
       </div>
     `;
+
+    // Asignar eventos a los botones
+    const editButton = telefonoItem.querySelector(".btn-edit");
+    const buyButton = telefonoItem.querySelector(".btn-buy");
+
+    editButton.addEventListener("click", () =>
+      editTelefono(telefono.codTelefono)
+    );
+    buyButton.addEventListener("click", () =>
+      buyTelefono(telefono.codTelefono)
+    );
+
     telefonoInfo.appendChild(telefonoItem);
   });
 }

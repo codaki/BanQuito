@@ -13,15 +13,18 @@ document.addEventListener("DOMContentLoaded", () => {
     .addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const id = document.getElementById("telefonoId").value;
+      const codTelefono = parseInt(
+        document.getElementById("telefonoId").value,
+        10
+      );
       const nombre = document.getElementById("nombre").value;
-      const precio = document.getElementById("precio").value;
+      const precio = parseFloat(document.getElementById("precio").value);
       const marca = document.getElementById("marca").value;
       const disponible =
         document.getElementById("disponible").value === "true" ? 1 : 0;
 
       const telefono = {
-        id,
+        codTelefono,
         nombre,
         precio,
         marca,
@@ -29,41 +32,27 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       try {
-        const response = await fetch(
-          id ? "/updateTelefono" : "/insertTelefono",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ telefono }),
-          }
-        );
+        const response = await fetch("/updateTelefono", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ telefono }),
+        });
 
         const result = await response.json();
-
+        console.log(result);
         if (result.success) {
-          showModal(
-            "Éxito",
-            `Teléfono ${id ? "actualizado" : "guardado"} exitosamente.`,
-            () => {
-              window.location.href = "/telefonos";
-            }
-          );
+          showModal("Éxito", "Teléfono actualizado exitosamente.", () => {
+            window.location.href = "/telefonos";
+          });
+          // window.location.href = "/telefonos";
         } else {
-          showModal(
-            "Error",
-            `Fallo al ${id ? "actualizar" : "guardar"} el teléfono.`,
-            () => {
-              window.location.href = "/telefonos";
-            }
-          );
+          showModal("Error", "Fallo al actualizar el teléfono.");
         }
       } catch (error) {
-        console.error(`${id ? "Update" : "Insert"} telefono error:`, error);
+        console.error("Update telefono error:", error);
         showModal(
           "Error",
-          `Un error ha ocurrido durante el ${
-            id ? "actualización" : "guardado"
-          } del teléfono. Por favor, revise la conexión.`
+          "Un error ha ocurrido durante la actualización del teléfono. Por favor, revise la conexión."
         );
       }
     });
@@ -88,8 +77,6 @@ async function loadTelefonoData(id) {
       document.getElementById("disponible").value = telefono.disponible
         ? "true"
         : "false";
-      document.getElementById("form-title").innerText = "Actualizar Teléfono";
-      document.getElementById("submitButton").innerText = "Actualizar";
     } else {
       showModal("Error", "Fallo en recuperar los datos del teléfono.");
     }

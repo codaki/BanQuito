@@ -8,31 +8,36 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/styles.css" />
-    <title>CRUD Teléfonos</title>
+    <title>Comprar Teléfono</title>
   </head>
   <body class="login-body">
     <div class="login-container">
       <div class="login-card">
         <img src="/images/oozma.png" alt="Logo" class="logo" />
-        <h2 id="form-title">Insertar un teléfono</h2>
-        <form id="telefonoForm">
+        <h2 id="form-title">Comprar Teléfono</h2>
+        <form id="compraForm">
           <input type="hidden" id="telefonoId" />
-          <input type="text" id="nombre" placeholder="Nombre" required />
-          <input
-            type="number"
-            id="precio"
-            placeholder="Precio"
-            required
-            step=".01"
-          />
-          <input type="text" id="marca" placeholder="Marca" required />
-          <select id="disponible" required>
-            <option value="" disabled selected>Disponibilidad</option>
-            <option value="true">Disponible</option>
-            <option value="false">No Disponible</option>
+          <div id="telefonoInfo">
+            <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+            <p><strong>Precio:</strong> $<span id="precio"></span></p>
+            <p><strong>Marca:</strong> <span id="marca"></span></p>
+          </div>
+          <select id="tipoCompra" required>
+            <option value="" disabled selected>
+              Seleccione tipo de compra
+            </option>
+            <option value="efectivo">Efectivo</option>
+            <option value="credito">Crédito</option>
           </select>
+          <div id="compraEfectivo" class="compra-opcion hidden">
+            <input type="text" id="cedula" placeholder="Cédula" />
+          </div>
+          <div id="compraCredito" class="compra-opcion hidden">
+            <input type="number" id="plazoMeses" placeholder="Plazo en meses" />
+            <input type="text" id="cedulaCredito" placeholder="Cédula" />
+          </div>
           <button type="submit" class="btn-primary" id="submitButton">
-            Guardar
+            Comprar
           </button>
         </form>
       </div>
@@ -51,6 +56,6 @@
         });
     </script>
     <script type="module" src="/controller/modal.js"></script>
-    <script type="module" src="/controller/crudTelefonos.js"></script>
+    <script type="module" src="/controller/comprarController.js"></script>
   </body>
 </html>
