@@ -1,4 +1,3 @@
-
 package ec.edu.monster.dao;
 
 import ec.edu.monster.bdd.DBConnection;
@@ -61,7 +60,4 @@ import java.util.List;
         }
         return creditos;
     }
-    
 }
-
-

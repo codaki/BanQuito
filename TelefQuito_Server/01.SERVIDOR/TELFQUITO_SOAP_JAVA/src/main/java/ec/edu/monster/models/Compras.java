@@ -1,4 +1,3 @@
-
 package ec.edu.monster.models;
 
 public class Compras {
@@ -88,7 +87,5 @@ public class Compras {
 
     public void setDescuento(Double descuento) {
         this.descuento = descuento;
-    }
-    
-    
+    }   
 }

@@ -1,4 +1,3 @@
-
 package ec.edu.monster.models;
 
 public class Tabla {

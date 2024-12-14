@@ -1,4 +1,3 @@
-
 package ec.edu.monster.servicio;
 
 import ec.edu.monster.dao.ClienteDAO;
@@ -52,8 +51,7 @@ public class SujetoCreditoService {
             
         } catch (SQLException e) {
             e.printStackTrace();
-            return -1; // Return -1 if an error occurs
+            return -1;
         }
     }
-
 }

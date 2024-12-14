@@ -1,4 +1,3 @@
-
 package ec.edu.monster.servicio;
 
 import ec.edu.monster.dao.MovimientoDAO;
@@ -11,11 +10,9 @@ public class MontoMaximoService {
         double promedioDepositos = movimientoDAO.obtenerPromedioDepositos(cod);
         double promedioRetiros = movimientoDAO.obtenerPromedioRetiros(cod);
 
-        // Fórmula para calcular el monto máximo del crédito
         double diferenciaPromedios = promedioDepositos - promedioRetiros;
         double montoMaximoCredito = (diferenciaPromedios * 0.35) * 6;
 
-        // Si la diferencia es negativa, el monto máximo del crédito será 0
         return Math.max(0, montoMaximoCredito);
     }
 }

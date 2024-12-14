@@ -1,6 +1,4 @@
-
 package ec.edu.monster.dao;
-
 
 import ec.edu.monster.bdd.DBConnection;
 import ec.edu.monster.model.Cliente;
@@ -92,7 +90,7 @@ public class ClienteDAO {
         statement.setString(1, cedula);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt(1) > 0; // Retorna true si hay al menos un cliente
+            return resultSet.getInt(1) > 0;
         }
     }
     return false;
@@ -104,7 +102,7 @@ public class ClienteDAO {
         statement.setString(1, cedula);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt(1) > 0; // Retorna true si hay depósitos en el último mes
+            return resultSet.getInt(1) > 0;
         }
     }
     return false;
@@ -118,7 +116,7 @@ public class ClienteDAO {
         if (resultSet.next()) {
             int edad = resultSet.getInt("edad");
             String genero = resultSet.getString("GENERO");
-            return !("M".equals(genero) && edad < 25); // Retorna false si es hombre menor de 25
+            return !("M".equals(genero) && edad < 25);
         }
     }
     return false;
@@ -130,7 +128,7 @@ public class ClienteDAO {
         statement.setString(1, cedula);
         ResultSet resultSet = statement.executeQuery();
         if (resultSet.next()) {
-            return resultSet.getInt(1) > 0; // Retorna true si hay crédito activo
+            return resultSet.getInt(1) > 0;
         }
     }
     return false;
@@ -145,7 +143,6 @@ public class ClienteDAO {
                 return resultSet.getInt("COD_CLIENTE");
             }
         }
-        return -1; // Return -1 if no client is found
+        return -1;
     }
 }
-

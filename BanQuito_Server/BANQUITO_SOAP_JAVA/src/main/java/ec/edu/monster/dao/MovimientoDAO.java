@@ -1,4 +1,3 @@
-
 package ec.edu.monster.dao;
 
 import ec.edu.monster.bdd.DBConnection;
@@ -6,10 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-
     
-    public class MovimientoDAO {
+public class MovimientoDAO {
     public boolean tieneDepositoReciente(String cedula) throws SQLException {
         String sql = " SELECT COUNT(*) FROM movimiento m INNER JOIN cuenta c ON m.NUM_CUENTA = c.NUM_CUENTA INNER JOIN cliente cl ON c.COD_CLIENTE = cl.COD_CLIENTE WHERE cl.CEDULA = ? AND m.TIPO = 'DEP' AND m.FECHA >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH) ";
         try (Connection connection = DBConnection.getConnection();
@@ -26,7 +23,7 @@ import java.sql.SQLException;
             statement.setString(1, Integer.toString(cedula));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getDouble(1); // Retorna el promedio de depósitos
+                return resultSet.getDouble(1); 
             }
         }
         return 0.0;
@@ -38,14 +35,9 @@ import java.sql.SQLException;
             statement.setString(1, Integer.toString(cedula));
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getDouble(1); // Retorna el promedio de retiros
+                return resultSet.getDouble(1);
             }
         }
         return 0.0;
     }
-
-    // Calcular el monto máximo del crédito
-    
 }
-
-

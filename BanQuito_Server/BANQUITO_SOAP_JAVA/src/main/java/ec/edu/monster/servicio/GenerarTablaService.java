@@ -16,14 +16,11 @@ public class GenerarTablaService {
         CreditoDAO creditoDAO = new CreditoDAO();
         TablaDAO amortizacionDAO = new TablaDAO();
 
-        // Crear el crédito y obtener el ID generado
         int codCredito = creditoDAO.createCredito(credito);
         credito.setCodCredito(codCredito);
 
-        // Generar la tabla de amortización
         List<Tabla> amortizaciones = generarTablaAmortizacion(credito);
 
-        // Guardar la tabla de amortización
         for (Tabla amortizacion : amortizaciones) {
             amortizacionDAO.createAmortizacion(amortizacion);
         }

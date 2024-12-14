@@ -1,4 +1,3 @@
-
 package ec.edu.monster.DAO;
 
 import ec.edu.monster.models.Telefonos;
@@ -8,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class TelefonoDAO {
     private Connection connection;
@@ -73,5 +71,4 @@ public class TelefonoDAO {
         }
         return telefonosList;
     }
-
 }

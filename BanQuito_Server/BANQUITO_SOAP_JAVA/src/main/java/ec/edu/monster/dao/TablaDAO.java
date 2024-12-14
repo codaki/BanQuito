@@ -1,4 +1,3 @@
-
 package ec.edu.monster.dao;
 
 import ec.edu.monster.bdd.DBConnection;
@@ -48,5 +47,4 @@ public class TablaDAO {
         }
         return amortizaciones;
     }
-
 }

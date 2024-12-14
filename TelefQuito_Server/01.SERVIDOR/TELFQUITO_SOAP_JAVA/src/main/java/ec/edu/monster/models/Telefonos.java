@@ -1,4 +1,3 @@
-
 package ec.edu.monster.models;
 
 public class Telefonos {
@@ -66,5 +65,4 @@ public class Telefonos {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
-    
 }

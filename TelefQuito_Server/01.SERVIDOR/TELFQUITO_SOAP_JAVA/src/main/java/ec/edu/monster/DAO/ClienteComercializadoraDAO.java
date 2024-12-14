@@ -1,4 +1,3 @@
-
 package ec.edu.monster.DAO;
 
 import ec.edu.monster.models.ClienteComercializadora;
@@ -40,6 +39,6 @@ public class ClienteComercializadoraDAO {
                 return rs.getInt("codc_cliente");
             }
         }
-        return -1; // Return -1 if no client is found with the given cedula
+        return -1;
     }
 }
