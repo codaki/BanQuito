@@ -6,12 +6,6 @@ export function showModal(title, content, callback) {
   modalContent.textContent = content;
   modalContainer.classList.remove("hidden");
 
-  if (isError) {
-    modalContent.style.color = "red";
-  } else {
-    modalContent.style.color = "black";
-  }
-
   const modalOkButton = document.getElementById("modal-ok-button");
   if (modalOkButton) {
     modalOkButton.addEventListener("click", () => {

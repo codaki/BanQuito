@@ -17,11 +17,6 @@
         <h2 id="form-title">Comprar Teléfono</h2>
         <form id="compraForm">
           <input type="hidden" id="telefonoId" />
-          <div id="telefonoInfo">
-            <p><strong>Nombre:</strong> <span id="nombre"></span></p>
-            <p><strong>Precio:</strong> $<span id="precio"></span></p>
-            <p><strong>Marca:</strong> <span id="marca"></span></p>
-          </div>
           <select id="tipoCompra" required>
             <option value="" disabled selected>
               Seleccione tipo de compra
@@ -35,6 +30,11 @@
           <div id="compraCredito" class="compra-opcion hidden">
             <input type="number" id="plazoMeses" placeholder="Plazo en meses" />
             <input type="text" id="cedulaCredito" placeholder="Cédula" />
+          </div>
+          <div id="telefonoInfo">
+            <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+            <p><strong>Precio:</strong> $<span id="precio"></span></p>
+            <p><strong>Marca:</strong> <span id="marca"></span></p>
           </div>
           <button type="submit" class="btn-primary" id="submitButton">
             Comprar

@@ -50,6 +50,16 @@ document.addEventListener("DOMContentLoaded", () => {
           ? parseInt(document.getElementById("plazoMeses").value, 10)
           : null;
 
+      if (tipoCompra === "credito" && (plazoMeses < 3 || plazoMeses > 18)) {
+        showModal(
+          "Advertencia",
+          "El plazo debe estar entre 3 y 18 meses.",
+          null,
+          true
+        );
+        return;
+      }
+
       try {
         const response = await fetch(
           tipoCompra === "efectivo" ? "/comprarEfectivo" : "/comprarCredito",
@@ -69,20 +79,20 @@ document.addEventListener("DOMContentLoaded", () => {
         if (result.success) {
           if (
             tipoCompra === "credito" &&
-            result.message === "Compra exitosa a credito!!"
+            result.result === "Compra exitosa a credito!!"
           ) {
             showModal("Éxito", "Compra realizada exitosamente.", () => {
               window.location.href = "/telefonos";
             });
           } else {
-            showModal("Resultado", result.result);
+            showModal("Resultado", result.result, null, true);
           }
         } else {
           showModal("Error", "Fallo al realizar la compra.");
         }
       } catch (error) {
         console.error("Compra error:", error);
-        showModal("Error", result, null, true);
+        showModal("Error", result.result, null, true);
       }
     });
 });
@@ -108,9 +118,6 @@ async function loadTelefonoData(id) {
     }
   } catch (error) {
     console.error("Load telefono data error:", error);
-    showModal(
-      "Error",
-      "Un error ha ocurrido durante la carga de los datos del teléfono. Por favor, revise la conexión."
-    );
+    showModal("Error", error.message, null, true);
   }
 }
