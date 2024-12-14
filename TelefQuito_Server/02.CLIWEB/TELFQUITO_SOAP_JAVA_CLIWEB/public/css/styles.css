@@ -222,3 +222,18 @@ select {
   background-position: right 10px center;
   background-size: 12px;
 }
+
+.gridCentrao {
+  display: grid;
+  place-items: center;
+  padding: 1em;
+
+}
+
+.grid3columns {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid2rows {
+  grid-template-rows: repeat(2, 1fr);
+}

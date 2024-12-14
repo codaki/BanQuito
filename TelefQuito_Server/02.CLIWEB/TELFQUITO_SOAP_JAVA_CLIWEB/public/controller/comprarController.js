@@ -19,16 +19,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tipoCompra === "efectivo") {
       const compraEfectivo = document.getElementById("compraEfectivo");
       compraEfectivo.classList.remove("hidden");
-      compraEfectivo
-        .querySelector("input")
-        .setAttribute("required", "required");
-      const precio = parseFloat(document.getElementById("precio").textContent);
+      // compraEfectivo
+      //   .querySelector("input")
+      //   .setAttribute("required", "required");
+
+      const precioText = document.getElementById("precio").textContent;
+      const precio = parseFloat(precioText.replace(/[^0-9.-]+/g, ""));
       const descuento = precio * 0.42;
       const precioFinal = precio - descuento;
-      document.getElementById("precioOriginal").textContent = precio.toFixed(2);
-      document.getElementById("descuento").textContent = descuento.toFixed(2);
-      document.getElementById("precioFinal").textContent =
-        precioFinal.toFixed(2);
+      document.getElementById("precioOriginal").textContent = "$" + precio.toFixed(2);
+      document.getElementById("descuento").textContent = "$" + descuento.toFixed(2);
+      document.getElementById("precioFinal").textContent = "$" + precioFinal.toFixed(2);
     } else if (tipoCompra === "credito") {
       const compraCredito = document.getElementById("compraCredito");
       compraCredito.classList.remove("hidden");
@@ -61,8 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
         showModal(
           "Advertencia",
           "El plazo debe estar entre 3 y 18 meses.",
-          null,
-          true
+          true,
+          null
         );
         return;
       }
@@ -88,22 +89,22 @@ document.addEventListener("DOMContentLoaded", () => {
             tipoCompra === "credito" &&
             result.result === "Compra exitosa a credito!!"
           ) {
-            showModal("Éxito", "Compra realizada exitosamente.", () => {
+            showModal("Éxito", "Compra realizada exitosamente.", false, () => {
               window.location.href = "/telefonos";
             });
           } else if (result.result === "Compra en efectivo exitosa!!") {
-            showModal("Resultado", result.result, () => {
+            showModal("Resultado", result.result, false, () => {
               window.location.href = "/telefonos";
             });
           } else {
-            showModal("Resultado", result.result, null);
+            showModal("Resultado", result.result, false, null);
           }
         } else {
-          showModal("Error", "Fallo al realizar la compra.");
+          showModal("Error", "Fallo al realizar la compra.", true, null);
         }
       } catch (error) {
         console.error("Compra error:", error);
-        showModal("Error", result.result, null);
+        showModal("Error", error.message, true, null);
       }
     });
 });
@@ -122,13 +123,13 @@ async function loadTelefonoData(id) {
       const telefono = result.result;
       document.getElementById("telefonoId").value = telefono.codTelefono;
       document.getElementById("nombre").textContent = telefono.nombre;
-      document.getElementById("precio").textContent = telefono.precio;
+      document.getElementById("precio").textContent = "$" + telefono.precio;
       document.getElementById("marca").textContent = telefono.marca;
     } else {
-      showModal("Error", "Fallo en recuperar los datos del teléfono.");
+      showModal("Error", "Fallo en recuperar los datos del teléfono.", true, null);
     }
   } catch (error) {
     console.error("Load telefono data error:", error);
-    showModal("Error", error.message, null, true);
+    showModal("Error", error.message, true, null);
   }
 }
