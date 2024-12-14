@@ -22,11 +22,6 @@ public class TelefonoController {
         this.telefonoService = new TelefonoService();
     }
 
-    /**
-     * Método para cargar y mostrar los telefonos en la vista proporcionada.
-     *
-     * @param catalogoView
-     */
     public void cargarTelefonos(CatalogoView catalogoView) {
         try {
             List<Telefonos> telefonos = telefonoService.obtenerTelefonos();
@@ -41,7 +36,6 @@ public class TelefonoController {
                 noResultados.setForeground(Color.RED);
                 panelResultados.add(noResultados);
             } else {
-                // Crear celdas para cada movimiento
                 for (Telefonos telf : telefonos) {
                     JPanel celda = catalogoView.crearCelda(String.valueOf(telf.getCodTelefono()),
                             "Marca: " + telf.getMarca(),
@@ -51,10 +45,8 @@ public class TelefonoController {
                     );
                     panelResultados.add(celda);
                 }
-
             }
 
-            // Reemplazar el contenido del JScrollPane con los nuevos resultados
             catalogoView.getjScrollPane1().setViewportView(panelResultados);
 
         } catch (Exception e) {
@@ -64,9 +56,9 @@ public class TelefonoController {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
-    public void activarpantallaVenta(String codigo){
-        Telefonos telefono = telefonoService.obtenerTelefonoPorId(Integer.parseInt(codigo));;
+
+    public void activarpantallaVenta(String codigo) {
+        Telefonos telefono = telefonoService.obtenerTelefonoPorId(Integer.parseInt(codigo));
 
         VentaView venta = new VentaView(telefono);
         venta.lblMarca.setText(telefono.getMarca());
@@ -75,7 +67,7 @@ public class TelefonoController {
 
         venta.setVisible(true);
     }
-    
+
     public String insertarTelefono(Telefonos telefono) {
         return telefonoService.insertarTelefono(telefono);
     }
@@ -84,8 +76,7 @@ public class TelefonoController {
         return telefonoService.actualizarTelefono(telefono);
     }
 
-    public Telefonos obtenerPorId(int codigo){
+    public Telefonos obtenerPorId(int codigo) {
         return telefonoService.obtenerTelefonoPorId(codigo);
     }
-
 }

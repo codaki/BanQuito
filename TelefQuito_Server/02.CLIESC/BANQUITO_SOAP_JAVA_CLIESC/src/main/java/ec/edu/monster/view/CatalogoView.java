@@ -256,7 +256,6 @@ public final class CatalogoView extends javax.swing.JFrame {
     }
 
     public void cargarCatalogo() {
-        
         controller.cargarTelefonos(this);
     }
 
