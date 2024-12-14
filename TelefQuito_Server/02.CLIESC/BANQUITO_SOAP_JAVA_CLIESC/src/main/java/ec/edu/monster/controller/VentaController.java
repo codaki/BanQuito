@@ -18,8 +18,10 @@ public class VentaController {
         String mensaje = compraService.comprarCredito(telf.getCodTelefono(), cedula, plazoInt);
         view.lblMensaje.setText(mensaje);
         if ("Compra exitosa a crédito!!".equals(mensaje)) {
-            FacturaView factura = new FacturaView(telf);
-            factura.setVisible(true);
+            FacturaController factController = new FacturaController();
+            FacturaView factura = new FacturaView();
+            factController.mostrarFactura(telf.getPrecio(), cedula,factura);
+//          factura.setVisible(true);
             view.dispose();
         } else {
             view.lblMensaje.setText(mensaje);
@@ -31,13 +33,14 @@ public class VentaController {
         view.lblMensaje.setText(mensaje);
         
         if ("Compra en efectivo exitosa!!".equals(mensaje)) {
-            FacturaView factura = new FacturaView(telf);
-            factura.setVisible(true);
+            FacturaController factController = new FacturaController();
+            FacturaView factura = new FacturaView();
+            factController.mostrarFactura(telf.getPrecio(), cedula, factura);
             view.dispose();
         } else {
             view.lblMensaje.setText(mensaje);
         }
-        
-       
     }
+    
+    
 }
