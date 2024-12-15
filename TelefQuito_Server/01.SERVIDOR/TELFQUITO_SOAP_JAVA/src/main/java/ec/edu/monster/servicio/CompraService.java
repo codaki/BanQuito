@@ -59,7 +59,6 @@ public class CompraService {
         } else {
             return ("Compra en efectivo fallida");
         }
-
     }
 
     public String realizarCompraCredito(int codTelefono, String cedula, String formaPago, int plazoMeses)
@@ -67,28 +66,23 @@ public class CompraService {
         Telefonos telefono = telefonoDAO.getTelefonoById(codTelefono);
         double precioTelefono = telefono.getPrecio();
 
-        // Verificar si el cliente es sujeto de crédito
         int esSujetoCredito = sujetoCreditoService.verifica(cedula);
         if (esSujetoCredito == 0) {
             return ("El cliente no es sujeto de crédito.");
         }
 
-        // valor = sujetoCreditoService.obtenerCodClientePorCedula(cedula);
-        // Obtener el monto máximo de crédito aprobado
         double montoMaximo = montoMaximoService.montoMaximo(esSujetoCredito);
         System.out.println(montoMaximo);
         if (precioTelefono > montoMaximo) {
             return ("El precio del teléfono excede el monto máximo de crédito aprobado.");
         }
 
-        // Crear la tabla de amortización
         String resultado = generarTablaService.crearCreditoYTablaAmortizacion(esSujetoCredito, precioTelefono,
                 plazoMeses);
         if (!resultado.equals("Crédito y tabla de amortización creados exitosamente.")) {
             return ("Error al crear la tabla de amortización.");
         }
 
-        // Realizar la compra
         Compras compra = new Compras();
         compra.setCodTelefono(codTelefono);
         compra.setCodcCliente(clientecDAO.getCodClienteByCedula(cedula));
@@ -101,7 +95,6 @@ public class CompraService {
         } else {
             return ("Compra fallida!!");
         }
-
     }
 
     public List<Factura> obtenerFactura(String cedula) {
