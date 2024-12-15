@@ -1,4 +1,3 @@
-
 package ec.edu.monster.models;
 
 public class Factura {
@@ -11,7 +10,6 @@ public class Factura {
     private String nombreTelefono;
     private String marcaTelefono;
 
-    // Getters and Setters
     public int getCodCompra() {
         return codCompra;
     }
@@ -35,7 +33,6 @@ public class Factura {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
-
 
     public Double getDescuento() {
         return descuento;

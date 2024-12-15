@@ -1,6 +1,4 @@
-
 package ec.edu.monster.models;
-
 
 public class ClienteComercializadora {
     private int codcCliente;
@@ -59,7 +57,4 @@ public class ClienteComercializadora {
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-
-
-    
 }

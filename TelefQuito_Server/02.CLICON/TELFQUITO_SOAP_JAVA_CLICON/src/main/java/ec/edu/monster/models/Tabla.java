@@ -1,4 +1,3 @@
-
 package ec.edu.monster.models;
 
 public class Tabla {
@@ -8,7 +7,6 @@ public class Tabla {
     private double interesPagado;
     private double capitalPagado;
     private double saldo;
-
 
     public Tabla(int codCredito, int cuota, double valorCuota, double interesPagado, double capitalPagado, double saldo) {
         this.codCredito = codCredito;
