@@ -1,11 +1,8 @@
 package ec.edu.monster.controller;
 
 import ec.edu.monster.service.CompraService;
-import ec.edu.monster.service.TelefonoService;
-import ec.edu.monster.view.CatalogoView;
 import ec.edu.monster.view.TablaView;
 import ec.edu.monster.ws.Tabla;
-import ec.edu.monster.ws.Telefonos;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
@@ -53,7 +50,6 @@ public class TablaController {
 
             }
 
-            // Reemplazar el contenido del JScrollPane con los nuevos resultados
             tablaView.getjScrollPane1().setViewportView(panelResultados);
 
         } catch (Exception e) {

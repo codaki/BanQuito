@@ -21,7 +21,6 @@ public class VentaController {
             FacturaController factController = new FacturaController();
             FacturaView factura = new FacturaView();
             factController.mostrarFactura(telf.getPrecio(), cedula,factura);
-//          factura.setVisible(true);
             view.dispose();
         } else {
             view.lblMensaje.setText(mensaje);
@@ -41,6 +40,4 @@ public class VentaController {
             view.lblMensaje.setText(mensaje);
         }
     }
-    
-    
 }
