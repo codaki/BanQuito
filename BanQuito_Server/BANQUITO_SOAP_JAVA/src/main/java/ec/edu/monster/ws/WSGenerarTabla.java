@@ -1,4 +1,3 @@
-
 package ec.edu.monster.ws;
 
 import ec.edu.monster.model.Credito;
@@ -11,10 +10,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @WebService(serviceName = "WSGenerarTabla")
 public class WSGenerarTabla {
-
 /**
      * Web service operation to create credit and generate amortization table.
      * @param codCliente
@@ -28,12 +25,10 @@ public class WSGenerarTabla {
             @WebParam(name = "monto") double monto,
             @WebParam(name = "plazoMeses") int plazoMeses) {
         
-        // Validate input parameters
         if (plazoMeses < 3 || plazoMeses > 18) {
             return "El plazo del crédito debe ser mayor o igual a 3 meses y menor o igual a 18 meses.";
         }
 
-        // Create Credito object
         Credito credito = new Credito();
         credito.setCodCliente(codCliente);
         credito.setMonto(monto);
@@ -41,7 +36,6 @@ public class WSGenerarTabla {
         credito.setTasaInteres(16.5); 
         credito.setFechaInicio(LocalDate.now().toString());
 
-        // Generate credit and amortization table
         GenerarTablaService generarTablaService = new GenerarTablaService();
         try {
             generarTablaService.crearCreditoYTablaAmortizacion(credito);

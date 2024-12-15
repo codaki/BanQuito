@@ -1,14 +1,8 @@
-
 package ec.edu.monster.ws;
 
 import jakarta.jws.WebService;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
-
-/**
- *
- * @author danie
- */
 
 import ec.edu.monster.servicio.SujetoCreditoService;
 @WebService(serviceName = "WSSujetoCredito")

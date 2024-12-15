@@ -1,4 +1,3 @@
-
 package ec.edu.monster.ws;
 
 import ec.edu.monster.DAO.TelefonoDAO;
@@ -14,10 +13,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- *
- * @author danie
- */
 @WebService(serviceName = "WSTelefonos")
 public class WSTelefonos {
 
@@ -32,7 +27,7 @@ public class WSTelefonos {
             e.printStackTrace();
         }
     }
-/**
+    /**
      * Web service operation to verify a customer
      */
     @WebMethod(operationName = "getTelefonoById")
@@ -44,7 +39,7 @@ public class WSTelefonos {
             return null;
         }
     }
-/**
+    /**
      * Web service operation to verify a customer
      */
     @WebMethod(operationName = "insertTelefono")
@@ -55,7 +50,7 @@ public class WSTelefonos {
             return "Error al insertar el teléfono: " + e.getMessage();
         }
     }
-/**
+    /**
      * Web service operation to verify a customer
      */
     @WebMethod(operationName = "updateTelefono")
@@ -66,7 +61,7 @@ public class WSTelefonos {
             return "Error al actualizar el teléfono: " + e.getMessage();
         }
     }
-/**
+    /**
      * Web service operation to verify a customer
      */
     @WebMethod(operationName = "getAllTelefonos")

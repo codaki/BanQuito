@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/WebServices/WebService.java to edit this template
- */
 package ec.edu.monster.ws;
 
 import ec.edu.monster.DAO.ClienteComercializadoraDAO;
@@ -20,11 +16,6 @@ import ec.edu.monster.models.Factura;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
-
-/**
- *
- * @author danie
- */
 
 @WebService(serviceName = "WSCompra")
 public class WSCompra {
