@@ -1,4 +1,3 @@
-
 package ec.edu.monster.test;
 
 
@@ -11,7 +10,6 @@ public class TestCRUD {
     public static void main(String[] args) {
         ClienteDAO clienteDAO = new ClienteDAO();
 
-        // Crear un nuevo cliente
         Cliente nuevoCliente = new Cliente();
         nuevoCliente.setCedula("1234567890");
         nuevoCliente.setNombre("Luis Martínez");
@@ -21,19 +19,16 @@ public class TestCRUD {
         try {
             clienteDAO.createCliente(nuevoCliente);
 
-            // Leer todos los clientes
             for (Cliente cliente : clienteDAO.getAllClientes()) {
                 System.out.println("Cliente: " + cliente.getNombre());
             }
 
-            // Actualizar un cliente
             Cliente clienteActualizado = clienteDAO.getClienteById(1);
             if (clienteActualizado != null) {
                 clienteActualizado.setNombre("Juan Carlos Pérez");
                 clienteDAO.updateCliente(clienteActualizado);
             }
 
-            // Eliminar un cliente
             clienteDAO.deleteCliente(5);
         } catch (Exception e) {
             e.printStackTrace();

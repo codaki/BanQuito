@@ -1,4 +1,3 @@
-
 package ec.edu.monster.test;
 
 import ec.edu.monster.model.Credito;

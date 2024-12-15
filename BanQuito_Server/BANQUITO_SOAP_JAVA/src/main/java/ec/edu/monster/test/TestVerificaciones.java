@@ -1,4 +1,3 @@
-
 package ec.edu.monster.test;
 
 import ec.edu.monster.dao.ClienteDAO;
@@ -6,10 +5,6 @@ import ec.edu.monster.dao.CreditoDAO;
 import ec.edu.monster.dao.MovimientoDAO;
 import java.sql.SQLException;
 
-/**
- *
- * @author danie
- */
 public class TestVerificaciones {
     public static void main(String[] args) {
         ClienteDAO clienteDAO = new ClienteDAO();

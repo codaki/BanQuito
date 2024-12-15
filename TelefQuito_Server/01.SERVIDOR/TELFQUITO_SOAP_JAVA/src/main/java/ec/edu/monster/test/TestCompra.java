@@ -17,7 +17,6 @@ public class TestCompra {
   
 
         try (Connection connection = DBConnection.getConnection()) {
-            // Crear instancias de DAO y servicios
             CompraDAO comprasDAO = new CompraDAO(connection);
             TelefonoDAO telefonoDAO = new TelefonoDAO(connection);
             ClienteComercializadoraDAO clientecDAO = new  ClienteComercializadoraDAO(connection);
@@ -25,25 +24,21 @@ public class TestCompra {
             MontoMaximoService montoMaximoService = new MontoMaximoService();
             GenerarTablaService generarTablaService = new GenerarTablaService();
 
-            // Crear instancia de CompraService
             CompraService compraService = new CompraService(comprasDAO, telefonoDAO,clientecDAO, sujetoCreditoService, montoMaximoService, generarTablaService);
 
-            // Datos quemados para probar
-            int codTelefono = 5; // Asegúrate de que este ID exista en la tabla `telefonos`
-            String codcCliente = "0506070809"; // Asegúrate de que este ID exista en la tabla `cliente_comercializadora`
+            int codTelefono = 5;
+            String codcCliente = "0506070809";
             String formaPagoEfectivo = "Efectivo";
             String formaPagoCredito = "Crédito Directo";
             int plazoMeses = 12;
 
-            // Probar compra en efectivo
-//            try {
-//                compraService.realizarCompraEfectivo(codTelefono, codcCliente, formaPagoEfectivo);
-//                System.out.println("Compra en efectivo realizada con éxito.");
-//            } catch (Exception e) {
-//                System.err.println("Error al realizar compra en efectivo: " + e.getMessage());
-//            }
+            try {
+                compraService.realizarCompraEfectivo(codTelefono, codcCliente, formaPagoEfectivo);
+                System.out.println("Compra en efectivo realizada con éxito.");
+            } catch (Exception e) {
+                System.err.println("Error al realizar compra en efectivo: " + e.getMessage());
+            }
 
-            // Probar compra con crédito directo
             try {
                 compraService.realizarCompraCredito(codTelefono, codcCliente, formaPagoCredito, plazoMeses);
                 System.out.println("Compra con crédito directo realizada con éxito.");
