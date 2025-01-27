@@ -12,6 +12,7 @@ import ec.edu.monster.banquito.GenerarTablaService;
 import ec.edu.monster.banquito.Tabla;
 import ec.edu.monster.servicio.CompraService;
 import ec.edu.monster.bdd.DBConnection;
+import ec.edu.monster.models.Carrito;
 import ec.edu.monster.models.Factura;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -41,12 +42,15 @@ public class WSCompra {
 
     /**
      * Web service operation to verify a customer
+     * @param carrito
+     * @param codcCedula
+     * @return 
      */
     @WebMethod(operationName = "comprarEfectivo")
-    public String comprarEfectivo(@WebParam(name = "codTelefono") int codTelefono,
+    public String comprarEfectivo(@WebParam(name = "carrito") Carrito carrito,
             @WebParam(name = "codcCedula") String codcCedula) {
         try {
-            return compraService.realizarCompraEfectivo(codTelefono, codcCedula, "Efectivo");
+            return compraService.realizarCompraEfectivo(carrito, codcCedula, "Efectivo");
         } catch (Exception e) {
             return "Error al realizar la compra en efectivo: " + e.getMessage();
         }
@@ -54,12 +58,16 @@ public class WSCompra {
 
     /**
      * Web service operation to verify a customer
+     * @param carrito
+     * @param cedula
+     * @param plazoMeses
+     * @return 
      */
     @WebMethod(operationName = "comprarCredito")
-    public String comprarCredito(@WebParam(name = "codTelefono") int codTelefono,
+    public String comprarCredito(@WebParam(name = "carrito") Carrito carrito,
             @WebParam(name = "cedula") String cedula, @WebParam(name = "plazoMeses") int plazoMeses) {
         try {
-            return compraService.realizarCompraCredito(codTelefono, cedula, "Crédito Directo", plazoMeses);
+            return compraService.realizarCompraCredito(carrito, cedula, "Crédito Directo", plazoMeses);
         } catch (Exception e) {
             return "Error al realizar la compra con crédito: " + e.getMessage();
         }
