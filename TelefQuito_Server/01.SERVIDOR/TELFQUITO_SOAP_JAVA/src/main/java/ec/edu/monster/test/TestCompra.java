@@ -8,6 +8,8 @@ import ec.edu.monster.banquito.SujetoCreditoService;
 import ec.edu.monster.banquito.MontoMaximoService;
 import ec.edu.monster.banquito.GenerarTablaService;
 import ec.edu.monster.bdd.DBConnection;
+import ec.edu.monster.models.Carrito;
+import ec.edu.monster.models.Telefonos;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -32,19 +34,28 @@ public class TestCompra {
             String formaPagoCredito = "Crédito Directo";
             int plazoMeses = 12;
 
+            
+                  // Crear un carrito con teléfonos
+            Carrito carrito = new Carrito();
+           
+            carrito.agregarTelefono(2, 1);
+            carrito.agregarTelefono(2, 2);
+
+            // Realizar la compra en efectivo
+
             try {
-                compraService.realizarCompraEfectivo(codTelefono, codcCliente, formaPagoEfectivo);
+                compraService.realizarCompraEfectivo(carrito, codcCliente, formaPagoEfectivo);
                 System.out.println("Compra en efectivo realizada con éxito.");
             } catch (Exception e) {
                 System.err.println("Error al realizar compra en efectivo: " + e.getMessage());
             }
 
-            try {
-                compraService.realizarCompraCredito(codTelefono, codcCliente, formaPagoCredito, plazoMeses);
-                System.out.println("Compra con crédito directo realizada con éxito.");
-            } catch (Exception e) {
-                System.err.println("Error al realizar compra con crédito directo: " + e.getMessage());
-            }
+//            try {
+//                compraService.realizarCompraCredito(codTelefono, codcCliente, formaPagoCredito, plazoMeses);
+//                System.out.println("Compra con crédito directo realizada con éxito.");
+//            } catch (Exception e) {
+//                System.err.println("Error al realizar compra con crédito directo: " + e.getMessage());
+//            }
 
         } catch (SQLException e) {
             System.err.println("Error al conectar a la base de datos: " + e.getMessage());
