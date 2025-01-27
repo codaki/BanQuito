@@ -21,7 +21,7 @@ import java.util.Vector;
 public class CompraService {
     private static final String TAG = "CompraService";
     private static final String NAMESPACE = "http://ws.monster.edu.ec/";
-    private static final String URL = "http://192.168.186.83:8080/TELFQUITO_SOAP_JAVA/WSCompra";
+    private static final String URL = "http://192.168.18.8:8080/TELFQUITO_SOAP_JAVA/WSCompra";
     private static final int TIMEOUT = 15000;
 
     public interface SoapCallback<T> {

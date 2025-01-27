@@ -4,7 +4,8 @@ const path = require("path");
 const authService = require("./services/LoginService");
 const compraService = require("./services/CompraService");
 const telefonoService = require("./services/TelefonoService");
-const telefonoController = require("./public/controller/telefonoController"); // Importa el controlador de teléfono
+const telefonoController = require("./public/controller/telefonoController");
+const ImageService = require("./services/ImageService");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -174,6 +175,30 @@ app.get("/getAllTelefonos", async (req, res) => {
       message: "Get all teléfonos error",
       error: error.message,
     });
+  }
+});
+
+app.get("/getImage", async (req, res) => {
+  const { filename } = req.query;
+
+  try {
+    const imageBase64 = await ImageService.GetImage(filename);
+    res.json({ success: true, image: imageBase64 });
+  } catch (error) {
+    console.error("Error fetching image:", error);
+    res.status(500).json({ success: false, message: "Error fetching image" });
+  }
+});
+
+app.post("/uploadImage", async (req, res) => {
+  const { fileName, imageData } = req.body;
+
+  try {
+    const result = await ImageService.UploadImage(fileName, imageData);
+    res.json({ success: true, result });
+  } catch (error) {
+    console.error("Error uploading image");
+    res.status(500).json({ success: false, message: "Error uploading image" });
   }
 });
 

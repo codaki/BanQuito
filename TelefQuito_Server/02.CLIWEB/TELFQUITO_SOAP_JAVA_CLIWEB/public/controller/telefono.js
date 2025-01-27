@@ -1,4 +1,5 @@
 import { showModal } from "./modal.js";
+import { DefaultImages } from './defaultImages.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   document
@@ -40,14 +41,34 @@ function editTelefono(id) {
 function buyTelefono(id) {
   window.location.href = `/comprarTelefono?id=${id}`;
 }
-function populateTelefonos(telefonos) {
+async function populateTelefonos(telefonos) {
   const telefonoInfo = document.getElementById("movements-list");
   telefonoInfo.innerHTML = "";
+  let imageClassDefault = new DefaultImages();
+  let defaultImage = imageClassDefault.images[1];
 
-  telefonos.forEach((telefono) => {
+  for (const telefono of telefonos) {
+    let imgBased64;
+    try {
+      const response = await fetch(`/getImage?filename=${telefono.imgUrl}`);
+      const result = await response.json();
+      if (result.success) {
+        imgBased64 = result.image;
+      } else {
+        console.log("Error fetching image:", defaultImage);
+        imgBased64 = defaultImage;
+      }
+    } catch (error) {
+      console.error(`Error loading image for ${telefono.nombre}:`, error);
+      imgBased64 = defaultImage;
+    }
+
     const telefonoItem = document.createElement("div");
     telefonoItem.className = 'movement-item';
     telefonoItem.innerHTML = `
+      <div class="col-6">
+        <img src="data:image/jpeg;base64,${imgBased64}" class="telfImg" alt="${telefono.nombre}" />
+      </div>
       <div class="col-6">
         <div class="font-bold text-black">ID: ${telefono.codTelefono}</div>
         <div class="font-normal text-gray-700">Nombre: ${telefono.nombre}</div>
@@ -76,5 +97,5 @@ function populateTelefonos(telefonos) {
     );
 
     telefonoInfo.appendChild(telefonoItem);
-  });
+  }
 }
