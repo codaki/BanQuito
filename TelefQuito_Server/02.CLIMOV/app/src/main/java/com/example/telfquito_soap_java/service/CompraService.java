@@ -11,8 +11,10 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.telfquito_soap_java.models.Carrito;
 import com.example.telfquito_soap_java.models.FacturaModel;
 import com.example.telfquito_soap_java.models.TablaModel;
+import com.example.telfquito_soap_java.models.TelefonoCarrito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.Vector;
 public class CompraService {
     private static final String TAG = "CompraService";
     private static final String NAMESPACE = "http://ws.monster.edu.ec/";
-    private static final String URL = "http://192.168.18.8:8080/TELFQUITO_SOAP_JAVA/WSCompra";
+    private static final String URL = "http://192.168.225.83:8080/TELFQUITO_SOAP_JAVA/WSCompra";
     private static final int TIMEOUT = 15000;
 
     public interface SoapCallback<T> {
@@ -30,19 +32,23 @@ public class CompraService {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void comprarEfectivo(final int codTelefono, final String codcCedula, final SoapCallback<String> callback) {
+    public void comprarEfectivo(final List<TelefonoCarrito> carrito, final String codcCedula, final SoapCallback<String> callback) {
         new AsyncTask<Void, Void, AsyncTaskResult<String>>() {
             @Override
             protected AsyncTaskResult<String> doInBackground(Void... voids) {
                 try {
                     SoapObject request = new SoapObject(NAMESPACE, "comprarEfectivo");
 
-                    PropertyInfo codTelefonoProperty = new PropertyInfo();
-                    codTelefonoProperty.setName("codTelefono");
-                    codTelefonoProperty.setValue(codTelefono);
-                    codTelefonoProperty.setType(Integer.class);
-                    request.addProperty(codTelefonoProperty);
+                    // Create 'carrito' element
+                    Carrito carritoObject = new Carrito(carrito);
 
+                    PropertyInfo carritoProperty = new PropertyInfo();
+                    carritoProperty.setName("carrito");
+                    carritoProperty.setValue(carritoObject);
+                    carritoProperty.setType(Carrito.class); // Ensure this matches your server-side type
+                    request.addProperty(carritoProperty);
+
+                    // Add codcCedula property
                     PropertyInfo codcCedulaProperty = new PropertyInfo();
                     codcCedulaProperty.setName("codcCedula");
                     codcCedulaProperty.setValue(codcCedula);
@@ -58,7 +64,7 @@ public class CompraService {
 
                     try {
                         transport.call("", envelope);
-
+                        Log.d(TAG, "SOAP Request: " + transport.requestDump);
                         if (envelope.getResponse() instanceof SoapPrimitive) {
                             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
                             return new AsyncTaskResult<>(response.toString());
@@ -87,25 +93,30 @@ public class CompraService {
     }
 
     @SuppressLint("StaticFieldLeak")
-    public void comprarCredito(final int codTelefono, final String cedula, final int plazoMeses, final SoapCallback<String> callback) {
+    public void comprarCredito(final List<TelefonoCarrito> carrito, final String cedula, final int plazoMeses, final SoapCallback<String> callback) {
         new AsyncTask<Void, Void, AsyncTaskResult<String>>() {
             @Override
             protected AsyncTaskResult<String> doInBackground(Void... voids) {
                 try {
                     SoapObject request = new SoapObject(NAMESPACE, "comprarCredito");
 
-                    PropertyInfo codTelefonoProperty = new PropertyInfo();
-                    codTelefonoProperty.setName("codTelefono");
-                    codTelefonoProperty.setValue(codTelefono);
-                    codTelefonoProperty.setType(Integer.class);
-                    request.addProperty(codTelefonoProperty);
+                    // Add carrito object
+                    Carrito carritoObject = new Carrito(carrito);
 
+                    PropertyInfo carritoProperty = new PropertyInfo();
+                    carritoProperty.setName("carrito");
+                    carritoProperty.setValue(carritoObject);
+                    carritoProperty.setType(Carrito.class); // Ensure this matches your server-side type
+                    request.addProperty(carritoProperty);
+
+                    // Add cedula property
                     PropertyInfo cedulaProperty = new PropertyInfo();
                     cedulaProperty.setName("cedula");
                     cedulaProperty.setValue(cedula);
                     cedulaProperty.setType(String.class);
                     request.addProperty(cedulaProperty);
 
+                    // Add plazoMeses property
                     PropertyInfo plazoMesesProperty = new PropertyInfo();
                     plazoMesesProperty.setName("plazoMeses");
                     plazoMesesProperty.setValue(plazoMeses);
@@ -121,7 +132,7 @@ public class CompraService {
 
                     try {
                         transport.call("", envelope);
-
+                        Log.d(TAG, "SOAP Request: " + transport.requestDump);
                         if (envelope.getResponse() instanceof SoapPrimitive) {
                             SoapPrimitive response = (SoapPrimitive) envelope.getResponse();
                             return new AsyncTaskResult<>(response.toString());

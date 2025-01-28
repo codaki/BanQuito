@@ -20,7 +20,7 @@ import java.util.Vector;
 public class TelefonoService {
     private static final String TAG = "TelefonoService";
     private static final String NAMESPACE = "http://ws.monster.edu.ec/";
-    private static final String URL = "http://192.168.18.8:8080/TELFQUITO_SOAP_JAVA/WSTelefonos";
+    private static final String URL = "http://192.168.225.83:8080/TELFQUITO_SOAP_JAVA/WSTelefonos";
     private static final int TIMEOUT = 15000;
 
     public interface SoapCallback<T> {
@@ -66,6 +66,7 @@ public class TelefonoService {
                                     telefono.setMarca(telefonoObject.getProperty("marca").toString());
                                     telefono.setNombre(telefonoObject.getProperty("nombre").toString());
                                     telefono.setPrecio(telefonoObject.getProperty("precio").toString());
+                                    telefono.setImgUrl(telefonoObject.getProperty("imgUrl").toString());
                                     telefonos.add(telefono);
                                 }
                             }
@@ -82,6 +83,7 @@ public class TelefonoService {
                                 telefono.setMarca(telefonoObject.getProperty("marca").toString());
                                 telefono.setNombre(telefonoObject.getProperty("nombre").toString());
                                 telefono.setPrecio(telefonoObject.getProperty("precio").toString());
+                                telefono.setImgUrl(telefonoObject.getProperty("imgUrl").toString());
                                 telefonos.add(telefono);
                             }
                             return new AsyncTaskResult<>(telefonos);
@@ -143,6 +145,7 @@ public class TelefonoService {
                             telefono.setMarca(response.getProperty("marca").toString());
                             telefono.setNombre(response.getProperty("nombre").toString());
                             telefono.setPrecio(response.getProperty("precio").toString());
+                            telefono.setImgUrl(response.getProperty("imgUrl").toString());
                             return new AsyncTaskResult<>(telefono);
                         } else {
                             return new AsyncTaskResult<>(new Exception("Empty response received"));

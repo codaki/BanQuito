@@ -3,6 +3,7 @@ package com.example.telfquito_soap_java.controller;
 import com.example.telfquito_soap_java.service.CompraService;
 import com.example.telfquito_soap_java.models.TablaModel;
 import com.example.telfquito_soap_java.models.FacturaModel;
+import com.example.telfquito_soap_java.models.TelefonoCarrito;
 import android.util.Log;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class CompraController {
         this.compraService = new CompraService();
     }
 
-    public void comprarEfectivo(int codTelefono, String codcCedula, CompraService.SoapCallback<String> callback) {
-        compraService.comprarEfectivo(codTelefono, codcCedula, new CompraService.SoapCallback<String>() {
+    public void comprarEfectivo(List<TelefonoCarrito> carrito, String codcCedula, CompraService.SoapCallback<String> callback) {
+        compraService.comprarEfectivo(carrito, codcCedula, new CompraService.SoapCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "Compra en efectivo realizada con éxito: " + result);
@@ -31,8 +32,8 @@ public class CompraController {
         });
     }
 
-    public void comprarCredito(int codTelefono, String cedula, int plazoMeses, CompraService.SoapCallback<String> callback) {
-        compraService.comprarCredito(codTelefono, cedula, plazoMeses, new CompraService.SoapCallback<String>() {
+    public void comprarCredito(List<TelefonoCarrito> carrito, String cedula, int plazoMeses, CompraService.SoapCallback<String> callback) {
+        compraService.comprarCredito(carrito, cedula, plazoMeses, new CompraService.SoapCallback<String>() {
             @Override
             public void onSuccess(String result) {
                 Log.d(TAG, "Compra a crédito realizada con éxito: " + result);

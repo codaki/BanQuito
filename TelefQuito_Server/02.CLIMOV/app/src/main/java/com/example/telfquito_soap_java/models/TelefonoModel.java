@@ -11,7 +11,8 @@ public class TelefonoModel implements KvmSerializable, Serializable {
     private int disponible;
     private String marca;
     private String nombre;
-    private String precio; // Change to String
+    private String precio;
+    private String imgUrl;
 
     // Getters and setters
     public int getCodTelefono() {
@@ -54,6 +55,14 @@ public class TelefonoModel implements KvmSerializable, Serializable {
         this.precio = precio;
     }
 
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
     @Override
     public Object getProperty(int index) {
         switch (index) {
@@ -67,6 +76,8 @@ public class TelefonoModel implements KvmSerializable, Serializable {
                 return nombre;
             case 4:
                 return precio;
+            case 5:
+                return imgUrl;
             default:
                 return null;
         }
@@ -74,7 +85,7 @@ public class TelefonoModel implements KvmSerializable, Serializable {
 
     @Override
     public int getPropertyCount() {
-        return 5;
+        return 6;
     }
 
     @Override
@@ -94,6 +105,9 @@ public class TelefonoModel implements KvmSerializable, Serializable {
                 break;
             case 4:
                 precio = value.toString();
+                break;
+            case 5:
+                imgUrl = value.toString();
                 break;
         }
     }
@@ -120,6 +134,10 @@ public class TelefonoModel implements KvmSerializable, Serializable {
             case 4:
                 info.type = PropertyInfo.STRING_CLASS;
                 info.name = "precio";
+                break;
+            case 5:
+                info.type = PropertyInfo.STRING_CLASS;
+                info.name = "imgUrl";
                 break;
             default:
                 break;
