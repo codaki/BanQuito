@@ -23,12 +23,13 @@
       <!-- Teléfono info will be populated here -->
     </div>
   </div>
-  <button class="floating-button" onclick="window.location.href='account.html'">
-    +
+  <button class="floating-button" id="cartButton" onclick="window.location.href='carrito.html'">
+    🛒 (<span id="cartCount">0</span>)
   </button>
   <div id="modal-container"></div>
   <!-- Container for modal -->
-  <script>
+  <script type="module">
+    import { getCart } from '/controller/cart.js';
     fetch("/modal.html")
       .then((response) => response.text())
       .then((html) => {
@@ -38,9 +39,16 @@
           modalOkButton.addEventListener("click", closeModal);
         }
       });
+
+    // Update cart count
+    document.addEventListener('DOMContentLoaded', () => {
+      const cart = getCart();
+      document.getElementById('cartCount').innerText = cart.length;
+    });
   </script>
   <script type="module" src="/controller/modal.js"></script>
   <script type="module" src="/controller/telefono.js"></script>
+  <script type="module" src="/controller/cart.js"></script>
 </body>
 
 </html>
