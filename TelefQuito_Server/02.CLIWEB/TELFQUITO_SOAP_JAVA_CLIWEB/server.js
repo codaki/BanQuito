@@ -57,10 +57,10 @@ app.get("/comprarTelefono", (req, res) => {
 });
 
 app.post("/comprarEfectivo", async (req, res) => {
-  const { codTelefono, cedula } = req.body;
-  console.log(codTelefono, cedula);
+  const { carrito, cedula } = req.body;
+  console.log(carrito, cedula);
   try {
-    const result = await compraService.comprarEfectivo(codTelefono, cedula);
+    const result = await compraService.comprarEfectivo(carrito, cedula);
     res.json({ success: true, result });
   } catch (error) {
     res.status(500).json({
@@ -74,11 +74,11 @@ app.get("/factura", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "factura.html"));
 });
 app.post("/comprarCredito", async (req, res) => {
-  const { codTelefono, cedula, plazoMeses } = req.body;
-  console.log(codTelefono, plazoMeses, cedula);
+  const { carrito, cedula, plazoMeses } = req.body;
+  console.log(carrito, plazoMeses, cedula);
   try {
     const result = await compraService.comprarCredito(
-      codTelefono,
+      carrito,
       cedula,
       plazoMeses
     );

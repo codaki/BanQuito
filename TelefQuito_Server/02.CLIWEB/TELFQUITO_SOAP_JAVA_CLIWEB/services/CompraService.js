@@ -6,14 +6,20 @@ class CompraService {
     this.namespace = "http://ws.monster.edu.ec/";
   }
 
-  async comprarEfectivo(codTelefono, codCedula) {
+  async comprarEfectivo(carrito, codCedula) {
     try {
+      console.log("Comprando en efectivo", carrito, codCedula);
+      const args1 = {
+        carrito: { telefonoCarrito: carrito },
+        codcCedula: codCedula,
+      };
+      console.log("Args", args1);
       const soapClient = new SoapClient(this.wsdlUrl);
       const client = await soapClient.createClient();
 
       return new Promise((resolve, reject) => {
         const args = {
-          codTelefono: codTelefono,
+          carrito: { telefonoCarrito: carrito },
           codcCedula: codCedula,
         };
 
@@ -31,14 +37,14 @@ class CompraService {
     }
   }
 
-  async comprarCredito(codTelefono, cedula, plazoMeses) {
+  async comprarCredito(carrito, cedula, plazoMeses) {
     try {
       const soapClient = new SoapClient(this.wsdlUrl);
       const client = await soapClient.createClient();
 
       return new Promise((resolve, reject) => {
         const args = {
-          codTelefono: codTelefono,
+          carrito: { telefonoCarrito: carrito },
           cedula: cedula,
           plazoMeses: plazoMeses,
         };

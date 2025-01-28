@@ -1,5 +1,6 @@
 import { showModal } from "./modal.js";
 import { DefaultImages } from './defaultImages.js';
+import { getCart, addToCart, removeFromCart } from './cart.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   document
@@ -14,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "/consultarCreditos";
     });
 
-  fetchAllTelefonos(); // Fetch all teléfonos when the page loads
+  fetchAllTelefonos();
+  updateCartButton(); // Initialize cart count when page loads
 });
 
 async function fetchAllTelefonos() {
@@ -35,17 +37,26 @@ async function fetchAllTelefonos() {
     );
   }
 }
+
 function editTelefono(id) {
   window.location.href = `/editarTelefonos?id=${id}`;
 }
-function buyTelefono(id) {
-  window.location.href = `/comprarTelefono?id=${id}`;
+
+function updateCartButton() {
+  const cart = getCart();
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCountElement = document.getElementById('cartCount');
+  if (cartCountElement) {
+    cartCountElement.innerText = totalItems;
+  }
 }
+
 async function populateTelefonos(telefonos) {
   const telefonoInfo = document.getElementById("movements-list");
   telefonoInfo.innerHTML = "";
   let imageClassDefault = new DefaultImages();
   let defaultImage = imageClassDefault.images[1];
+  const cart = getCart();
 
   for (const telefono of telefonos) {
     let imgBased64;
@@ -65,6 +76,9 @@ async function populateTelefonos(telefonos) {
 
     const telefonoItem = document.createElement("div");
     telefonoItem.className = 'movement-item';
+    const cartItem = cart.find(item => item.id === telefono.codTelefono);
+    const quantity = cartItem ? cartItem.quantity : 0;
+
     telefonoItem.innerHTML = `
       <div class="col-6">
         <img src="data:image/jpeg;base64,${imgBased64}" class="telfImg" alt="${telefono.nombre}" />
@@ -80,21 +94,32 @@ async function populateTelefonos(telefonos) {
         <div class="d-flex justify-content-end mt-2">
           <button class="btn btn-primary mr-2 btn-edit">Editar</button>
           <br/><br/>
-          <button class="btn btn-primary mr-2 btn-buy">Comprar</button>
+          <div class="cart-controls">
+            <button class="btn btn-primary mr-2 btn-add-to-cart" data-id="${telefono.codTelefono}">
+              ${quantity > 0 ? 'Ver Carrito' : 'Añadir a Carrito'}
+            </button>
+          </div>
         </div>
       </div>
     `;
 
-    // Asignar eventos a los botones
     const editButton = telefonoItem.querySelector(".btn-edit");
-    const buyButton = telefonoItem.querySelector(".btn-buy");
+    const addToCartButton = telefonoItem.querySelector(".btn-add-to-cart");
 
-    editButton.addEventListener("click", () =>
-      editTelefono(telefono.codTelefono)
-    );
-    buyButton.addEventListener("click", () =>
-      buyTelefono(telefono.codTelefono)
-    );
+    editButton.addEventListener("click", () => editTelefono(telefono.codTelefono));
+
+    // Single click handler for the cart button
+    addToCartButton.addEventListener("click", () => {
+      const currentQuantity = getCart().find(item => item.id === telefono.codTelefono)?.quantity || 0;
+
+      if (currentQuantity > 0) {
+        window.location.href = 'carrito.html';
+      } else {
+        addToCart(telefono.codTelefono, 1);
+        addToCartButton.innerText = 'Ver Carrito';
+        updateCartButton(); // Update cart count immediately
+      }
+    });
 
     telefonoInfo.appendChild(telefonoItem);
   }
