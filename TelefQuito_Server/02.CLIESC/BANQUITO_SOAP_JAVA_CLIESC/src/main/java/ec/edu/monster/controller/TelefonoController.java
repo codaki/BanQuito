@@ -4,6 +4,8 @@ import ec.edu.monster.service.ImagenService;
 import ec.edu.monster.service.TelefonoService;
 import ec.edu.monster.view.CatalogoView;
 import ec.edu.monster.view.VentaView;
+import ec.edu.monster.ws.Carrito;
+import ec.edu.monster.ws.TelefonoCarrito;
 import ec.edu.monster.ws.Telefonos;
 import jakarta.activation.DataHandler;
 import jakarta.activation.DataSource;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import javax.swing.BoxLayout;
@@ -28,10 +31,12 @@ public class TelefonoController {
 
     private TelefonoService telefonoService;
     private ImagenService imagenService;
+    private Carrito carrito;
 
     public TelefonoController() {
         this.telefonoService = new TelefonoService();
         this.imagenService = new ImagenService();
+        this.carrito = new Carrito();
     }
 
     public DataHandler convertirBase64ADataHandler(String base64) {
@@ -113,16 +118,65 @@ public class TelefonoController {
         }
     }
 
-    public void activarpantallaVenta(String codigo) {
-        Telefonos telefono = telefonoService.obtenerTelefonoPorId(Integer.parseInt(codigo));
+    public void cargarCarrito(VentaView venta) {
+    Carrito carrito = venta.getCarrito();
+    
+    if (carrito == null || carrito.getTelefonoCarrito() == null) {
+        return;
+    }
+    JPanel contenedorCeldas = new JPanel();
+    contenedorCeldas.setLayout(new BoxLayout(contenedorCeldas, BoxLayout.Y_AXIS));
+    contenedorCeldas.setBackground(Color.WHITE);
 
-        VentaView venta = new VentaView(telefono);
-        venta.lblMarca.setText(telefono.getMarca());
-        venta.lblModelo.setText(telefono.getNombre());
-        venta.lblPrecio.setText(Double.toString(telefono.getPrecio()));
+    for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
+        int codigo = telCarrito.getTelefonoId();
+        Telefonos telefono = telefonoService.obtenerTelefonoPorId(codigo);
 
+        if (telefono != null) {
+            JPanel celdaVenta = venta.crearCeldaVenta(
+               codigo,
+                telefono.getNombre(),
+                telefono.getMarca(),
+                telefono.getPrecio(),
+                telCarrito.getCantidad()
+            );
+
+            // Agregar la celda al contenedor
+            contenedorCeldas.add(celdaVenta);
+        }
+        venta.getjScrollPane1().setViewportView(contenedorCeldas);
         venta.setVisible(true);
     }
+}
+
+    public void agregarCarrito(int codigo, Carrito carrito) {
+    // Buscar si el producto ya existe en el carrito
+    TelefonoCarrito telCarritoExistente = null;
+    for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
+        if (telCarrito.getTelefonoId() == codigo) {
+            telCarritoExistente = telCarrito;
+            break;
+        }
+    }
+
+    if (telCarritoExistente != null) {
+        // Si el producto ya está en el carrito, incrementamos su cantidad
+        telCarritoExistente.setCantidad(telCarritoExistente.getCantidad() + 1);
+    } else {
+        // Si el producto no está en el carrito, lo añadimos con cantidad 1
+        TelefonoCarrito nuevoTelCarrito = new TelefonoCarrito();
+        nuevoTelCarrito.setTelefonoId(codigo);
+        nuevoTelCarrito.setCantidad(1);
+        carrito.getTelefonoCarrito().add(nuevoTelCarrito);
+    }
+
+    // Confirmar que el producto se agregó correctamente
+    System.out.println("Producto con código " + codigo + " agregado al carrito.");
+    
+    VentaView venta = new VentaView(carrito);
+    cargarCarrito(venta);
+
+}
 
     public String insertarTelefono(Telefonos telefono, String ruta) {
         String imagenName = generateImageName(telefono.getNombre(), new File(ruta).getName());
@@ -167,4 +221,5 @@ public class TelefonoController {
     public Telefonos obtenerPorId(int codigo) {
         return telefonoService.obtenerTelefonoPorId(codigo);
     }
+
 }

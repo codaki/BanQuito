@@ -14,30 +14,28 @@ public class VentaController {
         this.compraService = new CompraService();
     }
 
-    public void ventaCredito(Telefonos telf, String cedula, String plazo, VentaView view) {
+    public void ventaCredito(Carrito carro, double total, String cedula, String plazo, VentaView view) {
         int plazoInt = Integer.parseInt(plazo);
-        Carrito carro = new Carrito();
         String mensaje = compraService.comprarCredito(carro, cedula, plazoInt);
         view.lblMensaje.setText(mensaje);
         if ("Compra exitosa a crédito!!".equals(mensaje)) {
             FacturaController factController = new FacturaController();
             FacturaView factura = new FacturaView();
-            factController.mostrarFactura(telf.getPrecio(), cedula,factura);
+            factController.mostrarFactura(carro, total, cedula,factura);
             view.dispose();
         } else {
             view.lblMensaje.setText(mensaje);
         }
     }
     
-    public void ventaEfectivo(Telefonos telf, String cedula, VentaView view){
-        Carrito carro = new Carrito();
+    public void ventaEfectivo(Carrito carro, double total, String cedula, VentaView view){
         String mensaje = compraService.comprarEfectivo(carro, cedula);
         view.lblMensaje.setText(mensaje);
         
         if ("Compra en efectivo exitosa!!".equals(mensaje)) {
             FacturaController factController = new FacturaController();
             FacturaView factura = new FacturaView();
-            factController.mostrarFactura(telf.getPrecio(), cedula, factura);
+            factController.mostrarFactura(carro, total, cedula, factura);
             view.dispose();
         } else {
             view.lblMensaje.setText(mensaje);

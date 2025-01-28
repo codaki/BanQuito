@@ -5,6 +5,7 @@
 package ec.edu.monster.view;
 
 import ec.edu.monster.controller.TelefonoController;
+import ec.edu.monster.ws.Carrito;
 import ec.edu.monster.ws.Telefonos;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,24 +25,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-
-
-
-/**
- *
- * @author JOSE
- */
 public final class CatalogoView extends javax.swing.JFrame {
 
     public TelefonoController controller;
+    public Carrito carrito;
 
-    /**
-     * Creates new form CatalogoView
-     */
     public CatalogoView() {
         controller = new TelefonoController();
         initComponents();
         cargarCatalogo();
+        carrito = new Carrito();
+    }
+    
+    public CatalogoView(Carrito carrito) {
+        controller = new TelefonoController();
+        initComponents();
+        cargarCatalogo();
+        this.carrito = carrito;
     }
 
     /**
@@ -240,9 +240,9 @@ public JPanel crearCelda(String codigo, String fotoBase64, String marca, String 
         this.cargarCatalogo();
     });
 
-    JButton btnVender = crearBoton("Vender", e -> {
+    JButton btnVender = crearBoton("Agregar al Carrito", e -> {
         System.out.println("Vender: " + codigo);
-        controller.activarpantallaVenta(codigo);
+        controller.agregarCarrito(Integer.parseInt(codigo), this.carrito);
         this.dispose();
     });
     // Contenedor de datos
