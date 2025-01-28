@@ -4,7 +4,6 @@ import ec.edu.monster.service.CompraService;
 import ec.edu.monster.view.FacturaView;
 import ec.edu.monster.view.VentaView;
 import ec.edu.monster.ws.Carrito;
-import ec.edu.monster.ws.Telefonos;
 
 public class VentaController {
 
