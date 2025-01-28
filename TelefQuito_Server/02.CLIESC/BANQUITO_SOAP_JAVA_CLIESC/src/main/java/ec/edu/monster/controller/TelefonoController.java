@@ -35,11 +35,19 @@ public class TelefonoController {
                 panelResultados.add(noResultados);
             } else {
                 for (Telefonos telf : telefonos) {
+                    String fotoBase64 = telf.getImgUrl();
+                    System.out.println(fotoBase64);
+                    if (fotoBase64.contains(",")) {
+                        fotoBase64 = fotoBase64.split(",")[1];
+                    }
+                    
+
                     JPanel celda = catalogoView.crearCelda(String.valueOf(telf.getCodTelefono()),
-                            "Marca: " + telf.getMarca(),
-                            "Modelo: " + telf.getNombre(),
+                            fotoBase64,
+                            telf.getMarca(),
+                            telf.getNombre(),
                             String.valueOf(telf.getDisponible()),
-                            "Precio: $" + String.format("%.2f", telf.getPrecio())
+                            String.format("%.2f", telf.getPrecio())
                     );
                     panelResultados.add(celda);
                 }

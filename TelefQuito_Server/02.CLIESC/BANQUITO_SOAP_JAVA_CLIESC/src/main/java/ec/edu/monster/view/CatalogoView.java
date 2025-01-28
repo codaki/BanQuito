@@ -13,13 +13,19 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionListener;
+import java.util.Base64;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
+
+
 
 /**
  *
@@ -178,7 +184,8 @@ private JButton crearBoton(String texto, ActionListener accion) {
     return boton;
 }
 
-public JPanel crearCelda(String codigo, String marca, String modelo, String disponible, String precio) {
+
+public JPanel crearCelda(String codigo, String fotoBase64, String marca, String modelo, String disponible, String precio) {
     JPanel panelCelda = new JPanel() {
         @Override
         protected void paintComponent(Graphics g) {
@@ -201,10 +208,19 @@ public JPanel crearCelda(String codigo, String marca, String modelo, String disp
     panelCelda.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
     panelCelda.setMaximumSize(new Dimension(550, 150));
 
+    // Decodificar la imagen Base64
+    byte[] imageBytes = Base64.getDecoder().decode(fotoBase64);
+    ImageIcon imageIcon = new ImageIcon(imageBytes);
+
+    // Redimensionar la imagen al tamaño deseado
+    Image scaledImage = imageIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+    JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+    imageLabel.setPreferredSize(new Dimension(100, 100));
+
     // Texto principal
-    JLabel labelModelo = new JLabel(modelo);
-    JLabel lblMarca = new JLabel(marca);
-    JLabel labelImporte = new JLabel(precio);
+    JLabel labelModelo = new JLabel("Modelo: " + modelo);
+    JLabel lblMarca = new JLabel("Marca: " + marca);
+    JLabel labelImporte = new JLabel("Precio: $" + precio);
     labelModelo.setFont(new Font("Arial", Font.BOLD, 14));
     labelImporte.setFont(new Font("Arial", Font.BOLD, 16));
     labelImporte.setForeground(new Color(45, 150, 255));
@@ -214,7 +230,7 @@ public JPanel crearCelda(String codigo, String marca, String modelo, String disp
         Telefonos telefono = controller.obtenerPorId(Integer.parseInt(codigo));
         CrudView crudView = new CrudView(telefono);
         crudView.setVisible(true);
-        this.cargarCatalogo();
+        this.dispose();
         System.out.println("Editar: " + codigo);
     });
 
@@ -227,8 +243,8 @@ public JPanel crearCelda(String codigo, String marca, String modelo, String disp
     JButton btnVender = crearBoton("Vender", e -> {
         System.out.println("Vender: " + codigo);
         controller.activarpantallaVenta(codigo);
+        this.dispose();
     });
-
     // Contenedor de datos
     JPanel datosPanel = new JPanel(new GridLayout(3, 2, 5, 15));
     datosPanel.setBackground(new Color(214, 209, 246));
@@ -242,6 +258,7 @@ public JPanel crearCelda(String codigo, String marca, String modelo, String disp
     datosPanel.add(btnVender);
 
     // Agregar al panel de celda
+    panelCelda.add(imageLabel, BorderLayout.WEST); // Agregar imagen a la izquierda
     panelCelda.add(datosPanel, BorderLayout.CENTER);
 
     // Borde de celda
@@ -252,6 +269,8 @@ public JPanel crearCelda(String codigo, String marca, String modelo, String disp
 
     return panelCelda;
 }
+
+
 
     public void cargarCatalogo() {
         // Limpiar el contenido actual del JScrollPane

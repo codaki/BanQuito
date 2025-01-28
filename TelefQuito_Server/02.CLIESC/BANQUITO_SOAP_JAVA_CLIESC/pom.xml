@@ -79,7 +79,25 @@
                         </configuration>
                         <id>wsimport-generate-WSTelefonos</id>
                         <phase>generate-sources</phase>
-                    </execution>      
+                    </execution>     
+                    <execution>
+                        <goals>
+                            <goal>wsimport</goal>
+                        </goals>
+                        <configuration>
+                            <wsdlUrls>
+                                <wsdlUrl>http://localhost:8080/TELFQUITO_SOAP_JAVA/WSImageService?wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <packageName>ec.edu.monster.ws</packageName>
+                            <vmArgs>
+                                <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
+                            </vmArgs>
+                            <sourceDestDir>${project.build.directory}/generated-sources/wsimport</sourceDestDir>
+                            <keep>true</keep>
+                        </configuration>
+                        <id>wsimport-generate-WSImageservice</id>
+                        <phase>generate-sources</phase>
+                    </execution>  
                 </executions>   
             </plugin>
         </plugins>

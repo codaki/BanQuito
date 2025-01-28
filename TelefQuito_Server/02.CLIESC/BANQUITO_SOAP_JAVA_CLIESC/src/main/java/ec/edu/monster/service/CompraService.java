@@ -1,5 +1,6 @@
 package ec.edu.monster.service;
 
+import ec.edu.monster.ws.Carrito;
 import ec.edu.monster.ws.Factura;
 import ec.edu.monster.ws.Tabla;
 import ec.edu.monster.ws.WSCompra;
@@ -21,8 +22,8 @@ public class CompraService {
      * @param codcCedula Cédula del comprador
      * @return Mensaje de confirmación o error
      */
-    public String comprarEfectivo(int codTelefono, String codcCedula) {
-        return port.comprarEfectivo(codTelefono, codcCedula);
+    public String comprarEfectivo(Carrito carrito, String codcCedula) {
+        return port.comprarEfectivo(carrito, codcCedula);
     }
 
     /**
@@ -32,8 +33,8 @@ public class CompraService {
      * @param plazoMeses Plazo en meses para la compra a crédito
      * @return Mensaje de confirmación o error
      */
-    public String comprarCredito(int codTelefono, String cedula, int plazoMeses) {
-        return port.comprarCredito(codTelefono, cedula, plazoMeses);
+    public String comprarCredito(Carrito carrito, String cedula, int plazoMeses) {
+        return port.comprarCredito(carrito, cedula, plazoMeses);
     }
 
     /**

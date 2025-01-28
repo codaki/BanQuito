@@ -2,4 +2,7 @@
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://localhost:8080/BANQUITO_SOAP_JAVA/WSGenerarTabla?wsdl" uri="wsdl/localhost_8080/BANQUITO_SOAP_JAVA/WSGenerarTabla.wsdl"/>
     <system systemId="http://localhost:8080/BANQUITO_SOAP_JAVA/WSGenerarTabla?xsd=1" uri="wsdl/localhost_8080/BANQUITO_SOAP_JAVA/WSGenerarTabla.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/TELFQUITO_SOAP_JAVA/WSImageService?wsdl" uri="wsdl/localhost_8080/TELFQUITO_SOAP_JAVA/WSImageService.wsdl"/>
+    <system systemId="http://localhost:8080/TELFQUITO_SOAP_JAVA/WSImageService?xsd=1" uri="wsdl/localhost_8080/TELFQUITO_SOAP_JAVA/WSImageService.xsd_1.xsd"/>
+    <system systemId="https://www.w3.org/2005/05/xmlmime" uri="wsdl/www.w3.org/2005/05/xmlmime.xsd"/>
 </catalog>
