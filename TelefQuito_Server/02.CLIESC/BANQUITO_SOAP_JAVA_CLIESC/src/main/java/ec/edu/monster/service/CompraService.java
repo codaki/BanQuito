@@ -18,7 +18,7 @@ public class CompraService {
     
     /**
      * Realiza una compra en efectivo de un teléfono.
-     * @param codTelefono Código del teléfono a comprar
+     * @param carrito
      * @param codcCedula Cédula del comprador
      * @return Mensaje de confirmación o error
      */
@@ -28,7 +28,7 @@ public class CompraService {
 
     /**
      * Realiza una compra a crédito de un teléfono.
-     * @param codTelefono Código del teléfono a comprar
+     * @param carrito
      * @param cedula Cédula del comprador
      * @param plazoMeses Plazo en meses para la compra a crédito
      * @return Mensaje de confirmación o error

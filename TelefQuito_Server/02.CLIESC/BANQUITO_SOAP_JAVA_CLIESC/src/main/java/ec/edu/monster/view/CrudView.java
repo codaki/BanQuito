@@ -8,8 +8,10 @@ import ec.edu.monster.controller.TelefonoController;
 import ec.edu.monster.ws.Telefonos;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Base64;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -73,6 +75,7 @@ public class CrudView extends javax.swing.JFrame {
         btnEnviar = new javax.swing.JButton();
         btnFoto = new javax.swing.JButton();
         lblImagen = new javax.swing.JLabel();
+        lblRuta = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -160,16 +163,24 @@ public class CrudView extends javax.swing.JFrame {
             }
         });
 
+        lblRuta.setForeground(new java.awt.Color(255, 255, 255));
+        lblRuta.setText("jLabel2");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
-                .addGap(30, 30, 30)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnFoto, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(107, 107, 107)
+                        .addComponent(lblRuta, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lblCtaOrigen)
@@ -227,7 +238,9 @@ public class CrudView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(messageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(messageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRuta))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -268,7 +281,7 @@ public class CrudView extends javax.swing.JFrame {
             telefono.setNombre(modelo);
             telefono.setMarca(marca);
             telefono.setPrecio(precio);
-            String result = telefonoController.actualizarTelefono(telefono);
+            String result = telefonoController.actualizarTelefono(telefono, lblRuta.getText());
             messageLabel.setText(result);
         } else {
             Telefonos newTelefono = new Telefonos();
@@ -276,7 +289,7 @@ public class CrudView extends javax.swing.JFrame {
             newTelefono.setMarca(marca);
             newTelefono.setPrecio(precio);
             newTelefono.setDisponible(1); // Assuming new phones are available by default
-            String result = telefonoController.insertarTelefono(newTelefono);
+            String result = telefonoController.insertarTelefono(newTelefono,lblRuta.getText());
             messageLabel.setText(result);
         }
         CatalogoView cat = new CatalogoView();
@@ -292,6 +305,7 @@ public class CrudView extends javax.swing.JFrame {
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File fichero = fc.getSelectedFile();
             ruta = fichero.getAbsolutePath();
+            lblRuta.setText(ruta);
             Image mImagen = new ImageIcon(ruta).getImage();
             ImageIcon mIcono = new ImageIcon(mImagen.getScaledInstance(lblImagen.getWidth(), lblImagen.getHeight(), Image.SCALE_SMOOTH));
             lblImagen.setIcon(mIcono);
@@ -344,6 +358,7 @@ public class CrudView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCtaOrigen;
     public javax.swing.JLabel lblImagen;
+    private javax.swing.JLabel lblRuta;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JLabel messageLabel;
     private javax.swing.JTextField txtMarca;
