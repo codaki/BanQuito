@@ -83,7 +83,25 @@ public class WSCompra {
     public List<Factura> obtenerFactura(@WebParam(name = "cedula") String cedula) {
         return compraService.obtenerFactura(cedula);
     }
+    
+    /**
+     * Web service operation facturaEspecifica
+     * 
+     * @param cedula
+     * @param grupoId
+     * @return
+     */
+    @WebMethod(operationName = "obtenerFacturaEspecifica")
+    public List<Factura> obtenerFacturaEspecifica(@WebParam(name = "cedula") String cedula, @WebParam(name = "grupoId") int grupoId) {
+        return compraService.obtenerSpecificFactura(cedula, grupoId);
+    }
 
+    /**
+     * Web service operation tabla
+     * 
+     * @param cedula
+     * @return
+     */
     @WebMethod(operationName = "consultarTablaAmortizacion")
     public List<Tabla> consultarTablaAmortizacion(@WebParam(name = "cedula") String cedula) {
         return compraService.consultarTablaAmortizacion(cedula);

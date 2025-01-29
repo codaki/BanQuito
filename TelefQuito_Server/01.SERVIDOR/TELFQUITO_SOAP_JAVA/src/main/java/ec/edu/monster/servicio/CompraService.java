@@ -74,7 +74,8 @@ public class CompraService {
                 compra.setFecha(LocalDate.now().toString());
                 compra.setDescuento(descuento);
                 compra.setPreciofinal(precioFinal);
-                compra.setGrupoId(nuevoGrupoId); // Set the new grupo ID
+                compra.setGrupoId(nuevoGrupoId);
+                compra.setVendedor("Luis Navarrete");
 
                 if (!compraDAO.createCompraEfectivo(compra)) {
                     return "Compra en efectivo fallida para el teléfono con ID: " + telefonoId;
@@ -146,7 +147,8 @@ public class CompraService {
                 compra.setFormaPago(formaPago);
                 compra.setFecha(LocalDate.now().toString());
                 compra.setPreciofinal(telefono.getPrecio());
-                compra.setGrupoId(nuevoGrupoId); // Set the new grupo ID
+                compra.setGrupoId(nuevoGrupoId);
+                compra.setVendedor("Luis Navarrete");
 
                 if (!compraDAO.createCompraCredito(compra)) {
                     return "Compra a crédito fallida para el teléfono con ID: " + telefonoId;

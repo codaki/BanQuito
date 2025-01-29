@@ -9,11 +9,12 @@ public class Compras {
     private Double descuento;
     private double preciofinal;
     private int grupoId;
+    private String vendedor;
 
     public Compras() {
     }
 
-    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, double preciofinal, int grupoId) {
+    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, double preciofinal, int grupoId, String vendedor) {
         this.codCompra = codCompra;
         this.formaPago = formaPago;
         this.fecha = fecha;
@@ -21,9 +22,10 @@ public class Compras {
         this.codcCliente = codcCliente;
         this.preciofinal = preciofinal;
         this.grupoId = grupoId;
+        this.vendedor = vendedor;
     }
 
-    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, Double descuento, double preciofinal, int grupoId) {
+    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, Double descuento, double preciofinal, int grupoId, String vendedor) {
         this.codCompra = codCompra;
         this.formaPago = formaPago;
         this.fecha = fecha;
@@ -32,6 +34,7 @@ public class Compras {
         this.descuento = descuento;
         this.preciofinal = preciofinal;
         this.grupoId = grupoId;
+        this.vendedor = vendedor;
     }
 
     public double getPreciofinal() {
@@ -96,5 +99,13 @@ public class Compras {
 
     public void setGrupoId(int grupoId) {
         this.grupoId = grupoId;
+    }
+
+    public String getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(String vendedor) {
+        this.vendedor = vendedor;
     }
 }

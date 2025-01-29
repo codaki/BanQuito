@@ -33,7 +33,7 @@ public class CompraDAO {
     }
 
     public boolean createCompraEfectivo(Compras compra) {
-        String query = "INSERT INTO compras (forma_pago, fecha, cod_telefono, codc_cliente, descuento, precio_final, grupo_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO compras (forma_pago, fecha, cod_telefono, codc_cliente, descuento, precio_final, grupo_id, vendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, compra.getFormaPago());
             stmt.setString(2, compra.getFecha());
@@ -42,6 +42,7 @@ public class CompraDAO {
             stmt.setDouble(5, compra.getDescuento());
             stmt.setDouble(6, compra.getPreciofinal());
             stmt.setInt(7, compra.getGrupoId());
+            stmt.setString(8, compra.getVendedor());
             stmt.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -51,7 +52,7 @@ public class CompraDAO {
     }
 
     public boolean createCompraCredito(Compras compra) {
-        String query = "INSERT INTO compras (forma_pago, fecha, cod_telefono, codc_cliente, precio_final, grupo_id) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO compras (forma_pago, fecha, cod_telefono, codc_cliente, precio_final, grupo_id, vendedor) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, compra.getFormaPago());
             stmt.setString(2, compra.getFecha());
@@ -59,6 +60,7 @@ public class CompraDAO {
             stmt.setInt(4, compra.getCodcCliente());
             stmt.setDouble(5, compra.getPreciofinal());
             stmt.setInt(6, compra.getGrupoId());
+            stmt.setString(7, compra.getVendedor());
             stmt.executeUpdate();
             return true;
         } catch (SQLException ex) {
@@ -68,7 +70,7 @@ public class CompraDAO {
     }
     
     public List<Factura> obtenerSpecificFactura(String cedula, int grupoId) {
-        String query = "SELECT c.cod_compra, c.forma_pago, c.fecha, cl.nombre AS nombre_cliente, t.nombre AS nombre_telefono, t.marca AS marca_telefono, c.descuento, c.precio_final, c.grupo_id FROM compras c " +
+        String query = "SELECT c.cod_compra, c.forma_pago, c.fecha, cl.nombre AS nombre_cliente, t.nombre AS nombre_telefono, t.marca AS marca_telefono, c.descuento, c.precio_final, c.grupo_id, c.vendedor FROM compras c " +
                         "JOIN cliente_comercializadora cl ON c.codc_cliente = cl.codc_cliente " +
                         "JOIN telefonos t ON c.cod_telefono = t.cod_telefono " +
                         "WHERE cl.cedula = ? AND c.grupo_id = ?";
@@ -88,6 +90,7 @@ public class CompraDAO {
                 compra.setDescuento(rs.getDouble("descuento"));
                 compra.setPreciofinal(rs.getDouble("precio_final"));
                 compra.setGrupoId(rs.getInt("grupo_id"));
+                compra.setVendedor(rs.getString("vendedor"));
                 comprasList.add(compra);
             }
         } catch (SQLException ex) {
@@ -97,7 +100,7 @@ public class CompraDAO {
     }
 
     public List<Factura> obtenerFactura(String cedula) {
-        String query = "SELECT c.cod_compra, c.forma_pago, c.fecha, cl.nombre AS nombre_cliente, t.nombre AS nombre_telefono, t.marca AS marca_telefono, c.descuento, c.precio_final, c.grupo_id FROM compras c " +
+        String query = "SELECT c.cod_compra, c.forma_pago, c.fecha, cl.nombre AS nombre_cliente, t.nombre AS nombre_telefono, t.marca AS marca_telefono, c.descuento, c.precio_final, c.grupo_id, c.vendedor FROM compras c " +
                         "JOIN cliente_comercializadora cl ON c.codc_cliente = cl.codc_cliente " +
                         "JOIN telefonos t ON c.cod_telefono = t.cod_telefono " +
                         "WHERE cl.cedula = ?";
@@ -116,6 +119,7 @@ public class CompraDAO {
                 compra.setDescuento(rs.getDouble("descuento"));
                 compra.setPreciofinal(rs.getDouble("precio_final"));
                 compra.setGrupoId(rs.getInt("grupo_id"));
+                compra.setVendedor(rs.getString("vendedor"));
                 comprasList.add(compra);
             }
         } catch (SQLException ex) {
