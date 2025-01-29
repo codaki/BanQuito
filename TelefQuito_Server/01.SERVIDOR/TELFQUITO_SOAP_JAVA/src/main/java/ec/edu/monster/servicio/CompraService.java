@@ -35,117 +35,135 @@ public class CompraService {
         this.generarTablaService = generarTablaService;
     }
 
-        public String realizarCompraEfectivo(Carrito carrito, String codCedula, String formaPago) throws Exception {
-    int idCliente = clientecDAO.getCodClienteByCedula(codCedula);
-    if (idCliente == -1) {
-        return "No se encontró el cliente";
-    }
-
-    if (carrito.getTelefonos().isEmpty()) {
-        return "El carrito está vacío";
-    }
-
-    for (TelefonoCarrito item : carrito.getTelefonos()) {
-        int telefonoId = item.getTelefonoId();
-        int cantidad = item.getCantidad();
-
-        // Validar que la cantidad sea mayor que 0
-        if (cantidad <= 0) {
-            return "La cantidad para el teléfono con ID " + telefonoId + " no es válida";
+   public String realizarCompraEfectivo(Carrito carrito, String codCedula, String formaPago) throws Exception {
+        int idCliente = clientecDAO.getCodClienteByCedula(codCedula);
+        if (idCliente == -1) {
+            return "No se encontró el cliente";
         }
 
-        Telefonos telefono = telefonoDAO.getTelefonoById(telefonoId);
-        double precioOriginal = telefono.getPrecio();
+        if (carrito.getTelefonos().isEmpty()) {
+            return "El carrito está vacío";
+        }
 
-        for (int i = 0; i < cantidad; i++) {
-            double descuento = precioOriginal * 0.42; // Aplicar descuento del 42%
-            double precioFinal = precioOriginal - descuento;
+        int grupoIdMax = compraDAO.getGrupoIdMax();
+        if (grupoIdMax == 0) {
+            return "Compra fallida: no se pudo obtener el grupo ID máximo.";
+        }
+        int nuevoGrupoId = grupoIdMax + 1;
 
-            Compras compra = new Compras();
-            compra.setCodTelefono(telefonoId);
-            compra.setCodcCliente(idCliente);
-            compra.setFormaPago(formaPago);
-            compra.setFecha(LocalDate.now().toString());
-            compra.setDescuento(descuento);
-            compra.setPreciofinal(precioFinal);
+        for (TelefonoCarrito item : carrito.getTelefonos()) {
+            int telefonoId = item.getTelefonoId();
+            int cantidad = item.getCantidad();
 
-            if (!compraDAO.createCompraEfectivo(compra)) {
-                return "Compra en efectivo fallida para el teléfono con ID: " + telefonoId;
+            // Validar que la cantidad sea mayor que 0
+            if (cantidad <= 0) {
+                return "La cantidad para el teléfono con ID " + telefonoId + " no es válida";
             }
-        }
-    }
 
-    return "Compra en efectivo exitosa!!";
-}
-
-   public String realizarCompraCredito(Carrito carrito, String cedula, String formaPago, int plazoMeses) throws Exception {
-    if (carrito.getTelefonos().isEmpty()) {
-        return "El carrito está vacío";
-    }
-
-    int esSujetoCredito = sujetoCreditoService.verifica(cedula);
-    if (esSujetoCredito == 0) {
-        return "El cliente no es sujeto de crédito.";
-    }
-
-    // Calcular el monto total del carrito
-    double montoTotal = 0.0;
-    for (TelefonoCarrito item : carrito.getTelefonos()) {
-        int telefonoId = item.getTelefonoId();
-        int cantidad = item.getCantidad();
-
-        if (cantidad <= 0) {
-            return "La cantidad para el teléfono con ID " + telefonoId + " no es válida.";
-        }
-
-        Telefonos telefono = telefonoDAO.getTelefonoById(telefonoId);
-        montoTotal += telefono.getPrecio() * cantidad;
-    }
-
-    // Verificar que el monto total no exceda el monto máximo de crédito
-    double montoMaximo = montoMaximoService.montoMaximo(esSujetoCredito);
-    if (montoTotal > montoMaximo) {
-        return "El monto total del carrito excede el monto máximo de crédito aprobado.";
-    }
-
-    // Generar una única tabla de amortización para el monto total
-    String resultado = generarTablaService.crearCreditoYTablaAmortizacion(esSujetoCredito, montoTotal, plazoMeses);
-    if (!resultado.equals("Crédito y tabla de amortización creados exitosamente.")) {
-        return "Error al crear la tabla de amortización.";
-    }
-
-    // Registrar las compras individuales en la base de datos
-    int idCliente = clientecDAO.getCodClienteByCedula(cedula);
-    if (idCliente == -1) {
-        return "No se encontró el cliente.";
-    }
-
-    for (TelefonoCarrito item : carrito.getTelefonos()) {
-        int telefonoId = item.getTelefonoId();
-        int cantidad = item.getCantidad();
-
-        for (int i = 0; i < cantidad; i++) {
             Telefonos telefono = telefonoDAO.getTelefonoById(telefonoId);
+            double precioOriginal = telefono.getPrecio();
 
-            Compras compra = new Compras();
-            compra.setCodTelefono(telefonoId);
-            compra.setCodcCliente(idCliente);
-            compra.setFormaPago(formaPago);
-            compra.setFecha(LocalDate.now().toString());
-            compra.setPreciofinal(telefono.getPrecio());
+            for (int i = 0; i < cantidad; i++) {
+                double descuento = precioOriginal * 0.42; // Aplicar descuento del 42%
+                double precioFinal = precioOriginal - descuento;
 
-            if (!compraDAO.createCompraCredito(compra)) {
-                return "Compra a crédito fallida para el teléfono con ID: " + telefonoId;
+                Compras compra = new Compras();
+                compra.setCodTelefono(telefonoId);
+                compra.setCodcCliente(idCliente);
+                compra.setFormaPago(formaPago);
+                compra.setFecha(LocalDate.now().toString());
+                compra.setDescuento(descuento);
+                compra.setPreciofinal(precioFinal);
+                compra.setGrupoId(nuevoGrupoId); // Set the new grupo ID
+
+                if (!compraDAO.createCompraEfectivo(compra)) {
+                    return "Compra en efectivo fallida para el teléfono con ID: " + telefonoId;
+                }
             }
         }
+
+        return "Compra en efectivo exitosa!!";
     }
 
-    return "Compra a crédito exitosa!!";
-}
+    public String realizarCompraCredito(Carrito carrito, String cedula, String formaPago, int plazoMeses) throws Exception {
+        if (carrito.getTelefonos().isEmpty()) {
+            return "El carrito está vacío";
+        }
+
+        int esSujetoCredito = sujetoCreditoService.verifica(cedula);
+        if (esSujetoCredito == 0) {
+            return "El cliente no es sujeto de crédito.";
+        }
+
+        int grupoIdMax = compraDAO.getGrupoIdMax();
+        if (grupoIdMax == 0) {
+            return "Compra fallida: no se pudo obtener el grupo ID máximo.";
+        }
+        int nuevoGrupoId = grupoIdMax + 1;
+
+        // Calcular el monto total del carrito
+        double montoTotal = 0.0;
+        for (TelefonoCarrito item : carrito.getTelefonos()) {
+            int telefonoId = item.getTelefonoId();
+            int cantidad = item.getCantidad();
+
+            if (cantidad <= 0) {
+                return "La cantidad para el teléfono con ID " + telefonoId + " no es válida.";
+            }
+
+            Telefonos telefono = telefonoDAO.getTelefonoById(telefonoId);
+            montoTotal += telefono.getPrecio() * cantidad;
+        }
+
+        // Verificar que el monto total no exceda el monto máximo de crédito
+        double montoMaximo = montoMaximoService.montoMaximo(esSujetoCredito);
+        if (montoTotal > montoMaximo) {
+            return "El monto total del carrito excede el monto máximo de crédito aprobado.";
+        }
+
+        // Generar una única tabla de amortización para el monto total
+        String resultado = generarTablaService.crearCreditoYTablaAmortizacion(esSujetoCredito, montoTotal, plazoMeses);
+        if (!resultado.equals("Crédito y tabla de amortización creados exitosamente.")) {
+            return "Error al crear la tabla de amortización.";
+        }
+
+        // Registrar las compras individuales en la base de datos
+        int idCliente = clientecDAO.getCodClienteByCedula(cedula);
+        if (idCliente == -1) {
+            return "No se encontró el cliente.";
+        }
+
+        for (TelefonoCarrito item : carrito.getTelefonos()) {
+            int telefonoId = item.getTelefonoId();
+            int cantidad = item.getCantidad();
+
+            for (int i = 0; i < cantidad; i++) {
+                Telefonos telefono = telefonoDAO.getTelefonoById(telefonoId);
+
+                Compras compra = new Compras();
+                compra.setCodTelefono(telefonoId);
+                compra.setCodcCliente(idCliente);
+                compra.setFormaPago(formaPago);
+                compra.setFecha(LocalDate.now().toString());
+                compra.setPreciofinal(telefono.getPrecio());
+                compra.setGrupoId(nuevoGrupoId); // Set the new grupo ID
+
+                if (!compraDAO.createCompraCredito(compra)) {
+                    return "Compra a crédito fallida para el teléfono con ID: " + telefonoId;
+                }
+            }
+        }
+
+        return "Compra a crédito exitosa!!";
+    }
 
 
     public List<Factura> obtenerFactura(String cedula) {
         return compraDAO.obtenerFactura(cedula);
+    }
+
+    public List<Factura> obtenerSpecificFactura(String cedula, int grupoId) {
+        return compraDAO.obtenerSpecificFactura(cedula, grupoId);
     }
 
     public List<ec.edu.monster.banquito.Tabla> consultarTablaAmortizacion(String cedula) {

@@ -1,27 +1,29 @@
 package ec.edu.monster.models;
 
 public class Compras {
-     private int codCompra;
+    private int codCompra;
     private String formaPago;
     private String fecha;
     private int codTelefono;
     private int codcCliente;
     private Double descuento;
     private double preciofinal;
+    private int grupoId;
 
     public Compras() {
     }
 
-    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, double preciofinal) {
+    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, double preciofinal, int grupoId) {
         this.codCompra = codCompra;
         this.formaPago = formaPago;
         this.fecha = fecha;
         this.codTelefono = codTelefono;
         this.codcCliente = codcCliente;
         this.preciofinal = preciofinal;
+        this.grupoId = grupoId;
     }
 
-    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, Double descuento, double preciofinal) {
+    public Compras(int codCompra, String formaPago, String fecha, int codTelefono, int codcCliente, Double descuento, double preciofinal, int grupoId) {
         this.codCompra = codCompra;
         this.formaPago = formaPago;
         this.fecha = fecha;
@@ -29,6 +31,7 @@ public class Compras {
         this.codcCliente = codcCliente;
         this.descuento = descuento;
         this.preciofinal = preciofinal;
+        this.grupoId = grupoId;
     }
 
     public double getPreciofinal() {
@@ -38,8 +41,6 @@ public class Compras {
     public void setPreciofinal(double preciofinal) {
         this.preciofinal = preciofinal;
     }
-
-   
 
     public int getCodCompra() {
         return codCompra;
@@ -88,4 +89,12 @@ public class Compras {
     public void setDescuento(Double descuento) {
         this.descuento = descuento;
     }   
+
+    public int getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(int grupoId) {
+        this.grupoId = grupoId;
+    }
 }

@@ -9,6 +9,7 @@ public class Factura {
     private String nombreCliente;
     private String nombreTelefono;
     private String marcaTelefono;
+    private int grupoId;
 
     // Getters and Setters
     public int getCodCompra() {
@@ -74,5 +75,13 @@ public class Factura {
 
     public void setMarcaTelefono(String marcaTelefono) {
         this.marcaTelefono = marcaTelefono;
+    }
+
+    public int getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(int grupoId) {
+        this.grupoId = grupoId;
     }
 }
