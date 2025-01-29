@@ -79,4 +79,21 @@ public class CompraController {
             }
         });
     }
+
+    public void obtenerFacturaEspecifica(String cedula, int grupoId, CompraService.SoapCallback<List<FacturaModel>> callback) {
+        compraService.obtenerFacturaEspecifica(cedula, grupoId, new CompraService.SoapCallback<List<FacturaModel>>() {
+            @Override
+            public void onSuccess(List<FacturaModel> result) {
+                Log.d(TAG, "Factura específica obtenida con éxito: " + result);
+                callback.onSuccess(result);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e(TAG, "Error al obtener la factura específica: " + errorMessage);
+                callback.onError(errorMessage);
+            }
+        });
+    }
+
 }

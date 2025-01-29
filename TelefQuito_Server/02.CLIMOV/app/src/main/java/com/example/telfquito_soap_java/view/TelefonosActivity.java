@@ -65,6 +65,11 @@ public class TelefonosActivity extends AppCompatActivity {
             Intent intent = new Intent(TelefonosActivity.this, TablaActivity.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.btn_VerFacturas).setOnClickListener(v -> {
+            Intent intent = new Intent(TelefonosActivity.this, FacturasActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override

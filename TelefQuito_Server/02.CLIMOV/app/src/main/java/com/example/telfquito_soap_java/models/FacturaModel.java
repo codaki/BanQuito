@@ -9,6 +9,8 @@ public class FacturaModel {
     private String nombreCliente;
     private String nombreTelefono;
     private double preciofinal;
+    private int grupoId;
+    private String vendedor;
 
     // Getters and setters
     public int getCodCompra() {
@@ -73,5 +75,21 @@ public class FacturaModel {
 
     public void setPreciofinal(double preciofinal) {
         this.preciofinal = preciofinal;
+    }
+
+    public int getGrupoId() {
+        return grupoId;
+    }
+
+    public void setGrupoId(int grupoId) {
+        this.grupoId = grupoId;
+    }
+
+    public String getVendedor() {
+        return vendedor;
+    }
+
+    public void setVendedor(String vendedor) {
+        this.vendedor = vendedor;
     }
 }

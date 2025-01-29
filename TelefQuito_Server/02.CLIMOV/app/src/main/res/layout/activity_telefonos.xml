@@ -8,37 +8,49 @@
     android:background="@drawable/fondo2"
     tools:context=".view.TelefonosActivity">
 
-    <Button
-        android:id="@+id/btn_AgregarTelefonos"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#0D6EFC"
-        android:fontFamily="@font/fredoka_bold"
-        android:padding="12dp"
-        android:text="Agregar Teléfono"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnConsultarCreditos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#0D6EFC"
-        android:fontFamily="@font/fredoka_bold"
-        android:padding="12dp"
-        android:text="Consultar Créditos"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.825"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.057" />
+        <Button
+            android:id="@+id/btn_AgregarTelefonos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#0D6EFC"
+            android:fontFamily="@font/fredoka_bold"
+            android:padding="12dp"
+            android:text="CRUD Teléfonos"
+            android:layout_marginEnd="4dp"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btn_VerFacturas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#0D6EFC"
+            android:fontFamily="@font/fredoka_bold"
+            android:padding="12dp"
+            android:text="Facturas"
+            android:layout_marginEnd="4dp"
+            android:textColor="#FFFFFF" />
+
+        <Button
+            android:id="@+id/btnConsultarCreditos"
+            android:layout_width="132dp"
+            android:layout_height="51dp"
+            android:backgroundTint="#0D6EFC"
+            android:fontFamily="@font/fredoka_bold"
+            android:padding="12dp"
+            android:text="Créditos"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView"

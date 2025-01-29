@@ -187,12 +187,7 @@ public class VenderActivity extends AppCompatActivity {
             compraController.comprarEfectivo(carrito, cedula, new CompraService.SoapCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if ("Compra en efectivo exitosa!!".equals(result)) {
-                        CarritoSingleton.clearCarrito();
-                        startFacturaActivity(cedula);
-                    } else {
-                        Toast.makeText(VenderActivity.this, "Error: " + result, Toast.LENGTH_SHORT).show();
-                    }
+                    processPurchaseResult(result, cedula);
                 }
 
                 @Override
@@ -204,12 +199,7 @@ public class VenderActivity extends AppCompatActivity {
             compraController.comprarCredito(carrito, cedula, plazoMeses, new CompraService.SoapCallback<String>() {
                 @Override
                 public void onSuccess(String result) {
-                    if ("Compra a crédito exitosa!!".equals(result)) {
-                        CarritoSingleton.clearCarrito();
-                        startFacturaActivity(cedula);
-                    } else {
-                        Toast.makeText(VenderActivity.this, "Error: " + result, Toast.LENGTH_SHORT).show();
-                    }
+                    processPurchaseResult(result, cedula);
                 }
 
                 @Override
@@ -220,9 +210,29 @@ public class VenderActivity extends AppCompatActivity {
         }
     }
 
-    private void startFacturaActivity(String cedula) {
+    private void processPurchaseResult(String result, String cedula) {
+        String[] parts = result.split("!");
+        if (parts.length == 2) {
+            String message = parts[0];
+            int grupoId = Integer.parseInt(parts[1]);
+
+            if (message.equals("Compra en efectivo exitosa") || message.equals("Compra a crédito exitosa")) {
+                CarritoSingleton.clearCarrito();
+                startFacturaActivity(cedula, grupoId);
+            } else {
+                Log.d(TAG, "processPurchaseResult: " + result);
+                Toast.makeText(VenderActivity.this, "Error: " + result, Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Log.d(TAG, "processPurchaseResult: " + result);
+            Toast.makeText(VenderActivity.this, "Respuesta inesperada: " + result, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void startFacturaActivity(String cedula, int grupoId) {
         Intent intent = new Intent(this, FacturaActivity.class);
         intent.putExtra("cedula", cedula);
+        intent.putExtra("grupoId", grupoId);
         startActivity(intent);
         finish();
     }
