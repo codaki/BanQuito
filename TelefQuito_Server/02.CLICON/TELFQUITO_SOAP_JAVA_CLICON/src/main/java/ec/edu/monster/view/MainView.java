@@ -1,5 +1,7 @@
 package ec.edu.monster.view;
 
+import ec.edu.monster.models.CarritoE;
+import ec.edu.monster.ws.TelefonoCarrito;
 import ec.edu.monster.ws.*;
 import java.util.List;
 import java.util.Scanner;
@@ -9,6 +11,7 @@ public class MainView {
   private static LoginService loginService = new LoginService();
   private static CompraServicio compraServicio = new CompraServicio();
   private static TelefonoServicio telefonoServicio = new TelefonoServicio();
+  private static CarritoE carrito = new CarritoE();
 
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
@@ -30,10 +33,10 @@ public class MainView {
   private static void mainMenu(Scanner scanner) {
     while (true) {
       System.out.println("Seleccione una opción:");
-      System.out.println("1. Vender");
-      System.out.println("2. Consultar tabla de amortizaciones");
-      System.out.println("3. Gestionar teléfonos");
-      System.out.println("4. Obtener facturas");
+      System.out.println("1. Consultar tabla de amortizaciones");
+      System.out.println("2. Gestionar teléfonos");
+      System.out.println("3. Obtener facturas");
+      System.out.println("4. Carrito de compras");
       System.out.println("5. Salir");
 
       int choice = scanner.nextInt();
@@ -41,16 +44,16 @@ public class MainView {
 
       switch (choice) {
         case 1:
-          venderMenu(scanner);
-          break;
-        case 2:
           consultarTablaAmortizacion(scanner);
           break;
-        case 3:
+        case 2:
           gestionarTelefonos(scanner);
           break;
-        case 4:
+        case 3:
           obtenerFacturas(scanner);
+          break;
+        case 4:
+          gestionarCarrito(scanner);
           break;
         case 5:
           System.out.println("Saliendo...");
@@ -61,71 +64,142 @@ public class MainView {
     }
   }
 
-  private static void venderMenu(Scanner scanner) {
+  private static void gestionarCarrito(Scanner scanner) {
     while (true) {
       System.out.println("Seleccione una opción:");
-      System.out.println("1. Comprar Efectivo");
-      System.out.println("2. Comprar Crédito");
-      System.out.println("3. Regresar");
+      System.out.println("1. Agregar teléfono al carrito");
+      System.out.println("2. Mostrar contenido del carrito");
+      System.out.println("3. Pagar elementos del carrito");
+      System.out.println("4. Vaciar carrito");
+      System.out.println("5. Regresar");
 
       int choice = scanner.nextInt();
       scanner.nextLine(); // consume newline
 
       switch (choice) {
         case 1:
-              List<Telefonos> telefonos = telefonoServicio.getAllTelefonos();
-                      StringBuilder resultado = new StringBuilder();
-          resultado.append("\n===== LISTA DE TELÉFONOS =====\n");
-          resultado.append(String.format("%-15s %-20s %-10s %-15s %-10s%n",
-              "CodTelefono", "Nombre", "Precio", "Marca", "Disponible"));
-          resultado.append("-------------------------------------------------------------\n");
-
-          for (Telefonos telefono : telefonos) {
-            resultado.append(String.format("%-15d %-20s %-10.2f %-15s %-10d%n",
-                telefono.getCodTelefono(), telefono.getNombre(), telefono.getPrecio(), telefono.getMarca(),
-                telefono.getDisponible()));
-          }
-
-          System.out.println(resultado.toString());
-          System.out.println("Ingrese el código del teléfono:");
-          int codTelefono = scanner.nextInt();
-          scanner.nextLine(); // consume newline
-          System.out.println("Ingrese la cédula:");
-          String cedula = scanner.nextLine();
-          String resultEfectivo = compraServicio.comprarEfectivo(codTelefono, cedula);
-          System.out.println(resultEfectivo);
+          agregarTelefonoAlCarrito(scanner);
           break;
         case 2:
-             List<Telefonos> telefonos2 = telefonoServicio.getAllTelefonos();
-                      StringBuilder resultado2 = new StringBuilder();
-          resultado2.append("\n===== LISTA DE TELÉFONOS =====\n");
-          resultado2.append(String.format("%-15s %-20s %-10s %-15s %-10s%n",
-              "CodTelefono", "Nombre", "Precio", "Marca", "Disponible"));
-          resultado2.append("-------------------------------------------------------------\n");
-
-          for (Telefonos telefono : telefonos2) {
-            resultado2.append(String.format("%-15d %-20s %-10.2f %-15s %-10d%n",
-                telefono.getCodTelefono(), telefono.getNombre(), telefono.getPrecio(), telefono.getMarca(),
-                telefono.getDisponible()));
-          }
-           System.out.println(resultado2.toString());
-          System.out.println("Ingrese el código del teléfono:");
-          codTelefono = scanner.nextInt();
-          scanner.nextLine(); // consume newline
-          System.out.println("Ingrese la cédula:");
-          cedula = scanner.nextLine();
-          System.out.println("Ingrese el plazo en meses:");
-          int plazoMeses = scanner.nextInt();
-          scanner.nextLine(); // consume newline
-          String resultCredito = compraServicio.comprarCredito(codTelefono, cedula, plazoMeses);
-          System.out.println(resultCredito);
+          mostrarContenidoCarrito();
           break;
         case 3:
+          pagarElementosCarrito(scanner);
+          break;
+        case 4:
+          carrito.vaciarCarrito();
+          System.out.println("Carrito vaciado.");
+          break;
+        case 5:
           return;
         default:
           System.out.println("Opción no válida.");
       }
     }
+  }
+
+  private static void agregarTelefonoAlCarrito(Scanner scanner) {
+    List<Telefonos> telefonos = telefonoServicio.getAllTelefonos();
+    if (telefonos == null || telefonos.isEmpty()) {
+      System.out.println("No hay teléfonos disponibles.");
+      return;
+    }
+
+    StringBuilder resultado = new StringBuilder();
+    resultado.append("\n===== LISTA DE TELÉFONOS =====\n");
+    resultado.append(String.format("%-15s %-20s %-10s %-15s %-10s%n",
+        "CodTelefono", "Nombre", "Precio", "Marca", "Disponible"));
+    resultado.append("-------------------------------------------------------------\n");
+
+    for (Telefonos telefono : telefonos) {
+      resultado.append(String.format("%-15d %-20s %-10.2f %-15s %-10d%n",
+          telefono.getCodTelefono(), telefono.getNombre(), telefono.getPrecio(), telefono.getMarca(),
+          telefono.getDisponible()));
+    }
+
+    System.out.println(resultado.toString());
+    System.out.println("Ingrese el código del teléfono:");
+    int telefonoId = scanner.nextInt();
+    scanner.nextLine(); // consume newline
+    System.out.println("Ingrese la cantidad:");
+    int cantidad = scanner.nextInt();
+    scanner.nextLine(); // consume newline
+
+    carrito.agregarTelefono(telefonoId, cantidad);
+    System.out.println("Teléfono agregado al carrito.");
+  }
+
+  private static void mostrarContenidoCarrito() {
+    List<TelefonoCarrito> telefonosCarrito = carrito.getTelefonos();
+    if (telefonosCarrito.isEmpty()) {
+      System.out.println("El carrito está vacío.");
+      return;
+    }
+
+    StringBuilder resultado = new StringBuilder();
+    resultado.append("\n===== CONTENIDO DEL CARRITO =====\n");
+    resultado.append(String.format("%-15s %-10s%n", "TelefonoId", "Cantidad"));
+    resultado.append("-----------------------------------\n");
+
+    for (TelefonoCarrito telefono : telefonosCarrito) {
+      resultado.append(String.format("%-15d %-10d%n", telefono.getTelefonoId(), telefono.getCantidad()));
+    }
+
+    System.out.println(resultado.toString());
+  }
+
+  private static void pagarElementosCarrito(Scanner scanner) {
+    if (carrito.getTelefonos().isEmpty()) {
+      System.out.println("El carrito está vacío. No se puede proceder con la compra.");
+      return;
+    }
+
+    System.out.println("Seleccione el método de pago:");
+    System.out.println("1. Efectivo");
+    System.out.println("2. Crédito");
+    int metodoPago = scanner.nextInt();
+    scanner.nextLine(); // consume newline
+
+    System.out.println("Ingrese su cédula:");
+    String cedula = scanner.nextLine();
+
+    switch (metodoPago) {
+      case 1:
+//        String resultadoEfectivo = compraServicio.comprarEfectivo(carrito, cedula);
+//          System.out.println("carrito");
+//          System.out.println(carrito.getTelefonos());
+      //System.out.println(resultadoEfectivo);
+        break;
+      case 2:
+        System.out.println("Ingrese el plazo en meses:");
+        int plazoMeses = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+//       String resultadoCredito = compraServicio.comprarCredito(carrito, cedula, plazoMeses);
+//        System.out.println(resultadoCredito);
+        break;
+      default:
+        System.out.println("Método de pago no válido.");
+        return;
+    }
+
+    carrito.vaciarCarrito(); // Vaciar el carrito después de la compra
+    System.out.println("Compra realizada exitosamente.");
+  }
+
+  private static void mostrarTelefonos(List<Telefonos> telefonos) {
+    StringBuilder resultado = new StringBuilder();
+    resultado.append("\n===== LISTA DE TELÉFONOS =====\n");
+    resultado.append(String.format("%-15s %-20s %-10s %-15s %-10s%n",
+        "CodTelefono", "Nombre", "Precio", "Marca", "Disponible"));
+    resultado.append("-------------------------------------------------------------\n");
+
+    for (Telefonos telefono : telefonos) {
+      resultado.append(String.format("%-15d %-20s %-10.2f %-15s %-10d%n",
+          telefono.getCodTelefono(), telefono.getNombre(), telefono.getPrecio(), telefono.getMarca(),
+          telefono.getDisponible()));
+    }
+
+    System.out.println(resultado.toString());
   }
 
   private static void consultarTablaAmortizacion(Scanner scanner) {
@@ -151,7 +225,6 @@ public class MainView {
     }
 
     System.out.println(resultado.toString());
-
   }
 
   private static void gestionarTelefonos(Scanner scanner) {
@@ -167,96 +240,78 @@ public class MainView {
 
       switch (choice) {
         case 1:
-          List<Telefonos> telefonos = telefonoServicio.getAllTelefonos();
-
-          if (telefonos == null || telefonos.isEmpty()) {
-            System.out.println("No se encontraron teléfonos.");
-            break;
-          }
-
-          StringBuilder resultado = new StringBuilder();
-          resultado.append("\n===== LISTA DE TELÉFONOS =====\n");
-          resultado.append(String.format("%-15s %-20s %-10s %-15s %-10s%n",
-              "CodTelefono", "Nombre", "Precio", "Marca", "Disponible"));
-          resultado.append("-------------------------------------------------------------\n");
-
-          for (Telefonos telefono : telefonos) {
-            resultado.append(String.format("%-15d %-20s %-10.2f %-15s %-10d%n",
-                telefono.getCodTelefono(), telefono.getNombre(), telefono.getPrecio(), telefono.getMarca(),
-                telefono.getDisponible()));
-          }
-
-          System.out.println(resultado.toString());
+          mostrarTelefonos(telefonoServicio.getAllTelefonos());
           break;
         case 2:
-          System.out.println("Ingrese los detalles del teléfono:");
-          System.out.print("Nombre: ");
-          String nombre = scanner.nextLine();
-          System.out.print("Precio: ");
-          double precio = scanner.nextDouble();
-          scanner.nextLine(); // consume newline
-          System.out.print("Marca: ");
-          String marca = scanner.nextLine();
-          System.out.print("Disponible (1 para sí, 0 para no): ");
-          int disponible = scanner.nextInt();
-          scanner.nextLine(); // consume newline
-
-          Telefonos nuevoTelefono = new Telefonos();
-          nuevoTelefono.setNombre(nombre);
-          nuevoTelefono.setPrecio(precio);
-          nuevoTelefono.setMarca(marca);
-          nuevoTelefono.setDisponible(disponible);
-
-          String resultInsert = telefonoServicio.insertTelefono(nuevoTelefono);
-          System.out.println(resultInsert);
+          crearTelefono(scanner);
           break;
         case 3:
-             List<Telefonos> telefonos1 = telefonoServicio.getAllTelefonos();
-             StringBuilder resultado2 = new StringBuilder();
-          resultado2.append("\n===== LISTA DE TELÉFONOS =====\n");
-          resultado2.append(String.format("%-15s %-20s %-10s %-15s %-10s%n",
-              "CodTelefono", "Nombre", "Precio", "Marca", "Disponible"));
-          resultado2.append("-------------------------------------------------------------\n");
-
-          for (Telefonos telefono : telefonos1) {
-            resultado2.append(String.format("%-15d %-20s %-10.2f %-15s %-10d%n",
-                telefono.getCodTelefono(), telefono.getNombre(), telefono.getPrecio(), telefono.getMarca(),
-                telefono.getDisponible()));
-          }
-
-          System.out.println(resultado2.toString());
-         System.out.println("Ingrese el código del teléfono a actualizar:");
-                int codTelefonoActualizar = scanner.nextInt();
-                scanner.nextLine(); // consume newline
-
-                System.out.println("Ingrese los nuevos detalles del teléfono:");
-                System.out.print("Nombre: ");
-                String nombreActualizar = scanner.nextLine();
-                System.out.print("Precio: ");
-                double precioActualizar = scanner.nextDouble();
-                scanner.nextLine(); // consume newline
-                System.out.print("Marca: ");
-                String marcaActualizar = scanner.nextLine();
-                System.out.print("Disponible (1 para sí, 0 para no): ");
-                int disponibleActualizar = scanner.nextInt();
-                scanner.nextLine(); // consume newline
-
-                Telefonos telefonoActualizado = new Telefonos();
-                telefonoActualizado.setCodTelefono(codTelefonoActualizar);
-                telefonoActualizado.setNombre(nombreActualizar);
-                telefonoActualizado.setPrecio(precioActualizar);
-                telefonoActualizado.setMarca(marcaActualizar);
-                telefonoActualizado.setDisponible(disponibleActualizar);
-
-                String resultUpdate = telefonoServicio.updateTelefono(telefonoActualizado);
-                System.out.println(resultUpdate);
-                break;
+          actualizarTelefono(scanner);
+          break;
         case 4:
           return;
         default:
           System.out.println("Opción no válida.");
       }
     }
+  }
+
+  private static void crearTelefono(Scanner scanner) {
+    System.out.println("Ingrese los detalles del teléfono:");
+    System.out.print("Nombre: ");
+    String nombre = scanner.nextLine();
+    System.out.print("Precio: ");
+    double precio = scanner.nextDouble();
+    scanner.nextLine(); // consume newline
+    System.out.print("Marca: ");
+    String marca = scanner.nextLine();
+    System.out.print("Disponible (1 para sí, 0 para no): ");
+    int disponible = scanner.nextInt();
+    scanner.nextLine(); // consume newline
+
+    Telefonos nuevoTelefono = new Telefonos();
+    nuevoTelefono.setNombre(nombre);
+    nuevoTelefono.setPrecio(precio);
+    nuevoTelefono.setMarca(marca);
+    nuevoTelefono.setDisponible(disponible);
+
+    String resultInsert = telefonoServicio.insertTelefono(nuevoTelefono);
+    System.out.println(resultInsert);
+  }
+
+  private static void actualizarTelefono(Scanner scanner) {
+    List<Telefonos> telefonos = telefonoServicio.getAllTelefonos();
+    if (telefonos == null || telefonos.isEmpty()) {
+      System.out.println("No hay teléfonos disponibles.");
+      return;
+    }
+
+    mostrarTelefonos(telefonos);
+    System.out.println("Ingrese el código del teléfono a actualizar:");
+    int codTelefonoActualizar = scanner.nextInt();
+    scanner.nextLine(); // consume newline
+
+    System.out.println("Ingrese los nuevos detalles del teléfono:");
+    System.out.print("Nombre: ");
+    String nombreActualizar = scanner.nextLine();
+    System.out.print("Precio: ");
+    double precioActualizar = scanner.nextDouble();
+    scanner.nextLine(); // consume newline
+    System.out.print("Marca: ");
+    String marcaActualizar = scanner.nextLine();
+    System.out.print("Disponible (1 para sí, 0 para no): ");
+    int disponibleActualizar = scanner.nextInt();
+    scanner.nextLine(); // consume newline
+
+    Telefonos telefonoActualizado = new Telefonos();
+    telefonoActualizado.setCodTelefono(codTelefonoActualizar);
+    telefonoActualizado.setNombre(nombreActualizar);
+    telefonoActualizado.setPrecio(precioActualizar);
+    telefonoActualizado.setMarca(marcaActualizar);
+    telefonoActualizado.setDisponible(disponibleActualizar);
+
+    String resultUpdate = telefonoServicio.updateTelefono(telefonoActualizado);
+    System.out.println(resultUpdate);
   }
 
   private static void obtenerFacturas(Scanner scanner) {
@@ -285,5 +340,4 @@ public class MainView {
 
     System.out.println(resultado.toString());
   }
-
 }
