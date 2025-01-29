@@ -83,7 +83,7 @@ public class CompraService {
             }
         }
 
-        return "Compra en efectivo exitosa!!";
+        return "Compra en efectivo exitosa!" + String.valueOf(nuevoGrupoId);
     }
 
     public String realizarCompraCredito(Carrito carrito, String cedula, String formaPago, int plazoMeses) throws Exception {
@@ -156,7 +156,7 @@ public class CompraService {
             }
         }
 
-        return "Compra a crédito exitosa!!";
+        return "Compra a crédito exitosa!" + String.valueOf(nuevoGrupoId);
     }
 
 
