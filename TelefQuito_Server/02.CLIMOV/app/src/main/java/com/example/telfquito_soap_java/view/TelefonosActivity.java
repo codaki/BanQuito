@@ -60,6 +60,11 @@ public class TelefonosActivity extends AppCompatActivity {
             Intent intent = new Intent(TelefonosActivity.this, AddEditTelefonoActivity.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.btnConsultarCreditos).setOnClickListener(v -> {
+            Intent intent = new Intent(TelefonosActivity.this, TablaActivity.class);
+            startActivity(intent);
+        });
     }
 
     @Override
