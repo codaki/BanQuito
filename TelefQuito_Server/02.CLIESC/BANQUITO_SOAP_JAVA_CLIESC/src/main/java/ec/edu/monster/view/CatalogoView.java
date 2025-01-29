@@ -240,10 +240,31 @@ public JPanel crearCelda(String codigo, String fotoBase64, String marca, String 
         this.cargarCatalogo();
     });
 
-    JButton btnVender = crearBoton("Agregar al Carrito", e -> {
-        System.out.println("Vender: " + codigo);
-        controller.agregarCarrito(Integer.parseInt(codigo), this.carrito);
-        this.dispose();
+    // Lógica para el botón de "Agregar al Carrito"
+    JButton btnVender = new JButton("Agregar al Carrito");
+    btnVender.setFont(new Font("Arial", Font.BOLD, 12));
+    btnVender.setBackground(new Color(100, 180, 100));
+    btnVender.setForeground(Color.WHITE);
+    btnVender.setFocusPainted(false);
+    btnVender.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+    // Flag para saber si ya fue agregado al carrito
+    final boolean[] agregadoAlCarrito = {false};
+
+    btnVender.addActionListener(e -> {
+        if (!agregadoAlCarrito[0]) {
+            // Primera vez: Agregar al carrito
+            controller.agregarCarrito(Integer.parseInt(codigo), this.carrito);
+            btnVender.setText("Ver Carrito");
+            btnVender.setBackground(new Color(255, 165, 0)); // Cambia color a naranja
+            agregadoAlCarrito[0] = true;
+            System.out.println("Producto agregado al carrito: " + codigo);
+        } else {
+            // Segunda vez: Cargar el carrito
+            controller.cargarCarrito(carrito);
+            this.dispose();
+            System.out.println("Mostrando el carrito");
+        }
     });
     // Contenedor de datos
     JPanel datosPanel = new JPanel(new GridLayout(3, 2, 5, 15));
