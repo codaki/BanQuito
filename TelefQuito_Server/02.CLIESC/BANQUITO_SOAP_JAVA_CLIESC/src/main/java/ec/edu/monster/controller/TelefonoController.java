@@ -1,5 +1,6 @@
 package ec.edu.monster.controller;
 
+import static ec.edu.monster.ImageToBase64.imgToDataHandler;
 import ec.edu.monster.service.ImagenService;
 import ec.edu.monster.service.TelefonoService;
 import ec.edu.monster.view.CatalogoView;
@@ -39,11 +40,6 @@ public class TelefonoController {
         this.carrito = new Carrito();
     }
 
-    public DataHandler convertirBase64ADataHandler(String base64) {
-        byte[] decodedBytes = Base64.getDecoder().decode(base64);
-        DataSource dataSource = new ByteArrayDataSource(decodedBytes, "image/jpeg");
-        return new DataHandler(dataSource);
-    }
 
     public String convertirDataHandlerAString(DataHandler dataHandler) {
         if (dataHandler == null) {
@@ -118,81 +114,79 @@ public class TelefonoController {
         }
     }
 
-    public void cargarCarrito(VentaView venta) {
-    Carrito carrito = venta.getCarrito();
-    
-    if (carrito == null || carrito.getTelefonoCarrito() == null) {
-        return;
-    }
-    JPanel contenedorCeldas = new JPanel();
-    contenedorCeldas.setLayout(new BoxLayout(contenedorCeldas, BoxLayout.Y_AXIS));
-    contenedorCeldas.setBackground(Color.WHITE);
+    public void cargarCarrito(Carrito carrito) {
+        VentaView venta = new VentaView(carrito);
 
-    for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
-        int codigo = telCarrito.getTelefonoId();
-        Telefonos telefono = telefonoService.obtenerTelefonoPorId(codigo);
-
-        if (telefono != null) {
-            JPanel celdaVenta = venta.crearCeldaVenta(
-               codigo,
-                telefono.getNombre(),
-                telefono.getMarca(),
-                telefono.getPrecio(),
-                telCarrito.getCantidad()
-            );
-
-            // Agregar la celda al contenedor
-            contenedorCeldas.add(celdaVenta);
+        if (carrito == null || carrito.getTelefonoCarrito() == null) {
+            return;
         }
-        venta.getjScrollPane1().setViewportView(contenedorCeldas);
-        venta.setVisible(true);
+        JPanel contenedorCeldas = new JPanel();
+        contenedorCeldas.setLayout(new BoxLayout(contenedorCeldas, BoxLayout.Y_AXIS));
+        contenedorCeldas.setBackground(Color.WHITE);
+
+        for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
+            int codigo = telCarrito.getTelefonoId();
+            Telefonos telefono = telefonoService.obtenerTelefonoPorId(codigo);
+
+            if (telefono != null) {
+                JPanel celdaVenta = venta.crearCeldaVenta(
+                        codigo,
+                        telefono.getNombre(),
+                        telefono.getMarca(),
+                        telefono.getPrecio(),
+                        telCarrito.getCantidad()
+                );
+
+                // Agregar la celda al contenedor
+                contenedorCeldas.add(celdaVenta);
+            }
+            venta.getjScrollPane1().setViewportView(contenedorCeldas);
+            venta.setVisible(true);
+        }
     }
-}
 
     public void agregarCarrito(int codigo, Carrito carrito) {
-    // Buscar si el producto ya existe en el carrito
-    TelefonoCarrito telCarritoExistente = null;
-    for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
-        if (telCarrito.getTelefonoId() == codigo) {
-            telCarritoExistente = telCarrito;
-            break;
+        // Buscar si el producto ya existe en el carrito
+        TelefonoCarrito telCarritoExistente = null;
+        for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
+            if (telCarrito.getTelefonoId() == codigo) {
+                telCarritoExistente = telCarrito;
+                break;
+            }
         }
+
+        if (telCarritoExistente != null) {
+            // Si el producto ya está en el carrito, incrementamos su cantidad
+            telCarritoExistente.setCantidad(telCarritoExistente.getCantidad() + 1);
+        } else {
+            // Si el producto no está en el carrito, lo añadimos con cantidad 1
+            TelefonoCarrito nuevoTelCarrito = new TelefonoCarrito();
+            nuevoTelCarrito.setTelefonoId(codigo);
+            nuevoTelCarrito.setCantidad(1);
+            carrito.getTelefonoCarrito().add(nuevoTelCarrito);
+        }
+
+        // Confirmar que el producto se agregó correctamente
+        System.out.println("Producto con código " + codigo + " agregado al carrito.");
     }
-
-    if (telCarritoExistente != null) {
-        // Si el producto ya está en el carrito, incrementamos su cantidad
-        telCarritoExistente.setCantidad(telCarritoExistente.getCantidad() + 1);
-    } else {
-        // Si el producto no está en el carrito, lo añadimos con cantidad 1
-        TelefonoCarrito nuevoTelCarrito = new TelefonoCarrito();
-        nuevoTelCarrito.setTelefonoId(codigo);
-        nuevoTelCarrito.setCantidad(1);
-        carrito.getTelefonoCarrito().add(nuevoTelCarrito);
-    }
-
-    // Confirmar que el producto se agregó correctamente
-    System.out.println("Producto con código " + codigo + " agregado al carrito.");
-    
-    VentaView venta = new VentaView(carrito);
-    cargarCarrito(venta);
-
-}
 
     public String insertarTelefono(Telefonos telefono, String ruta) {
         String imagenName = generateImageName(telefono.getNombre(), new File(ruta).getName());
-        byte[] imgBase64 = imgToBase64(ruta);
-        DataHandler dataHandler = convertirBytesADataHandler(imgBase64);
-        imagenService.upload(imagenName, dataHandler);
+        DataHandler imageDataHandler = imgToDataHandler(ruta);
+        
+        imagenService.upload(imagenName, imageDataHandler);
         telefono.setImgUrl(imagenName);
+        
         return telefonoService.insertarTelefono(telefono);
     }
 
     public String actualizarTelefono(Telefonos telefono, String ruta) {
         String imagenName = generateImageName(telefono.getNombre(), new File(ruta).getName());
-        byte[] imgBase64 = imgToBase64(ruta);
-        DataHandler dataHandler = convertirBytesADataHandler(imgBase64);
-        imagenService.upload(imagenName, dataHandler);
+        DataHandler imageDataHandler = imgToDataHandler(ruta);
+        
+        imagenService.upload(imagenName, imageDataHandler);
         telefono.setImgUrl(imagenName);
+        
         return telefonoService.actualizarTelefono(telefono);
     }
 
@@ -202,20 +196,15 @@ public class TelefonoController {
         return prefix + "_" + currentDate + "_" + imagenName;
     }
 
-    public byte[] imgToBase64(String imagePath) {
-        try (FileInputStream imageInFile = new FileInputStream(new File(imagePath))) {
-            byte[] imageData = new byte[(int) new File(imagePath).length()];
-            imageInFile.read(imageData);
-            return Base64.getEncoder().encode(imageData);
+    public static DataHandler imgToDataHandler(String ruta) {
+        try (FileInputStream fis = new FileInputStream(new File(ruta))) {
+            byte[] bytes = fis.readAllBytes();
+            DataSource dataSource = new ByteArrayDataSource(bytes, "application/octet-stream");
+            return new DataHandler(dataSource);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            throw new RuntimeException("Error al convertir la imagen a DataHandler", e);
         }
-    }
-
-    public DataHandler convertirBytesADataHandler(byte[] imageData) {
-        DataSource dataSource = new ByteArrayDataSource(imageData, "application/octet-stream");
-        return new DataHandler(dataSource);
     }
 
     public Telefonos obtenerPorId(int codigo) {
