@@ -96,23 +96,26 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(result);
 
         if (result.success) {
-          if (
-            tipoCompra === "credito" &&
-            result.result === "Compra exitosa a credito!!"
-          ) {
-            showModal("Éxito", "Compra realizada exitosamente.", false, () => {
+          const parts = result.result.split("!");
+          if (parts.length === 2) {
+            const message = parts[0];
+            const grupoId = parts[1];
+
+            if (
+              message === "Compra en efectivo exitosa" ||
+              message === "Compra a crédito exitosa"
+            ) {
               clearCart();
-              setTimeout(() => {
-                window.location.href = "/telefonos";
-              }, 3000);
-            });
-          } else if (result.result === "Compra en efectivo exitosa!!") {
-            showModal("Resultado", result.result, false, () => {
-              clearCart();
-              window.location.href = "/telefonos";
-            });
+              window.location.href = `/facturaEspecifica.html?cedula=${cedula}&grupoId=${grupoId}`;
+            } else {
+              showModal("Resultado", result.result, false);
+            }
           } else {
-            showModal("Resultado", result.result, false);
+            showModal(
+              "Resultado",
+              "Respuesta inesperada: " + result.result,
+              false
+            );
           }
         } else {
           showModal("Error", "Fallo al realizar la compra.", true);

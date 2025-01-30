@@ -21,11 +21,14 @@ async function loadFacturaEspecificaData(cedula, grupoId) {
     const result = await response.json();
     if (result.success && result.result.length > 0) {
       const factura = result.result[0]; // Obtener la primera factura
+      console.log(grupoId);
+      document.getElementById("codigoFactura").textContent = grupoId;
       document.getElementById("cedulaCliente").textContent = cedula;
       document.getElementById("nombreCliente").textContent =
         factura.nombreCliente;
       document.getElementById("formaPago").textContent = factura.formaPago;
       document.getElementById("empleado").textContent = factura.vendedor;
+      document.getElementById("fechaCompra").textContent = factura.fecha;
 
       const productosTableBody = document
         .getElementById("productosTable")

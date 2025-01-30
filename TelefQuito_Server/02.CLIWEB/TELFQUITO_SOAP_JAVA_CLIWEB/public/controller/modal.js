@@ -41,7 +41,7 @@ export function showModal(title, content, isError = false, callback = null) {
     if (callback && typeof callback === "function") {
       callback();
     }
-    window.location.href = "/telefonos";
+    // window.location.href = "/telefonos";
   }, 3000);
 }
 

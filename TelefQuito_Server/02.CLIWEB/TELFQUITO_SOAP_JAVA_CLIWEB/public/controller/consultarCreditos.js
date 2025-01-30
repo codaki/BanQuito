@@ -35,7 +35,6 @@ async function searchAmortizaciones() {
 function populateAmortizaciones(amortizaciones) {
   const amortizacionesInfo = document.getElementById("movements-list");
   amortizacionesInfo.innerHTML = "";
-
   amortizaciones.forEach((amortizacion) => {
     const amortizacionItem = document.createElement("div");
     amortizacionItem.className = "movement-item";
