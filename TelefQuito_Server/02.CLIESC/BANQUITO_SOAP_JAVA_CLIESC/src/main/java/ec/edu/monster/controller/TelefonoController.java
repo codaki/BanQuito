@@ -40,7 +40,6 @@ public class TelefonoController {
         this.carrito = new Carrito();
     }
 
-
     public String convertirDataHandlerAString(DataHandler dataHandler) {
         if (dataHandler == null) {
             return null;
@@ -60,6 +59,11 @@ public class TelefonoController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public List<Telefonos> obtenerTelefonos() {
+        List<Telefonos> telefonos = telefonoService.obtenerTelefonos();
+        return telefonos;
     }
 
     public void cargarTelefonos(CatalogoView catalogoView) {
@@ -145,48 +149,73 @@ public class TelefonoController {
         }
     }
 
-    public void agregarCarrito(int codigo, Carrito carrito) {
-        // Buscar si el producto ya existe en el carrito
-        TelefonoCarrito telCarritoExistente = null;
+    public void recargarCarrito(Carrito carrito, VentaView venta) {
+        if (carrito == null || carrito.getTelefonoCarrito() == null) {
+            return;
+        }
+
+        JPanel contenedorCeldas = new JPanel();
+        contenedorCeldas.setLayout(new BoxLayout(contenedorCeldas, BoxLayout.Y_AXIS));
+        contenedorCeldas.setBackground(Color.WHITE);
+
         for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
-            if (telCarrito.getTelefonoId() == codigo) {
-                telCarritoExistente = telCarrito;
-                break;
+            int codigo = telCarrito.getTelefonoId();
+            Telefonos telefono = telefonoService.obtenerTelefonoPorId(codigo);
+
+            if (telefono != null) {
+                JPanel celdaVenta = venta.crearCeldaVenta(
+                        codigo,
+                        telefono.getNombre(),
+                        telefono.getMarca(),
+                        telefono.getPrecio(),
+                        telCarrito.getCantidad()
+                );
+
+                contenedorCeldas.add(celdaVenta);
             }
         }
 
-        if (telCarritoExistente != null) {
-            // Si el producto ya está en el carrito, incrementamos su cantidad
-            telCarritoExistente.setCantidad(telCarritoExistente.getCantidad() + 1);
-        } else {
-            // Si el producto no está en el carrito, lo añadimos con cantidad 1
-            TelefonoCarrito nuevoTelCarrito = new TelefonoCarrito();
-            nuevoTelCarrito.setTelefonoId(codigo);
-            nuevoTelCarrito.setCantidad(1);
-            carrito.getTelefonoCarrito().add(nuevoTelCarrito);
-        }
-
-        // Confirmar que el producto se agregó correctamente
-        System.out.println("Producto con código " + codigo + " agregado al carrito.");
+        venta.getjScrollPane1().setViewportView(contenedorCeldas);
+        venta.setVisible(true);
     }
+
+    public void agregarCarrito(int codigo, Carrito carrito) {
+    // Buscar si el producto ya existe en el carrito
+    for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
+        if (telCarrito.getTelefonoId() == codigo) {
+            telCarrito.setCantidad(telCarrito.getCantidad() + 1);
+            System.out.println("Cantidad actualizada en el carrito: " + telCarrito.getCantidad());
+            return; // Salir de la función porque ya se actualizó
+        }
+    }
+
+    // Si no existe, agregarlo con cantidad 1
+    TelefonoCarrito nuevoTelCarrito = new TelefonoCarrito();
+    nuevoTelCarrito.setTelefonoId(codigo);
+    nuevoTelCarrito.setCantidad(1);
+    carrito.getTelefonoCarrito().add(nuevoTelCarrito);
+
+    System.out.println("Nuevo producto agregado al carrito: " + codigo);
+}
+
 
     public String insertarTelefono(Telefonos telefono, String ruta) {
         String imagenName = generateImageName(telefono.getNombre(), new File(ruta).getName());
         DataHandler imageDataHandler = imgToDataHandler(ruta);
-        
+
         imagenService.upload(imagenName, imageDataHandler);
         telefono.setImgUrl(imagenName);
-        
+
         return telefonoService.insertarTelefono(telefono);
     }
 
     public String actualizarTelefono(Telefonos telefono, String ruta) {
         String imagenName = generateImageName(telefono.getNombre(), new File(ruta).getName());
         DataHandler imageDataHandler = imgToDataHandler(ruta);
-        
+
         imagenService.upload(imagenName, imageDataHandler);
         telefono.setImgUrl(imagenName);
-        
+
         return telefonoService.actualizarTelefono(telefono);
     }
 

@@ -4,25 +4,33 @@
  */
 package ec.edu.monster.view;
 
+import ec.edu.monster.controller.TelefonoController;
 import ec.edu.monster.controller.VentaController;
 import ec.edu.monster.service.TelefonoService;
 import ec.edu.monster.ws.Carrito;
 import ec.edu.monster.ws.TelefonoCarrito;
 import ec.edu.monster.ws.Telefonos;
-import jakarta.activation.DataHandler;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -30,7 +38,6 @@ import javax.swing.JScrollPane;
  */
 public class VentaView extends javax.swing.JFrame {
 
-    private Telefonos telf;
     private Carrito carrito;
     private double total;
 
@@ -43,6 +50,12 @@ public class VentaView extends javax.swing.JFrame {
         total = 0;
         calcularTotal();
         configureTransactionType();
+        txtBuscar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filtrarTelefonos(txtBuscar.getText().trim().toLowerCase());
+            }
+        });
     }
 
     public VentaView(Carrito carrito) {
@@ -51,6 +64,12 @@ public class VentaView extends javax.swing.JFrame {
         total = 0;
         calcularTotal();
         configureTransactionType();
+        txtBuscar.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                filtrarTelefonos(txtBuscar.getText().trim().toLowerCase());
+            }
+        });
     }
 
     public Carrito getCarrito() {
@@ -91,10 +110,12 @@ public class VentaView extends javax.swing.JFrame {
         lblMensaje = new javax.swing.JLabel();
         btnRegresar = new javax.swing.JButton();
         btnVerificar = new javax.swing.JButton();
+        txtCedula = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel3 = new javax.swing.JPanel();
-        txtCedula = new javax.swing.JTextField();
         txtBuscar = new javax.swing.JTextField();
+        jScrollFiltro = new javax.swing.JScrollPane();
+        jPanel4 = new javax.swing.JPanel();
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -138,7 +159,7 @@ public class VentaView extends javax.swing.JFrame {
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 590, 90));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 590, 90));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -259,6 +280,14 @@ public class VentaView extends javax.swing.JFrame {
             }
         });
 
+        txtCedula.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
+        txtCedula.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true));
+        txtCedula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCedulaActionPerformed(evt);
+            }
+        });
+
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -269,18 +298,10 @@ public class VentaView extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 151, Short.MAX_VALUE)
+            .addGap(0, 155, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel3);
-
-        txtCedula.setFont(new java.awt.Font("Comic Sans MS", 0, 18)); // NOI18N
-        txtCedula.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true));
-        txtCedula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCedulaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -291,8 +312,13 @@ public class VentaView extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(54, 54, 54)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(54, 54, 54))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)))
                         .addComponent(messageLabel)
                         .addGap(55, 55, 55))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -321,13 +347,12 @@ public class VentaView extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 626, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(125, 125, 125)
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(lblMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(99, 99, 99))
+                .addGap(106, 106, 106))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -349,9 +374,9 @@ public class VentaView extends javax.swing.JFrame {
                         .addGap(117, 117, 117)
                         .addComponent(messageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(24, 24, 24)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblMensaje, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -371,7 +396,24 @@ public class VentaView extends javax.swing.JFrame {
                 txtBuscarActionPerformed(evt);
             }
         });
-        getContentPane().add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 243, 33));
+        getContentPane().add(txtBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 140, 200, 33));
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 642, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 155, Short.MAX_VALUE)
+        );
+
+        jScrollFiltro.setViewportView(jPanel4);
+
+        getContentPane().add(jScrollFiltro, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 520, 110));
 
         fondo.setBackground(new java.awt.Color(255, 255, 255));
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo2.png"))); // NOI18N
@@ -466,6 +508,132 @@ public class VentaView extends javax.swing.JFrame {
         });
     }
 
+    private void filtrarTelefonos(String criterio) {
+        JPanel panelResultados = new JPanel();
+        panelResultados.setLayout(new BoxLayout(panelResultados, BoxLayout.Y_AXIS));
+        panelResultados.setBackground(Color.WHITE);
+
+        // Obtener lista de teléfonos en el carrito
+        List<TelefonoCarrito> telefonosCarrito = carrito.getTelefonoCarrito();
+        TelefonoController controller = new TelefonoController();
+        List<Telefonos> telefonos = controller.obtenerTelefonos();
+
+        boolean encontrado = false;
+
+        for (Telefonos telefono : telefonos) {
+
+            // Comparar el nombre del teléfono con el criterio de búsqueda
+            if (telefono != null && telefono.getNombre().toLowerCase().contains(criterio)) {
+                JPanel celda = crearCeldaFiltro(
+                        Integer.toString(telefono.getCodTelefono()),
+                        telefono.getMarca(),
+                        telefono.getNombre(),
+                        Double.toString(telefono.getPrecio())
+                );
+                
+                // Ajustar tamaño de la celda
+            celda.setMaximumSize(new Dimension(500, 50)); // Ancho fijo, altura automática
+            celda.setPreferredSize(new Dimension(500, 50));
+            celda.setMinimumSize(new Dimension(500, 50)); 
+            
+                panelResultados.add(celda);
+                encontrado = true;
+            }
+        }
+
+        // Si no se encontraron coincidencias, mostrar un mensaje
+        if (!encontrado) {
+            JLabel lblNoResultados = new JLabel("No se encontraron resultados.");
+            lblNoResultados.setFont(new Font("Arial", Font.BOLD, 14));
+            lblNoResultados.setForeground(Color.RED);
+            panelResultados.add(lblNoResultados);
+        }
+
+        // Actualizar la vista
+        jScrollFiltro.setViewportView(panelResultados);
+    }
+
+    public JPanel crearCeldaFiltro(String codigo, String marca, String modelo, String precio) {
+    JPanel panelCelda = new JPanel() {
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
+        }
+
+        @Override
+        public void setBackground(Color bg) {
+            super.setBackground(bg);
+            repaint();
+        }
+    };
+
+    panelCelda.setLayout(new GridLayout(1, 5, 10, 10)); // Distribuye en una línea horizontal con espacio entre elementos
+    panelCelda.setBackground(new Color(214, 209, 246));
+    panelCelda.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    panelCelda.setPreferredSize(new Dimension(600, 50)); // Tamaño fijo para alineación correcta
+
+    // Etiquetas con alineación centrada
+    JLabel lblCodigo = new JLabel(codigo, SwingConstants.CENTER);
+    JLabel lblMarca = new JLabel(marca, SwingConstants.CENTER);
+    JLabel lblModelo = new JLabel(modelo, SwingConstants.CENTER);
+    JLabel lblPrecio = new JLabel(precio, SwingConstants.CENTER);
+
+    // Aplicar formato a las etiquetas
+    Font fuente = new Font("Arial", Font.BOLD, 14);
+    lblCodigo.setFont(fuente);
+    lblMarca.setFont(fuente);
+    lblModelo.setFont(fuente);
+    lblPrecio.setFont(new Font("Arial", Font.BOLD, 16));
+    lblPrecio.setForeground(new Color(45, 150, 255));
+
+    // Botón "Agregar al Carrito"
+    JButton btnVender = new JButton("Agregar");
+    btnVender.setFont(new Font("Arial", Font.BOLD, 12));
+    btnVender.setBackground(new Color(100, 180, 100));
+    btnVender.setForeground(Color.WHITE);
+    btnVender.setFocusPainted(false);
+    btnVender.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+    // Acción del botón para agregar al carrito
+    btnVender.addActionListener(e -> {
+        TelefonoController controller = new TelefonoController();
+
+        // Verificar si el teléfono ya está en el carrito
+        boolean enCarrito = false;
+        for (TelefonoCarrito telCarrito : carrito.getTelefonoCarrito()) {
+            if (telCarrito.getTelefonoId() == Integer.parseInt(codigo)) {
+                telCarrito.setCantidad(telCarrito.getCantidad() + 1);
+                enCarrito = true;
+                break;
+            }
+        }
+
+        // Si no estaba en el carrito, lo agregamos
+        if (!enCarrito) {
+            controller.agregarCarrito(Integer.parseInt(codigo), carrito);
+        }
+
+        // Recargar la vista del carrito
+        controller.recargarCarrito(carrito, this);
+        System.out.println("Producto agregado al carrito: " + codigo);
+    });
+
+    // Agregar componentes al panel en una línea horizontal
+    panelCelda.add(lblCodigo);
+    panelCelda.add(lblMarca);
+    panelCelda.add(lblModelo);
+    panelCelda.add(lblPrecio);
+    panelCelda.add(btnVender);
+
+    return panelCelda;
+}
+
+
+
     private void configureTransactionType() {
         updateVentaView("Efectivo");
 
@@ -530,7 +698,7 @@ public class VentaView extends javax.swing.JFrame {
                         System.out.println("más codigo " + codigo);
                         int cantidadActual = telCarrito.getCantidad();
                         cantidadActual++;
-                        
+
                         lblSubtotal.setText(String.valueOf(cantidadActual * precio));
                         lblCantidad.setText(String.valueOf(cantidadActual));
                         telCarrito.setCantidad(cantidadActual);
@@ -621,7 +789,9 @@ public class VentaView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
+    public javax.swing.JScrollPane jScrollFiltro;
     public javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblCtaOrigen1;
     private javax.swing.JLabel lblCtaOrigen4;
@@ -636,7 +806,7 @@ public class VentaView extends javax.swing.JFrame {
     private javax.swing.JLabel lbldiferido;
     private javax.swing.JLabel lblmeses;
     private javax.swing.JLabel messageLabel;
-    private javax.swing.JTextField txtBuscar;
+    public javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCedula;
     public javax.swing.JTextField txtMeses;
     // End of variables declaration//GEN-END:variables

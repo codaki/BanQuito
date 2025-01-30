@@ -403,7 +403,6 @@ public class FacturaView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-   
         CatalogoView catalogo = new CatalogoView();
         catalogo.setVisible(true);
         this.dispose();
