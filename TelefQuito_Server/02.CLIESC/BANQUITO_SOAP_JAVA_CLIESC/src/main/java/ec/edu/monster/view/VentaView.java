@@ -433,7 +433,7 @@ public class VentaView extends javax.swing.JFrame {
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
 
-        String cedula = txtBuscar.getText();
+        String cedula = txtCedula.getText();
         String plazo = txtMeses.getText();
         String selectedTransaction = (String) cbPago.getSelectedItem();
 
@@ -751,7 +751,7 @@ public class VentaView extends javax.swing.JFrame {
                 txtMeses.setVisible(false);
                 lblmeses.setVisible(false);
                 btnVerificar.setVisible(false);
-                lblMensaje.setVisible(false);
+                lblMensaje.setVisible(true);
                 btnPagar.setEnabled(true);
 
                 // Crear un formateador para dos decimales

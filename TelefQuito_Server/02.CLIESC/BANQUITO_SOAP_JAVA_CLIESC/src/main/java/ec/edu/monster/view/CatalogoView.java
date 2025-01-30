@@ -36,7 +36,7 @@ public final class CatalogoView extends javax.swing.JFrame {
         initComponents();
         cargarCatalogo();
     }
-    
+
     public CatalogoView(Carrito carrito) {
         controller = new TelefonoController();
         initComponents();
@@ -58,6 +58,7 @@ public final class CatalogoView extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         btnFactura = new javax.swing.JButton();
+        btnCarrito = new javax.swing.JButton();
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,6 +124,19 @@ public final class CatalogoView extends javax.swing.JFrame {
         });
         getContentPane().add(btnFactura, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 200, 40));
 
+        btnCarrito.setBackground(new java.awt.Color(0, 153, 153));
+        btnCarrito.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        btnCarrito.setForeground(new java.awt.Color(255, 255, 255));
+        btnCarrito.setText("Ver Carrito");
+        btnCarrito.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 51, 51), 1, true));
+        btnCarrito.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnCarrito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCarritoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCarrito, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 600, 210, 40));
+
         fondo.setBackground(new java.awt.Color(255, 255, 255));
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo2.png"))); // NOI18N
         fondo.setText("jLabel6");
@@ -157,6 +171,12 @@ public final class CatalogoView extends javax.swing.JFrame {
         consulta.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnFacturaActionPerformed
+
+    private void btnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarritoActionPerformed
+        controller.cargarCarrito(carrito);
+        this.dispose();
+        System.out.println("Mostrando el carrito");
+    }//GEN-LAST:event_btnCarritoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,125 +213,122 @@ public final class CatalogoView extends javax.swing.JFrame {
         });
     }
 
-private JButton crearBoton(String texto, ActionListener accion) {
-    JButton boton = new JButton(texto);
-    boton.setBackground(new Color(173, 216, 230)); // Color celeste
-    boton.setForeground(Color.BLACK); // Texto negro
-    boton.setFocusPainted(false); // Elimina el borde de enfoque
-    boton.setBorder(BorderFactory.createLineBorder(new Color(100, 149, 237), 2)); // Borde azul claro
-    boton.setPreferredSize(new Dimension(100, 35)); // Menos ancho, más alto
-    boton.addActionListener(accion);
-    return boton;
-}
+    private JButton crearBoton(String texto, ActionListener accion) {
+        JButton boton = new JButton(texto);
+        boton.setBackground(new Color(173, 216, 230)); // Color celeste
+        boton.setForeground(Color.BLACK); // Texto negro
+        boton.setFocusPainted(false); // Elimina el borde de enfoque
+        boton.setBorder(BorderFactory.createLineBorder(new Color(100, 149, 237), 2)); // Borde azul claro
+        boton.setPreferredSize(new Dimension(100, 35)); // Menos ancho, más alto
+        boton.addActionListener(accion);
+        return boton;
+    }
 
+    public JPanel crearCelda(String codigo, String fotoBase64, String marca, String modelo, String disponible, String precio) {
+        JPanel panelCelda = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g2.setColor(getBackground());
+                g2.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
+            }
 
-public JPanel crearCelda(String codigo, String fotoBase64, String marca, String modelo, String disponible, String precio) {
-    JPanel panelCelda = new JPanel() {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(getBackground());
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 40, 40);
-        }
+            @Override
+            public void setBackground(Color bg) {
+                super.setBackground(bg);
+                repaint();
+            }
+        };
 
-        @Override
-        public void setBackground(Color bg) {
-            super.setBackground(bg);
-            repaint();
-        }
-    };
+        panelCelda.setLayout(new BorderLayout());
+        panelCelda.setBackground(new Color(214, 209, 246));
+        panelCelda.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+        panelCelda.setMaximumSize(new Dimension(550, 150));
 
-    panelCelda.setLayout(new BorderLayout());
-    panelCelda.setBackground(new Color(214, 209, 246));
-    panelCelda.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
-    panelCelda.setMaximumSize(new Dimension(550, 150));
+        // Decodificar la imagen Base64
+        byte[] imageBytes = Base64.getDecoder().decode(fotoBase64);
+        ImageIcon imageIcon = new ImageIcon(imageBytes);
 
-    // Decodificar la imagen Base64
-    byte[] imageBytes = Base64.getDecoder().decode(fotoBase64);
-    ImageIcon imageIcon = new ImageIcon(imageBytes);
+        // Redimensionar la imagen al tamaño deseado
+        Image scaledImage = imageIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+        imageLabel.setPreferredSize(new Dimension(100, 100));
 
-    // Redimensionar la imagen al tamaño deseado
-    Image scaledImage = imageIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
-    JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
-    imageLabel.setPreferredSize(new Dimension(100, 100));
+        // Texto principal
+        JLabel labelModelo = new JLabel("Modelo: " + modelo);
+        JLabel lblMarca = new JLabel("Marca: " + marca);
+        JLabel labelImporte = new JLabel("Precio: $" + precio);
+        labelModelo.setFont(new Font("Arial", Font.BOLD, 14));
+        labelImporte.setFont(new Font("Arial", Font.BOLD, 16));
+        labelImporte.setForeground(new Color(45, 150, 255));
 
-    // Texto principal
-    JLabel labelModelo = new JLabel("Modelo: " + modelo);
-    JLabel lblMarca = new JLabel("Marca: " + marca);
-    JLabel labelImporte = new JLabel("Precio: $" + precio);
-    labelModelo.setFont(new Font("Arial", Font.BOLD, 14));
-    labelImporte.setFont(new Font("Arial", Font.BOLD, 16));
-    labelImporte.setForeground(new Color(45, 150, 255));
-
-    // Crear botones
-    JButton btnEditar = crearBoton("Editar", e -> {
-        Telefonos telefono = controller.obtenerPorId(Integer.parseInt(codigo));
-        CrudView crudView = new CrudView(telefono);
-        crudView.setVisible(true);
-        this.dispose();
-        System.out.println("Editar: " + codigo);
-    });
-
-    String textoBotonActivar = disponible.equals("1") ? "Desactivar" : "Activar";
-    JButton btnActivar = crearBoton(textoBotonActivar, e -> {
-        System.out.println(textoBotonActivar + ": " + codigo);
-        this.cargarCatalogo();
-    });
-
-    // Lógica para el botón de "Agregar al Carrito"
-    JButton btnVender = new JButton("Agregar al Carrito");
-    btnVender.setFont(new Font("Arial", Font.BOLD, 12));
-    btnVender.setBackground(new Color(100, 180, 100));
-    btnVender.setForeground(Color.WHITE);
-    btnVender.setFocusPainted(false);
-    btnVender.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-
-    // Flag para saber si ya fue agregado al carrito
-    final boolean[] agregadoAlCarrito = {false};
-
-    btnVender.addActionListener(e -> {
-        if (!agregadoAlCarrito[0]) {
-            // Primera vez: Agregar al carrito
-            controller.agregarCarrito(Integer.parseInt(codigo), this.carrito);
-            btnVender.setText("Ver Carrito");
-            btnVender.setBackground(new Color(255, 165, 0)); // Cambia color a naranja
-            agregadoAlCarrito[0] = true;
-            System.out.println("Producto agregado al carrito: " + codigo);
-        } else {
-            // Segunda vez: Cargar el carrito
-            controller.cargarCarrito(carrito);
+        // Crear botones
+        JButton btnEditar = crearBoton("Editar", e -> {
+            Telefonos telefono = controller.obtenerPorId(Integer.parseInt(codigo));
+            CrudView crudView = new CrudView(telefono);
+            crudView.setVisible(true);
             this.dispose();
-            System.out.println("Mostrando el carrito");
-        }
-    });
-    // Contenedor de datos
-    JPanel datosPanel = new JPanel(new GridLayout(3, 2, 5, 15));
-    datosPanel.setBackground(new Color(214, 209, 246));
-    datosPanel.add(labelModelo);
-    datosPanel.add(btnActivar);
+            System.out.println("Editar: " + codigo);
+        });
 
-    datosPanel.add(lblMarca);
-    datosPanel.add(btnEditar);
+        String textoBotonActivar = disponible.equals("1") ? "Desactivar" : "Activar";
+        JButton btnActivar = crearBoton(textoBotonActivar, e -> {
+            System.out.println(textoBotonActivar + ": " + codigo);
+            this.cargarCatalogo();
+        });
 
-    datosPanel.add(labelImporte);
-    datosPanel.add(btnVender);
+        // Lógica para el botón de "Agregar al Carrito"
+        JButton btnVender = new JButton("Agregar al Carrito");
+        btnVender.setFont(new Font("Arial", Font.BOLD, 12));
+        btnVender.setBackground(new Color(100, 180, 100));
+        btnVender.setForeground(Color.WHITE);
+        btnVender.setFocusPainted(false);
+        btnVender.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
-    // Agregar al panel de celda
-    panelCelda.add(imageLabel, BorderLayout.WEST); // Agregar imagen a la izquierda
-    panelCelda.add(datosPanel, BorderLayout.CENTER);
+        // Flag para saber si ya fue agregado al carrito
+        final boolean[] agregadoAlCarrito = {false};
 
-    // Borde de celda
-    panelCelda.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(10, 10, 10, 10),
-            BorderFactory.createLineBorder(new Color(180, 180, 220), 2)
-    ));
+        btnVender.addActionListener(e -> {
+            if (!agregadoAlCarrito[0]) {
+                // Primera vez: Agregar al carrito
+                controller.agregarCarrito(Integer.parseInt(codigo), this.carrito);
+                btnVender.setText("Ver Carrito");
+                btnVender.setBackground(new Color(255, 165, 0)); // Cambia color a naranja
+                agregadoAlCarrito[0] = true;
+                System.out.println("Producto agregado al carrito: " + codigo);
+            } else {
+                // Segunda vez: Cargar el carrito
+                controller.cargarCarrito(carrito);
+                this.dispose();
+                System.out.println("Mostrando el carrito");
+            }
+        });
+        // Contenedor de datos
+        JPanel datosPanel = new JPanel(new GridLayout(3, 2, 5, 15));
+        datosPanel.setBackground(new Color(214, 209, 246));
+        datosPanel.add(labelModelo);
+        datosPanel.add(btnActivar);
 
-    return panelCelda;
-}
+        datosPanel.add(lblMarca);
+        datosPanel.add(btnEditar);
 
+        datosPanel.add(labelImporte);
+        datosPanel.add(btnVender);
 
+        // Agregar al panel de celda
+        panelCelda.add(imageLabel, BorderLayout.WEST); // Agregar imagen a la izquierda
+        panelCelda.add(datosPanel, BorderLayout.CENTER);
+
+        // Borde de celda
+        panelCelda.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(10, 10, 10, 10),
+                BorderFactory.createLineBorder(new Color(180, 180, 220), 2)
+        ));
+
+        return panelCelda;
+    }
 
     public void cargarCatalogo() {
         // Limpiar el contenido actual del JScrollPane
@@ -325,6 +342,7 @@ public JPanel crearCelda(String codigo, String fotoBase64, String marca, String 
         return jScrollPane1;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnCarrito;
     private javax.swing.JButton btnCrud;
     private javax.swing.JButton btnFactura;
     private javax.swing.JButton btnTab;
