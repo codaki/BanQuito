@@ -13,28 +13,36 @@ public class VentaController {
         this.compraService = new CompraService();
     }
 
-    public void ventaCredito(Carrito carro, double total, String cedula, String plazo, VentaView view) {
+    public void ventaCredito(Carrito carro, String cedula, String plazo, VentaView view) {
         int plazoInt = Integer.parseInt(plazo);
         String mensaje = compraService.comprarCredito(carro, cedula, plazoInt);
-        view.lblMensaje.setText(mensaje);
-        if ("Compra exitosa a crédito!!".equals(mensaje)) {
+
+        String[] partes = mensaje.split("!", 2);
+        String estado = partes[0];
+        String facturaId = partes[1];
+
+        view.lblMensaje.setText(estado);
+        if ("Compra a crédito exitosa".equals(estado)) {
             FacturaController factController = new FacturaController();
-            FacturaView factura = new FacturaView();
-            factController.mostrarFactura(carro, total, cedula,factura);
+            factController.mostrarFactura(cedula, Integer.parseInt(facturaId));
             view.dispose();
         } else {
             view.lblMensaje.setText(mensaje);
         }
     }
-    
-    public void ventaEfectivo(Carrito carro, double total, String cedula, VentaView view){
+
+    public void ventaEfectivo(Carrito carro, String cedula, VentaView view) {
         String mensaje = compraService.comprarEfectivo(carro, cedula);
-        view.lblMensaje.setText(mensaje);
         
-        if ("Compra en efectivo exitosa!!".equals(mensaje)) {
+        String[] partes = mensaje.split("!", 2);
+        String estado = partes[0];
+        String facturaId = partes[1];
+        
+        view.lblMensaje.setText(estado);
+
+        if ("Compra en efectivo exitosa".equals(mensaje)) {
             FacturaController factController = new FacturaController();
-            FacturaView factura = new FacturaView();
-            factController.mostrarFactura(carro, total, cedula, factura);
+            factController.mostrarFactura(cedula,Integer.parseInt(facturaId));
             view.dispose();
         } else {
             view.lblMensaje.setText(mensaje);

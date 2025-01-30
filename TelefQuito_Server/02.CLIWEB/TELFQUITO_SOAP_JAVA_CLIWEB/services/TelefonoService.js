@@ -2,7 +2,7 @@ const SoapClient = require("./soapclient");
 
 class TelefonoService {
   constructor() {
-    this.wsdlUrl = "http://localhost:8080/TELFQUITO_SOAP_JAVA/WSTelefonos?wsdl";
+    this.wsdlUrl = "http://192.168.8.83:8080/TELFQUITO_SOAP_JAVA/WSTelefonos?wsdl";
     this.namespace = "http://ws.monster.edu.ec/";
   }
 

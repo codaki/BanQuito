@@ -43,7 +43,7 @@ function populateAmortizaciones(amortizaciones) {
       <div class="row bg-radius2 bg-secondary-light py-3 mb-2">
         <div class="col-6">
          <div class="font-bold text-black-700">N# Cuota: ${amortizacion.cuota}</div>
-          <div class="font-normal text-gray">Código de Credito: ${amortizacion.codCredito}</div>
+          <div class="font-normal text-gray">Código de Crédito: ${amortizacion.codCredito}</div>
          
           <div class="font-normal text-gray-700">Valor Cuota: ${amortizacion.valorCuota}</div>
         </div>

@@ -45,6 +45,12 @@ public class CompraService {
     public List<Factura> obtenerFactura(String cedula) {
         return port.obtenerFactura(cedula);
     }
+    
+    
+    public List<Factura> obtenerFacturaEspecifica(String cedula, int grupoId){
+        return port.obtenerFacturaEspecifica(cedula, grupoId);
+    }
+   
 
     /**
      * Obtiene la tabla de amortización para un usuario por su cédula.

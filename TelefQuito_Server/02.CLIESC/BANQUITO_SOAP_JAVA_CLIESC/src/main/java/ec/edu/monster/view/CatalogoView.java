@@ -32,9 +32,9 @@ public final class CatalogoView extends javax.swing.JFrame {
 
     public CatalogoView() {
         controller = new TelefonoController();
+        carrito = new Carrito();
         initComponents();
         cargarCatalogo();
-        carrito = new Carrito();
     }
     
     public CatalogoView(Carrito carrito) {
@@ -57,6 +57,7 @@ public final class CatalogoView extends javax.swing.JFrame {
         btnCrud = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        btnFactura = new javax.swing.JButton();
         fondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,7 +74,7 @@ public final class CatalogoView extends javax.swing.JFrame {
                 btnTabActionPerformed(evt);
             }
         });
-        getContentPane().add(btnTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 70, 310, 40));
+        getContentPane().add(btnTab, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 70, 230, 40));
 
         btnCrud.setBackground(new java.awt.Color(0, 153, 153));
         btnCrud.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
@@ -86,7 +87,7 @@ public final class CatalogoView extends javax.swing.JFrame {
                 btnCrudActionPerformed(evt);
             }
         });
-        getContentPane().add(btnCrud, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 310, 40));
+        getContentPane().add(btnCrud, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 210, 40));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -108,6 +109,19 @@ public final class CatalogoView extends javax.swing.JFrame {
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 140, 680, 450));
+
+        btnFactura.setBackground(new java.awt.Color(0, 153, 153));
+        btnFactura.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        btnFactura.setForeground(new java.awt.Color(255, 255, 255));
+        btnFactura.setText("Facturas");
+        btnFactura.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 51, 51), 1, true));
+        btnFactura.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFacturaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnFactura, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 70, 200, 40));
 
         fondo.setBackground(new java.awt.Color(255, 255, 255));
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/fondo2.png"))); // NOI18N
@@ -137,6 +151,12 @@ public final class CatalogoView extends javax.swing.JFrame {
         crud.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnCrudActionPerformed
+
+    private void btnFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFacturaActionPerformed
+        ConstultaFactView consulta = new ConstultaFactView();
+        consulta.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnFacturaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -306,6 +326,7 @@ public JPanel crearCelda(String codigo, String fotoBase64, String marca, String 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrud;
+    private javax.swing.JButton btnFactura;
     private javax.swing.JButton btnTab;
     private javax.swing.JLabel fondo;
     private javax.swing.JPanel jPanel1;

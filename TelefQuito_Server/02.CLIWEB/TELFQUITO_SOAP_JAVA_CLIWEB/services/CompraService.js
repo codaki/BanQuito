@@ -2,7 +2,7 @@ const SoapClient = require("./soapclient");
 
 class CompraService {
   constructor() {
-    this.wsdlUrl = "http://localhost:8080/TELFQUITO_SOAP_JAVA/WSCompra?wsdl";
+    this.wsdlUrl = "http://192.168.8.83:8080/TELFQUITO_SOAP_JAVA/WSCompra?wsdl";
     this.namespace = "http://ws.monster.edu.ec/";
   }
 
@@ -28,7 +28,12 @@ class CompraService {
             console.error("SOAP Request Error:", err);
             return reject(err);
           }
-          resolve(result.return);
+          if (result && result.return) {
+            resolve(result.return);
+          } else {
+            console.error("SOAP Response Error: No return value");
+            return reject(new Error("No return value from SOAP response"));
+          }
         });
       });
     } catch (error) {
@@ -54,7 +59,12 @@ class CompraService {
             console.error("SOAP Request Error:", err);
             return reject(err);
           }
-          resolve(result.return);
+          if (result && result.return) {
+            resolve(result.return);
+          } else {
+            console.error("SOAP Response Error: No return value");
+            return reject(new Error("No return value from SOAP response"));
+          }
         });
       });
     } catch (error) {
@@ -78,7 +88,12 @@ class CompraService {
             console.error("SOAP Request Error:", err);
             return reject(err);
           }
-          resolve(result.return);
+          if (result && result.return) {
+            resolve(result.return);
+          } else {
+            console.error("SOAP Response Error: No return value");
+            return reject(new Error("No return value from SOAP response"));
+          }
         });
       });
     } catch (error) {

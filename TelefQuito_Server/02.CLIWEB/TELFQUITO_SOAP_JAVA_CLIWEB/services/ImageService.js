@@ -2,7 +2,7 @@ const SoapClient = require("./soapclient");
 
 class ImageService {
     constructor() {
-        this.wsdlUrl = "http://localhost:8080/TELFQUITO_SOAP_JAVA/WSImageService?wsdl";
+        this.wsdlUrl = "http://192.168.8.83:8080/TELFQUITO_SOAP_JAVA/WSImageService?wsdl";
     }
 
     async GetImage(filename) {
