@@ -15,4 +15,10 @@ public class CarritoSingleton {
             carritoInstance.vaciarCarrito();
         }
     }
+
+    public static void deleteItem(int id) {
+        if (carritoInstance != null) {
+            carritoInstance.removerTelefono(id);
+        }
+    }
 }

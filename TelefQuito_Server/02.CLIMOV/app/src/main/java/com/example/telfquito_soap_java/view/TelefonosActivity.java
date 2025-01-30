@@ -17,9 +17,11 @@ import com.example.telfquito_soap_java.controller.TelefonoController;
 import com.example.telfquito_soap_java.models.Carrito;
 import com.example.telfquito_soap_java.models.CarritoSingleton;
 import com.example.telfquito_soap_java.models.TelefonoModel;
+import com.example.telfquito_soap_java.models.TelefonosSingleton;
 import com.example.telfquito_soap_java.service.TelefonoService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TelefonosActivity extends AppCompatActivity {
@@ -50,11 +52,7 @@ public class TelefonosActivity extends AppCompatActivity {
 
         // Floating action button for the cart
         FloatingActionButton fabCart = findViewById(R.id.fabCart);
-        fabCart.setOnClickListener(v -> {
-            Intent intent = new Intent(TelefonosActivity.this, CarritoActivity.class);
-            intent.putExtra("carrito", carrito);
-            startActivity(intent);
-        });
+        fabCart.setOnClickListener(v -> openCarrito());
 
         findViewById(R.id.btn_AgregarTelefonos).setOnClickListener(v -> {
             Intent intent = new Intent(TelefonosActivity.this, AddEditTelefonoActivity.class);
@@ -80,12 +78,18 @@ public class TelefonosActivity extends AppCompatActivity {
         }
     }
 
+    private void openCarrito() {
+        Intent intent = new Intent(TelefonosActivity.this, CarritoActivity.class);
+        startActivity(intent);
+    }
+
     private void loadTelefonos() {
         telefonoController.getAllTelefonos(new TelefonoService.SoapCallback<List<TelefonoModel>>() {
             @Override
             public void onSuccess(List<TelefonoModel> result) {
                 adapter = new TelefonosAdapter(result, TelefonosActivity.this);
                 recyclerView.setAdapter(adapter);
+                TelefonosSingleton.setTelefonosInstance(result);
             }
 
             @Override

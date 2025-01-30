@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/radius2"
+    android:padding="12dp">
+
+    <!-- Phone Name -->
+    <TextView
+        android:id="@+id/tvNombreTelefono"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nombre Teléfono"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:fontFamily="@font/fredocka_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnAgregar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <!-- Add to Cart Button -->
+    <Button
+        android:id="@+id/btnAgregar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Agregar"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#0D6EFC"
+        android:padding="8dp"
+        android:fontFamily="@font/fredoka_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="8dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

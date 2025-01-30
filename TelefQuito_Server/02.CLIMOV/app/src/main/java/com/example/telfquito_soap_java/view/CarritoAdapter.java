@@ -16,8 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.telfquito_soap_java.R;
 import com.example.telfquito_soap_java.controller.TelefonoController;
+import com.example.telfquito_soap_java.models.CarritoSingleton;
 import com.example.telfquito_soap_java.models.TelefonoCarrito;
 import com.example.telfquito_soap_java.models.TelefonoModel;
+import com.example.telfquito_soap_java.models.TelefonosSingleton;
 import com.example.telfquito_soap_java.service.ImagenService;
 import com.example.telfquito_soap_java.service.TelefonoService;
 
@@ -30,6 +32,7 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
     private OnQuantityChangeListener quantityChangeListener;
     private TelefonoController telefonoController;
     private ImagenService imagenService;
+    private List<TelefonoModel> telefonosList;
 
     public interface OnQuantityChangeListener {
         void onQuantityChange(int position, int newQuantity);
@@ -54,39 +57,40 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
     public void onBindViewHolder(@NonNull CarritoViewHolder holder, int position) {
         TelefonoCarrito telefonoCarrito = telefonos.get(position);
 
-        // Fetch full phone details by ID
-        telefonoController.getTelefonoById(telefonoCarrito.getTelefonoId(), new TelefonoService.SoapCallback<TelefonoModel>() {
+        // Ensure telefonosList is up-to-date
+        telefonosList = TelefonosSingleton.getInstance();
+
+        TelefonoModel telefono = telefonosList.stream()
+                .filter(t -> t.getCodTelefono() == telefonoCarrito.getTelefonoId())
+                .findFirst()
+                .orElse(null);
+
+        if (telefono == null) {
+            Toast.makeText(context, "Telefono not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        holder.tvMarca.setText("Marca: " + telefono.getMarca());
+        holder.tvNombre.setText("Nombre: " + telefono.getNombre());
+        try {
+            double precio = Double.parseDouble(telefono.getPrecio());
+            holder.tvPrecio.setText(String.format("Precio: $%.2f", precio));
+        } catch (NumberFormatException e) {
+            holder.tvPrecio.setText("Precio: N/A");
+        }
+        holder.tvCantidad.setText("Cantidad: " + telefonoCarrito.getCantidad());
+
+        // Load image using ImagenService
+        imagenService.downloadImage(telefono.getImgUrl(), new ImagenService.DownloadSoapCallback() {
             @Override
-            public void onSuccess(TelefonoModel telefono) {
-                holder.tvMarca.setText("Marca: " + telefono.getMarca());
-                holder.tvNombre.setText("Nombre: " + telefono.getNombre());
-                try {
-                    double precio = Double.parseDouble(telefono.getPrecio());
-                    holder.tvPrecio.setText(String.format("Precio: $%.2f", precio));
-                } catch (NumberFormatException e) {
-                    holder.tvPrecio.setText("Precio: N/A");
-                }
-
-                holder.tvCantidad.setText("Cantidad: " + telefonoCarrito.getCantidad());
-
-                // Fetch and display image
-                imagenService.downloadImage(telefono.getImgUrl(), new ImagenService.DownloadSoapCallback() {
-                    @Override
-                    public void onDownloadSuccess(byte[] imageData) {
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
-                        holder.imgTelefono.post(() -> holder.imgTelefono.setImageBitmap(bitmap));
-                    }
-
-                    @Override
-                    public void onError(String errorMessage) {
-                        holder.imgTelefono.setImageResource(R.drawable.estrella_triste2);
-                    }
-                });
+            public void onDownloadSuccess(byte[] imageData) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                holder.imgTelefono.post(() -> holder.imgTelefono.setImageBitmap(bitmap));
             }
 
             @Override
             public void onError(String errorMessage) {
-                Toast.makeText(context, "Error al cargar teléfono: " + errorMessage, Toast.LENGTH_SHORT).show();
+                holder.imgTelefono.setImageResource(R.drawable.estrella_triste2);
             }
         });
 
@@ -102,7 +106,8 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
             } else {
                 telefonos.remove(position);
                 notifyItemRemoved(position);
-                Toast.makeText(context, "Item removed from carrito", Toast.LENGTH_SHORT).show();
+                CarritoSingleton.deleteItem(telefonoCarrito.getTelefonoId());
+                Toast.makeText(context, "Item quitado del carrito", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -120,7 +125,8 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
         holder.btnDeleteItem.setOnClickListener(v -> {
             telefonos.remove(position);
             notifyItemRemoved(position);
-            Toast.makeText(context, "Item removed from carrito", Toast.LENGTH_SHORT).show();
+            CarritoSingleton.deleteItem(telefonoCarrito.getTelefonoId());
+            Toast.makeText(context, "Item quitado del carrito", Toast.LENGTH_SHORT).show();
         });
     }
 
