@@ -13,11 +13,11 @@ export function showModal(title, content, isError = false, callback = null) {
 
   // Add error styling if needed
   if (isError) {
-    modalTitle.classList.add('error-title');
-    modalContent.classList.add('error-content');
+    modalTitle.classList.add("error-title");
+    modalContent.classList.add("error-content");
   } else {
-    modalTitle.classList.remove('error-title');
-    modalContent.classList.remove('error-content');
+    modalTitle.classList.remove("error-title");
+    modalContent.classList.remove("error-content");
   }
 
   modalContainer.classList.remove("hidden");
@@ -31,11 +31,18 @@ export function showModal(title, content, isError = false, callback = null) {
     // Add the new event listener
     newButton.addEventListener("click", () => {
       closeModal();
-      if (callback && typeof callback === 'function') {
+      if (callback && typeof callback === "function") {
         callback();
       }
     });
   }
+  setTimeout(() => {
+    closeModal();
+    if (callback && typeof callback === "function") {
+      callback();
+    }
+    window.location.href = "/telefonos";
+  }, 3000);
 }
 
 export function closeModal() {
@@ -60,6 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
     `;
-    document.body.insertAdjacentHTML('beforeend', modalHTML);
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
   }
 });

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>Factura Específica</title>
+  </head>
+
+  <body>
+    <div class="centrao-container" id="porciento">
+      <div class="containernuevo">
+        <div class="login-card">
+          <div class="row">
+            <div class="col">
+              <img src="/images/protasp.png" alt="Logo" width="90px" />
+            </div>
+            <div class="col">
+              TelfQuito la mejor tienda de celulares del país.
+            </div>
+          </div>
+        </div>
+        <div class="containernuevo" id="factura-especifica">
+          <h2 class="factura-title">Factura Específica</h2>
+          <div class="factura-columns">
+            <!-- Información del cliente -->
+            <div class="factura-column">
+              <h3>Información del Cliente</h3>
+              <div class="factura-grid" id="cuatroporcuatro">
+                <div>
+                  <strong>Cédula del Cliente:</strong>
+                  <span id="cedulaCliente"></span>
+                </div>
+                <div>
+                  <strong>Nombre del Cliente:</strong>
+                  <span id="nombreCliente"></span>
+                </div>
+                <div>
+                  <strong>Forma de Pago:</strong> <span id="formaPago"></span>
+                </div>
+                <div>
+                  <strong>Empleado:</strong> <span id="empleado"></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detalles del producto -->
+            <div class="factura-column">
+              <h3>Detalles del Producto</h3>
+              <table id="productosTable" class="table">
+                <thead>
+                  <tr>
+                    <th>Marca del Teléfono</th>
+                    <th>Nombre del Teléfono</th>
+                    <th>Precio Unitario</th>
+                    <th>Descuento Unitario</th>
+                    <th>Cantidad</th>
+
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Productos serán cargados aquí -->
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="5" style="text-align: right">
+                      <strong>Total:</strong>
+                    </td>
+                    <td id="totalFactura">$0.00</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" style="text-align: right">
+                      <strong>Descuento Total:</strong>
+                    </td>
+                    <td id="descuentoFactura">$0.00</td>
+                  </tr>
+                  <tr>
+                    <td colspan="5" style="text-align: right">
+                      <strong>Valor Total:</strong>
+                    </td>
+                    <td id="valorTotalFactura">$0.00</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+          <button
+            class="btn-primary"
+            onclick="window.location.href='/telefonos'"
+          >
+            Volver
+          </button>
+        </div>
+      </div>
+      <div id="modal-container"></div>
+      <!-- Container for modal -->
+      <script>
+        fetch("/modal.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("modal-container").innerHTML = html;
+            const modalOkButton = document.getElementById("modal-ok-button");
+            if (modalOkButton) {
+              modalOkButton.addEventListener("click", closeModal);
+            }
+          });
+      </script>
+      <script type="module" src="/controller/modal.js"></script>
+      <script
+        type="module"
+        src="/controller/facturaEspecificaController.js"
+      ></script>
+    </div>
+  </body>
+</html>

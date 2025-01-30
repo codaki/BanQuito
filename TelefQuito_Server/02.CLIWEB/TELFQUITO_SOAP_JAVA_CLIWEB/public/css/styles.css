@@ -85,7 +85,7 @@ body {
 
 .search-bar {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr; /* Updated to three columns */
   gap: 10vw;
   width: 80%;
   place-items: center;
@@ -270,7 +270,9 @@ select {
   justify-content: center;
   align-items: center;
 }
-
+#cuatroporcuatro {
+  grid-template-columns: auto auto;
+}
 .factura-grid {
   display: grid;
   gap: 10px;
@@ -293,6 +295,7 @@ select {
 .factura-columns {
   display: flex;
   padding: 10px;
+  flex-direction: column;
   justify-content: space-between;
   /* Espacio entre columnas */
   gap: 1em;
@@ -302,12 +305,40 @@ select {
 .factura-column {
   flex: 1;
   background: #fff;
-
+  padding: 2vh;
   border-radius: 8px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
   /* Sombra sutil */
 }
+/* .factura-grid tbody {
+  width: 100%;
+}
+.factura-grid table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.factura-grid tbody tr {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+}
 
+.factura-grid th,
+.factura-grid td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center; 
+}
+
+.factura-grid th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.factura-grid tfoot td {
+  font-weight: bold;
+  
+} */
 .factura-column:first-child {
   order: 1;
   /* Primera columna (Detalles del Producto) a la izquierda */
@@ -317,7 +348,6 @@ select {
   order: 2;
   /* Segunda columna (Información del Cliente) a la derecha */
 }
-
 
 .telfImg {
   width: 7vw;
@@ -390,4 +420,117 @@ select {
 .cantidadCarrito input {
   font-family: "Fredoka", Arial, sans-serif;
   border-radius: 8px;
+}
+/* Scrollable Invoice Container */
+.facturas-container {
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+  width: 60%;
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: var(--background-color);
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.facturas-container::-webkit-scrollbar {
+  width: 0px;
+}
+.factura-card {
+  background-color: var(--card-background);
+  width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.factura-card button {
+  padding: 8px 15px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.factura-card p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.factura-card h3 {
+  color: var(--primary-color);
+}
+.factura-card {
+  background-color: var(--card-background);
+  width: 90%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.factura-card h3 {
+  color: var(--primary-color);
+}
+
+/* Centering the search bar */
+.search-bar1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 50%;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: var(--card-background);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar1 input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-family: "Fredoka", Arial, sans-serif;
+}
+.centrao-container {
+  padding-top: 5vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  width: 100%;
+  height: 90vh;
+}
+.containernuevo {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+  /* height: 100vh; */
+}
+/* #factura-especifica {
+  width: 100%;
+} */
+/* #porciento {
+  width: 80%;
+} */
+.table {
+  border: 1px black solid;
+}
+.table th {
+  border: 1px black solid;
+}
+.table td {
+  border: 1px black solid;
+}
+.table tr {
+  text-align: center;
 }

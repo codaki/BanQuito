@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <title>Buscar Facturas</title>
+  </head>
+
+  <body>
+    <div class="centrao-container">
+      <!-- Search Bar -->
+      <div class="search-bar1">
+        <input type="text" id="cedula" placeholder="Ingrese la cédula" />
+        <button id="searchButton" class="btn-primary">Buscar</button>
+      </div>
+
+      <!-- Scrollable Facturas Container -->
+      <div class="facturas-container" id="facturasContainer">
+        <!-- Invoices will be inserted here dynamically -->
+      </div>
+
+      <div id="modal-container"></div>
+
+      <script>
+        fetch("/modal.html")
+          .then((response) => response.text())
+          .then((html) => {
+            document.getElementById("modal-container").innerHTML = html;
+            const modalOkButton = document.getElementById("modal-ok-button");
+            if (modalOkButton) {
+              modalOkButton.addEventListener("click", closeModal);
+            }
+          });
+      </script>
+      <script type="module" src="/controller/modal.js"></script>
+      <script type="module" src="/controller/buscarFacturas.js"></script>
+    </div>
+  </body>
+</html>

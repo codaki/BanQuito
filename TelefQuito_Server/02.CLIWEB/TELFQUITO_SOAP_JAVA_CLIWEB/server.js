@@ -55,7 +55,35 @@ app.get("/editarTelefonos", (req, res) => {
 app.get("/comprarTelefono", (req, res) => {
   res.sendFile(path.join(__dirname, "views", "comprarTelefono.html"));
 });
-
+app.post("/obtenerFacturas", async (req, res) => {
+  const { cedula } = req.body;
+  try {
+    const result = await compraService.obtenerFactura(cedula);
+    res.json({ success: true, facturas: result });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error al obtener las facturas",
+      error: error.message,
+    });
+  }
+});
+app.post("/obtenerFacturaEspecifica", async (req, res) => {
+  const { cedula, grupoId } = req.body;
+  try {
+    const result = await compraService.obtenerFacturaEspecifica(
+      cedula,
+      grupoId
+    );
+    res.json({ success: true, result });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Obtener factura específica error",
+      error: error.message,
+    });
+  }
+});
 app.post("/comprarEfectivo", async (req, res) => {
   const { carrito, cedula } = req.body;
   console.log(carrito, cedula);

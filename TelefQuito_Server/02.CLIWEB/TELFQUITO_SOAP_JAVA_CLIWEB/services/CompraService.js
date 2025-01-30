@@ -115,6 +115,30 @@ class CompraService {
       throw error;
     }
   }
+  async obtenerFacturaEspecifica(cedula, grupoId) {
+    try {
+      const soapClient = new SoapClient(this.wsdlUrl);
+      const client = await soapClient.createClient();
+
+      return new Promise((resolve, reject) => {
+        const args = {
+          cedula: cedula,
+          grupoId: grupoId,
+        };
+
+        client.obtenerFacturaEspecifica(args, (err, result) => {
+          if (err) {
+            console.error("SOAP Request Error:", err);
+            return reject(err);
+          }
+          resolve(result.return);
+        });
+      });
+    } catch (error) {
+      console.error("Obtener Factura Especifica Error:", error);
+      throw error;
+    }
+  }
 }
 
 module.exports = new CompraService();

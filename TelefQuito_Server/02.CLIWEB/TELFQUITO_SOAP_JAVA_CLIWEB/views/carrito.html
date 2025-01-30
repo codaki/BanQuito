@@ -1,30 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/css/styles.css" />
     <title>Carrito de Compras</title>
-</head>
+    <style>
+      .scrollable-container {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 5px;
+      }
+      .movement-item {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
 
-<body>
+  <body>
     <div class="cart-container">
-        <h2>Carrito de Compras</h2>
-        <div id="cart-list" class="cart-list">
-            <!-- Cart items will be populated here -->
-        </div>
-        <div class="cart-total">
-            <h3>Total: $<span id="cartTotal">0.00</span></h3>
-        </div>
-        <div class="cart-buttons">
-            <button class="btn-primary" onclick="window.location.href='comprarTelefono.html'">Comprar</button>
-            <button class="btn-primary" onclick="window.location.href='telefonos.html'">Volver a Teléfonos</button>
-        </div>
+      <h2>Carrito de Compras</h2>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar teléfono" />
+      </div>
+      <div id="search-results" class="scrollable-container">
+        <!-- Search results will be populated here -->
+      </div>
+      <div id="cart-list" class="cart-list">
+        <!-- Cart items will be populated here -->
+      </div>
+      <div class="cart-total">
+        <h3>Total: $<span id="cartTotal">0.00</span></h3>
+      </div>
+      <div class="cart-buttons">
+        <button
+          class="btn-primary"
+          onclick="window.location.href='comprarTelefono.html'"
+        >
+          Comprar
+        </button>
+        <button
+          class="btn-primary"
+          onclick="window.location.href='telefonos.html'"
+        >
+          Volver a Teléfonos
+        </button>
+      </div>
     </div>
     <script type="module" src="/controller/cart.js"></script>
     <script type="module" src="/controller/cartPage.js"></script>
-</body>
+    <script>
+      let telefonosData = new Map();
 
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", async () => {
+          const query = document.getElementById("searchInput").value.trim();
+          if (query === "") {
+            document.getElementById("search-results").innerHTML = "";
+            return;
+          }
+
+          const response = await fetch("/getAllTelefonos");
+          const result = await response.json();
+
+          if (result.success) {
+            const telefonos = result.result.filter(
+              (telefono) =>
+                telefono.nombre.toLowerCase().includes(query.toLowerCase()) ||
+                telefono.marca.toLowerCase().includes(query.toLowerCase())
+            );
+            telefonos.forEach((telefono) => {
+              telefonosData.set(telefono.codTelefono, telefono);
+            });
+            populateSearchResults(telefonos);
+          } else {
+            alert("Error al buscar teléfonos");
+          }
+        });
+      async function fetchImage(imgUrl) {
+        try {
+          const response = await fetch(`/getImage?filename=${imgUrl}`);
+          const result = await response.json();
+          if (result.success) {
+            return result.image;
+          }
+          throw new Error(result.message);
+        } catch (error) {
+          console.error(`Error loading image:`, error);
+          return "defaultImageBase64"; // Devuelve una imagen predeterminada si falla la carga
+        }
+      }
+      async function populateSearchResults(telefonos) {
+        const searchResults = document.getElementById("search-results");
+        searchResults.innerHTML = "";
+
+        for (const telefono of telefonos) {
+          const imgBase64 = await fetchImage(telefono.imgUrl);
+
+          const telefonoItem = document.createElement("div");
+          telefonoItem.className = "movement-item";
+          telefonoItem.innerHTML = `
+            <div class="col-6">
+                <img src="data:image/jpeg;base64,${imgBase64}" class="telfImg" alt="${telefono.nombre}" />
+            </div>
+            <div class="col-6">
+                <div class="font-bold text-black">ID: ${telefono.codTelefono}</div>
+                <div class="font-normal text-gray-700">Nombre: ${telefono.nombre}</div>
+                <div class="font-normal text-gray-700">Precio: $${telefono.precio}</div>
+                <div class="font-normal text-gray-700">Marca: ${telefono.marca}</div>
+                <button class="btn-primary" onclick="addToCart(${telefono.codTelefono})">Añadir al Carrito</button>
+            </div>
+        `;
+          searchResults.appendChild(telefonoItem);
+        }
+      }
+
+      function addToCart(id) {
+        console.log("Adding to cart:", id);
+        const cart = getCart();
+        const existingItem = cart.find((item) => item.id === id);
+
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({ id, quantity: 1 });
+        }
+
+        localStorage.setItem("telfCarrito", JSON.stringify(cart));
+        alert("Teléfono añadido al carrito");
+        updateCartTotal();
+        window.location.reload();
+      }
+
+      function getCart() {
+        const cart = localStorage.getItem("telfCarrito");
+        return cart ? JSON.parse(cart) : [];
+      }
+
+      function updateCartTotal() {
+        const cart = getCart();
+        const cartTotal = document.getElementById("cartTotal");
+        let total = 0;
+
+        cart.forEach((item) => {
+          const telefono = telefonosData.get(item.id);
+          if (telefono) {
+            total += telefono.precio * item.quantity;
+          }
+        });
+
+        cartTotal.innerText = total.toFixed(2);
+      }
+    </script>
+  </body>
 </html>

@@ -1,5 +1,5 @@
+import { clearCart, getCart } from "./cart.js";
 import { showModal } from "./modal.js";
-import { getCart, clearCart } from "./cart.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -9,110 +9,119 @@ document.addEventListener("DOMContentLoaded", () => {
     loadTelefonoData(telefonoId);
   }
 
-  document.getElementById("tipoCompra").addEventListener("change", async (e) => {
-    const tipoCompra = e.target.value;
-    document.querySelectorAll(".compra-opcion").forEach((el) => {
-      el.classList.add("hidden");
-      el.querySelectorAll("input").forEach((input) => {
-        input.removeAttribute("required");
+  document
+    .getElementById("tipoCompra")
+    .addEventListener("change", async (e) => {
+      const tipoCompra = e.target.value;
+      document.querySelectorAll(".compra-opcion").forEach((el) => {
+        el.classList.add("hidden");
+        el.querySelectorAll("input").forEach((input) => {
+          input.removeAttribute("required");
+        });
       });
-    });
-    if (tipoCompra === "efectivo") {
-      const compraEfectivo = document.getElementById("compraEfectivo");
-      compraEfectivo.classList.remove("hidden");
+      if (tipoCompra === "efectivo") {
+        const compraEfectivo = document.getElementById("compraEfectivo");
+        compraEfectivo.classList.remove("hidden");
 
-      const totalPrice = await calculateTotalPrice();
-      const descuento = totalPrice * 0.42;
-      const precioFinal = totalPrice - descuento;
-      document.getElementById("precioOriginal").textContent =
-        "$" + totalPrice.toFixed(2);
-      document.getElementById("descuento").textContent =
-        "$" + descuento.toFixed(2);
-      document.getElementById("precioFinal").textContent =
-        "$" + precioFinal.toFixed(2);
+        const totalPrice = await calculateTotalPrice();
+        const descuento = totalPrice * 0.42;
+        const precioFinal = totalPrice - descuento;
+        document.getElementById("precioOriginal").textContent =
+          "$" + totalPrice.toFixed(2);
+        document.getElementById("descuento").textContent =
+          "$" + descuento.toFixed(2);
+        document.getElementById("precioFinal").textContent =
+          "$" + precioFinal.toFixed(2);
+      } else if (tipoCompra === "credito") {
+        const compraCredito = document.getElementById("compraCredito");
+        compraCredito.classList.remove("hidden");
+        compraCredito.querySelectorAll("input").forEach((input) => {
+          input.setAttribute("required", "required");
+        });
 
-    } else if (tipoCompra === "credito") {
-      const compraCredito = document.getElementById("compraCredito");
-      compraCredito.classList.remove("hidden");
-      compraCredito.querySelectorAll("input").forEach((input) => {
-        input.setAttribute("required", "required");
-      });
-
-      const totalPriceC = await calculateTotalPrice();
-      console.log(totalPriceC);
-      const descuentoC = totalPriceC * 0.0;
-      const precioFinalC = totalPriceC - descuentoC;
-      document.getElementById("precioOriginalC").textContent =
-        "$" + totalPriceC.toFixed(2);
-      document.getElementById("descuentoC").textContent =
-        "$" + descuentoC.toFixed(2);
-      document.getElementById("precioFinalC").textContent =
-        "$" + precioFinalC.toFixed(2);
-    }
-  });
-
-  document.getElementById("compraForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const tipoCompra = document.getElementById("tipoCompra").value;
-    const carrito = getCart().map(item => ({
-      telefonoId: item.id,
-      cantidad: item.quantity
-    }));
-    const cedula = document.getElementById("cedula").value;
-    const plazoMeses = tipoCompra === "credito"
-      ? parseInt(document.getElementById("plazoMeses").value, 10)
-      : null;
-
-    if (tipoCompra === "credito" && (plazoMeses < 3 || plazoMeses > 18)) {
-      showModal(
-        "Advertencia",
-        "El plazo debe estar entre 3 y 18 meses.",
-        true,
-        null
-      );
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        tipoCompra === "efectivo" ? "/comprarEfectivo" : "/comprarCredito",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            carrito,
-            cedula,
-            ...(tipoCompra === "credito" && { plazoMeses }),
-          }),
-        }
-      );
-
-      const result = await response.json();
-      console.log(result);
-
-      if (result.success) {
-        if (tipoCompra === "credito" && result.result === "Compra exitosa a credito!!") {
-          showModal("Éxito", "Compra realizada exitosamente.", false, () => {
-            clearCart();
-            window.location.href = '/telefonos';
-          });
-        } else if (result.result === "Compra en efectivo exitosa!!") {
-          showModal("Resultado", result.result, false, () => {
-            clearCart();
-            window.location.href = '/telefonos';
-          });
-        } else {
-          showModal("Resultado", result.result, false);
-        }
-      } else {
-        showModal("Error", "Fallo al realizar la compra.", true);
+        const totalPriceC = await calculateTotalPrice();
+        console.log(totalPriceC);
+        const descuentoC = totalPriceC * 0.0;
+        const precioFinalC = totalPriceC - descuentoC;
+        document.getElementById("precioOriginalC").textContent =
+          "$" + totalPriceC.toFixed(2);
+        document.getElementById("descuentoC").textContent =
+          "$" + descuentoC.toFixed(2);
+        document.getElementById("precioFinalC").textContent =
+          "$" + precioFinalC.toFixed(2);
       }
-    } catch (error) {
-      console.error("Compra error:", error);
-      showModal("Error", error.message, true);
-    }
-  });
+    });
+
+  document
+    .getElementById("compraForm")
+    .addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const tipoCompra = document.getElementById("tipoCompra").value;
+      const carrito = getCart().map((item) => ({
+        telefonoId: item.id,
+        cantidad: item.quantity,
+      }));
+      const cedula = document.getElementById("cedula").value;
+      const plazoMeses =
+        tipoCompra === "credito"
+          ? parseInt(document.getElementById("plazoMeses").value, 10)
+          : null;
+
+      if (tipoCompra === "credito" && (plazoMeses < 3 || plazoMeses > 18)) {
+        showModal(
+          "Advertencia",
+          "El plazo debe estar entre 3 y 18 meses.",
+          true,
+          null
+        );
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          tipoCompra === "efectivo" ? "/comprarEfectivo" : "/comprarCredito",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              carrito,
+              cedula,
+              ...(tipoCompra === "credito" && { plazoMeses }),
+            }),
+          }
+        );
+
+        const result = await response.json();
+        console.log(result);
+
+        if (result.success) {
+          if (
+            tipoCompra === "credito" &&
+            result.result === "Compra exitosa a credito!!"
+          ) {
+            showModal("Éxito", "Compra realizada exitosamente.", false, () => {
+              clearCart();
+              setTimeout(() => {
+                window.location.href = "/telefonos";
+              }, 3000);
+            });
+          } else if (result.result === "Compra en efectivo exitosa!!") {
+            showModal("Resultado", result.result, false, () => {
+              clearCart();
+              window.location.href = "/telefonos";
+            });
+          } else {
+            showModal("Resultado", result.result, false);
+          }
+        } else {
+          showModal("Error", "Fallo al realizar la compra.", true);
+        }
+      } catch (error) {
+        console.error("Compra error:", error);
+        showModal("Error", error.message, true);
+      }
+    });
 
   loadCartItems();
 });
@@ -197,7 +206,11 @@ async function loadCartItems() {
         console.error("Failed to fetch phone details for item ID:", item.id);
       }
     } catch (error) {
-      console.error("Error fetching phone details for item ID:", item.id, error);
+      console.error(
+        "Error fetching phone details for item ID:",
+        item.id,
+        error
+      );
     }
   }
 
@@ -236,7 +249,11 @@ async function calculateTotalPrice() {
         console.error("Failed to fetch phone details for item ID:", item.id);
       }
     } catch (error) {
-      console.error("Error fetching phone details for item ID:", item.id, error);
+      console.error(
+        "Error fetching phone details for item ID:",
+        item.id,
+        error
+      );
     }
   }
 
