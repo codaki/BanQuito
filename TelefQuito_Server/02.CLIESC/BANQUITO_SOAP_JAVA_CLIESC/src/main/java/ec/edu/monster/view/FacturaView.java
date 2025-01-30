@@ -66,6 +66,7 @@ public class FacturaView extends javax.swing.JFrame {
         lblTitulo16 = new javax.swing.JLabel();
         lblTitulo13 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        lblTitulo14 = new javax.swing.JLabel();
         lblTitulo8 = new javax.swing.JLabel();
         lblNomCliente = new javax.swing.JLabel();
         lblTitulo9 = new javax.swing.JLabel();
@@ -212,23 +213,26 @@ public class FacturaView extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         lblTitulo7.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        lblTitulo7.setText("concepto");
+        lblTitulo7.setText("Marca");
 
         lblTitulo29.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        lblTitulo29.setText("marca");
+        lblTitulo29.setText("Modelo");
 
         lblCtaOrigen1.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
         lblCtaOrigen1.setForeground(new java.awt.Color(0, 102, 102));
         lblCtaOrigen1.setText("Detalle pago");
 
         lblTitulo15.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        lblTitulo15.setText("precio");
+        lblTitulo15.setText("cantidad");
 
         lblTitulo16.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        lblTitulo16.setText("cantidad");
+        lblTitulo16.setText("precio");
 
         lblTitulo13.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
-        lblTitulo13.setText("subtotal");
+        lblTitulo13.setText("descuento");
+
+        lblTitulo14.setFont(new java.awt.Font("Comic Sans MS", 1, 18)); // NOI18N
+        lblTitulo14.setText("subtotal");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -237,20 +241,22 @@ public class FacturaView extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblTitulo7, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(lblTitulo7, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTitulo29, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblTitulo15, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblTitulo29, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33)
-                        .addComponent(lblTitulo16, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblTitulo13, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(lblTitulo15, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTitulo16, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblTitulo13, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTitulo14, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(249, 249, 249)
                         .addComponent(lblCtaOrigen1)))
-                .addContainerGap(639, Short.MAX_VALUE))
+                .addContainerGap(650, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(8, 8, 8)
@@ -268,7 +274,8 @@ public class FacturaView extends javax.swing.JFrame {
                     .addComponent(lblTitulo29)
                     .addComponent(lblTitulo15)
                     .addComponent(lblTitulo16)
-                    .addComponent(lblTitulo13))
+                    .addComponent(lblTitulo13)
+                    .addComponent(lblTitulo14))
                 .addContainerGap(148, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
@@ -448,26 +455,29 @@ public class FacturaView extends javax.swing.JFrame {
     }
     
     public JPanel crearCeldaFactura(String marca, String modelo, int cantidad, double precio, double descuento, double pago) {
-    JPanel panelCelda = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5)); // Alineado horizontalmente
+    // Configuración del panel con GridLayout para mantener una alineación uniforme
+    JPanel panelCelda = new JPanel(new GridLayout(1, 6, 10, 0)); // 1 fila, 6 columnas con separación
     panelCelda.setBackground(new Color(240, 240, 240));
-    panelCelda.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    panelCelda.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-    // Crear etiquetas con formato adecuado
-    JLabel lblMarca = new JLabel(marca);
+    // Crear etiquetas bien alineadas
+    JLabel lblMarca = new JLabel(marca, JLabel.CENTER);
     lblMarca.setFont(new Font("Arial", Font.BOLD, 14));
 
-    JLabel lblModelo = new JLabel(modelo);
+    JLabel lblModelo = new JLabel(modelo, JLabel.CENTER);
     lblModelo.setFont(new Font("Arial", Font.PLAIN, 14));
 
-    JLabel lblCantidad = new JLabel(String.valueOf(cantidad));
+    JLabel lblCantidad = new JLabel(String.valueOf(cantidad), JLabel.CENTER);
 
-    JLabel lblPrecio = new JLabel(String.format("$%.2f", precio));
+    JLabel lblPrecio = new JLabel(String.format("$%.2f", precio), JLabel.CENTER);
 
-    JLabel lblDescuento = new JLabel(String.format("-$%.2f", descuento));
+    JLabel lblDescuento = new JLabel(String.format("-$%.2f", descuento), JLabel.CENTER);
+    lblDescuento.setForeground(Color.RED); // Resalta el descuento en rojo
 
-    JLabel lblSubtotal = new JLabel(String.format("$%.2f", pago));
+    JLabel lblSubtotal = new JLabel(String.format("$%.2f", pago), JLabel.CENTER);
+    lblSubtotal.setFont(new Font("Arial", Font.BOLD, 14));
 
-    // Agregar componentes en el orden requerido
+    // Agregar componentes al panel en el orden correcto
     panelCelda.add(lblMarca);
     panelCelda.add(lblModelo);
     panelCelda.add(lblCantidad);
@@ -477,6 +487,7 @@ public class FacturaView extends javax.swing.JFrame {
 
     return panelCelda;
 }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
@@ -502,6 +513,7 @@ public class FacturaView extends javax.swing.JFrame {
     private javax.swing.JLabel lblTitulo10;
     private javax.swing.JLabel lblTitulo11;
     private javax.swing.JLabel lblTitulo13;
+    private javax.swing.JLabel lblTitulo14;
     private javax.swing.JLabel lblTitulo15;
     private javax.swing.JLabel lblTitulo16;
     private javax.swing.JLabel lblTitulo2;

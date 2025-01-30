@@ -11,6 +11,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -94,19 +95,19 @@ public class ConstultaFactView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane)
-                        .addContainerGap())
+                        .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblCtaOrigen1)
-                        .addGap(67, 67, 67)
+                        .addGap(61, 61, 61)
                         .addComponent(lblCtaOrigen)
-                        .addGap(46, 46, 46)
+                        .addGap(64, 64, 64)
                         .addComponent(jLabel4)
-                        .addGap(73, 73, 73)
+                        .addGap(67, 67, 67)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15))))
+                        .addGap(33, 33, 33))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,7 +160,7 @@ public class ConstultaFactView extends javax.swing.JFrame {
                         .addComponent(lblValorC1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 320, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -283,41 +284,25 @@ public class ConstultaFactView extends javax.swing.JFrame {
     }
     
 public JPanel crearCelda(String cedula, String facturaId, String fecha, String formaPago, double total) {
-    System.out.println("´Entró a crear celda con el id: " + facturaId);
-    JPanel panelCelda = new JPanel() {
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2 = (Graphics2D) g;
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2.setColor(getBackground());
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
-        }
+    System.out.println("Entró a crear celda con el id: " + facturaId);
 
-        @Override
-        public void setBackground(Color bg) {
-            super.setBackground(bg);
-            repaint();
-        }
-    };
-
-    // Diseño horizontal con espaciado
-    panelCelda.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5));
+    // Panel principal con GridLayout para distribuir bien los componentes
+    JPanel panelCelda = new JPanel(new GridLayout(1, 5, 10, 0)); // 1 fila, 5 columnas
     panelCelda.setBackground(new Color(245, 245, 245));
-    panelCelda.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+    panelCelda.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
 
-    // Crear etiquetas con formato adecuado
-    JLabel lblFacturaId = new JLabel(facturaId);
-    JLabel lblFecha = new JLabel(fecha);
-    JLabel lblFormaPago = new JLabel(formaPago);
-    JLabel lblTotal = new JLabel(String.format("$%.2f", total));
+    // Crear etiquetas con formato adecuado y alineadas
+    JLabel lblFacturaId = new JLabel(facturaId, JLabel.CENTER);
+    JLabel lblFecha = new JLabel(fecha, JLabel.CENTER);
+    JLabel lblFormaPago = new JLabel(formaPago, JLabel.CENTER);
+    JLabel lblTotal = new JLabel(String.format("$%.2f", total), JLabel.CENTER);
 
     // Aplicar estilo a las etiquetas
     Font fuente = new Font("Arial", Font.PLAIN, 14);
     lblFacturaId.setFont(fuente);
     lblFecha.setFont(fuente);
     lblFormaPago.setFont(fuente);
-    lblTotal.setFont(fuente);
+    lblTotal.setFont(new Font("Arial", Font.BOLD, 14)); // Resaltar total
 
     // Botón para ver factura
     JButton btnVerFactura = new JButton("Ver Factura");
@@ -328,13 +313,10 @@ public JPanel crearCelda(String cedula, String facturaId, String fecha, String f
     btnVerFactura.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
     // Acción al presionar el botón
-    btnVerFactura.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            FacturaController controller = new FacturaController();
-            System.out.println("Ver Factura: " + facturaId);
-            controller.mostrarFactura(cedula, Integer.parseInt(facturaId));
-        }
+    btnVerFactura.addActionListener(e -> {
+        FacturaController controller = new FacturaController();
+        System.out.println("Ver Factura: " + facturaId);
+        controller.mostrarFactura(cedula, Integer.parseInt(facturaId));
     });
 
     // Agregar componentes en orden
@@ -346,6 +328,7 @@ public JPanel crearCelda(String cedula, String facturaId, String fecha, String f
 
     return panelCelda;
 }
+
     
     public JScrollPane getjScrollPane1() {
         return jScrollPane;

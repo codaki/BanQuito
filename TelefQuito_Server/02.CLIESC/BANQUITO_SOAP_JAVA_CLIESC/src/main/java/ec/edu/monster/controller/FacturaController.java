@@ -68,8 +68,8 @@ public class FacturaController {
                     fact.getMarcaTelefono(),
                     fact.getNombreTelefono(),
                     cantidadTotal,
-                    fact.getPreciofinal(),
-                    fact.getDescuento(),
+                    fact.getPreciofinal()*cantidadTotal,
+                    fact.getDescuento()*cantidadTotal,
                     subtotal
             );
             panelResultados.add(celda);

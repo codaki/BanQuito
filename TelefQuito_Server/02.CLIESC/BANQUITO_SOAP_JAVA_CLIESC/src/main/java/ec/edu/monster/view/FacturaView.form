@@ -439,23 +439,25 @@
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="lblTitulo7" min="-2" pref="95" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblTitulo7" min="-2" pref="140" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblTitulo29" min="-2" pref="140" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="lblTitulo15" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="lblTitulo29" min="-2" pref="79" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-                              <Component id="lblTitulo16" min="-2" pref="97" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="lblTitulo15" min="-2" pref="97" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTitulo16" min="-2" pref="67" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                               <Component id="lblTitulo13" min="-2" pref="97" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="lblTitulo14" min="-2" pref="97" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="249" max="-2" attributes="0"/>
                               <Component id="lblCtaOrigen1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="639" max="32767" attributes="0"/>
+                      <EmptySpace pref="650" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -478,6 +480,7 @@
                           <Component id="lblTitulo15" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTitulo16" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lblTitulo13" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblTitulo14" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="148" max="32767" attributes="0"/>
                   </Group>
@@ -497,7 +500,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Comic Sans MS" size="18" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="concepto"/>
+                <Property name="text" type="java.lang.String" value="Marca"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTitulo29">
@@ -505,7 +508,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Comic Sans MS" size="18" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="marca"/>
+                <Property name="text" type="java.lang.String" value="Modelo"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblCtaOrigen1">
@@ -524,7 +527,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Comic Sans MS" size="18" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="precio"/>
+                <Property name="text" type="java.lang.String" value="cantidad"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTitulo16">
@@ -532,7 +535,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Comic Sans MS" size="18" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="cantidad"/>
+                <Property name="text" type="java.lang.String" value="precio"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="lblTitulo13">
@@ -540,7 +543,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Comic Sans MS" size="18" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="subtotal"/>
+                <Property name="text" type="java.lang.String" value="descuento"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -550,6 +553,14 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
             </Container>
+            <Component class="javax.swing.JLabel" name="lblTitulo14">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Comic Sans MS" size="18" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="subtotal"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JLabel" name="lblTitulo8">
